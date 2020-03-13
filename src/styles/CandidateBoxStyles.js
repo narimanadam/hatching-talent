@@ -20,6 +20,8 @@ const Title = styled.h3`
   margin-top: 15px;
   margin-bottom: 5px;
   font-size: 18px;
+  border-top: 1px solid ${props => props.theme.grey};
+  padding-top: 15px;
 `;
 
 const Body = styled.span`

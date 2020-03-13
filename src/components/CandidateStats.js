@@ -6,7 +6,7 @@ import {
   Text
 } from "../styles/CandidateStatsStyles";
 
-function CandidateStats({ icon, number, text }) {
+const CandidateStats = ({ icon, number, text }) => {
   return (
     <CandidateStatsStyles>
       <Icon src={icon} alt={text} />
@@ -14,6 +14,6 @@ function CandidateStats({ icon, number, text }) {
       <Text>{text}</Text>
     </CandidateStatsStyles>
   );
-}
+};
 
 export default CandidateStats;

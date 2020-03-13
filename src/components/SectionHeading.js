@@ -10,14 +10,14 @@ export const SectionHeadingStyle = styled.h1`
   margin-bottom: ${props => (props.dark ? "30px" : "20px")};
 `;
 
-function SectionHeading(props) {
+const SectionHeading = ({ boldText, normalText }) => {
   return (
     <div>
       <SectionHeadingStyle>
-        <strong>{props.boldText}</strong> {props.normalText}
+        <strong>{boldText}</strong> {normalText}
       </SectionHeadingStyle>
     </div>
   );
-}
+};
 
 export default SectionHeading;

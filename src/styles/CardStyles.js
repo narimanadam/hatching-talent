@@ -62,7 +62,7 @@ const Actions = styled.div`
   max-width: 100%;
 `;
 
-const CardLink = styled.a`
+const CardLink = styled.span`
   float: left;
   color: ${props => props.theme.main};
   font-weight: bold;

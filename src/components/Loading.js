@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import LoadingGif from "../assets/loading.gif";
 import styled from "styled-components";
 
@@ -7,14 +7,12 @@ const LoadingImg = styled.img`
   margin-top: 100px;
 `;
 
-class Loading extends Component {
-  render() {
-    return (
-      <div>
-        <LoadingImg src={LoadingGif} alt="Loading ..." />
-      </div>
-    );
-  }
-}
+const Loading = () => {
+  return (
+    <div>
+      <LoadingImg src={LoadingGif} alt="Loading ..." />
+    </div>
+  );
+};
 
 export default Loading;

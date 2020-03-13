@@ -24,7 +24,7 @@ const CandidateName = styled.p`
 `;
 
 const Title = styled.h3`
-  font-size: 30px;
+  font-size: 20px;
   margin-bottom: 25px;
 `;
 

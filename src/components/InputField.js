@@ -1,15 +1,17 @@
 import React from "react";
 import { InputFieldStyle } from "../styles/FormStyles";
 
-function InputField({
+const InputField = ({
   type,
   placeholder,
   name,
   label,
   handleInputChange,
   handleBlur,
-  required
-}) {
+  required,
+  value,
+  handleInputKeyup
+}) => {
   return (
     <div className="form__group">
       {label && <label className="form__label">{label}</label>}
@@ -20,9 +22,11 @@ function InputField({
         onChange={handleInputChange}
         onBlur={handleBlur}
         required={required}
+        value={value}
+        onKeyUp={handleInputKeyup}
       />
     </div>
   );
-}
+};
 
 export default InputField;

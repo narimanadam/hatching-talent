@@ -6,7 +6,7 @@ import {
   ProgressText
 } from "../styles/ProgressBarStyles";
 
-function ProgressBar({ value }) {
+const ProgressBar = ({ value }) => {
   return (
     <ProgressBarStyles>
       <ProgressBarTrack />
@@ -15,6 +15,6 @@ function ProgressBar({ value }) {
       </ProgressBarThumb>
     </ProgressBarStyles>
   );
-}
+};
 
 export default ProgressBar;

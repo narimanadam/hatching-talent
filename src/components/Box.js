@@ -4,7 +4,7 @@ import { BoxStyles, Icon, Heading, Text } from "../styles/BoxStyles";
 
 const success = `${props => props.theme.success}`;
 
-const Box = ({ type, heading, text, children }) => {
+const Box = ({ type, heading, text, children, editMode }) => {
   return (
     <BoxStyles>
       {type == "success" && (
@@ -28,7 +28,7 @@ const Box = ({ type, heading, text, children }) => {
       )}
 
       <Heading>{heading}</Heading>
-      {text && text.map(text => <Text>{text}</Text>)}
+      {text && !editMode && text.map(text => <Text>{text}</Text>)}
       {children}
     </BoxStyles>
   );

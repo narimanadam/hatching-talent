@@ -1,43 +1,27 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+let isAuth = window.localStorage.getItem("authenticated");
+let userData = window.localStorage.getItem("userData") || null;
+let authUser = JSON.parse(userData) || {};
 
-const AuthContext = React.createContext();
-
-class AuthProvider extends Component {
-  state = {
-    isLoggedIn: true,
-    type: "admin",
-    employerId: 5
-  };
-
-  // checkUserStatus = userStatus => {
-  //   this.setState({
-  //     isLoggedIn: userStatus
-  //   });
-  // };
-
-  updateGlobal = () => {
-    this.setState({
-      type: "updated from child"
-    });
-  };
-
-  render() {
-    const { children } = this.props;
-
-    return (
-      <Provider
-        value={{
-          state: this.state,
-          updateGlobal: this.updateGlobal,
-          checkUserStatus: this.checkUserStatus
-        }}
-      >
-        {children}
-      </Provider>
-    );
+const AuthContext = React.createContext([
+  {
+    isLoggedIn: isAuth || false,
+    type: authUser.type || "Candidate",
+    userID: authUser.id || 0,
+    jobTitle: authUser.jobTitle || ""
   }
-}
+]);
 
-export const Provider = AuthContext.Provider;
-export const AuthConsumer = AuthContext.Consumer;
-export default AuthProvider;
+const AuthProvider = ({ children }) => {
+  const AuthState = useState({
+    isLoggedIn: isAuth || false,
+    type: authUser.type || "Candidate",
+    userID: authUser.id || 0,
+    jobTitle: authUser.jobTitle || ""
+  });
+  return (
+    <AuthContext.Provider value={AuthState}>{children}</AuthContext.Provider>
+  );
+};
+export { AuthProvider };
+export default AuthContext;

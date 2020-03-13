@@ -1,56 +1,45 @@
-import React, { Component } from "react";
+import React from "react";
 import { Container, Row, Col } from "react-grid-system";
 import ProfileInfoBox from "../components/ProfileInfoBox";
-import Labels from "../components/Labels";
 import Box from "../components/Box";
-import { MainOutlineButton, MainButton } from "../styles/Button";
-import InputField from "../components/InputField";
-import { InlineList, InlineListItem } from "../styles/ListStyle";
-import { Form } from "../styles/FormStyles";
-import ITSkills from "../components/CandidateProfile/ITSkills";
+// import ITSkills from "../components/CandidateProfile/ITSkills";
 import JobPreference from "../components/CandidateProfile/JobPreference";
 import WorkExperience from "../components/CandidateProfile/WorkExperience";
 import Skills from "../components/CandidateProfile/Skills";
 import EducationalDetails from "../components/CandidateProfile/EducationalDetails";
-import Projects from "../components/CandidateProfile/Projects";
+// import Projects from "../components/CandidateProfile/Projects";
 import CoursesAndCertification from "../components/CandidateProfile/CoursesAndCertification";
 import PersonalDetails from "../components/CandidateProfile/PersonalDetails";
 import OnlinePresence from "../components/CandidateProfile/OnlinePresence";
 import AwardsAndAchievements from "../components/CandidateProfile/AwardsAndAchievements";
 import LanguagesKnown from "../components/CandidateProfile/LanguagesKnown";
+import ProfileDesc from "../components/CandidateProfile/ProfileDesc";
 
-class CandidateProfilePage extends Component {
-  state = {
-    candidate: []
-  };
-
-  render() {
-    return (
-      <Container style={{ marginBottom: "40px", marginTop: "40px" }}>
-        <h2 className="page__title">Profile</h2>
-        <Row>
-          <Col sm={4} className="bg-gray">
-            <ProfileInfoBox />
-          </Col>
-          <Col sm={8}>
-            <Form>
-              <Box heading="Resume">hhhh</Box>
-              <Skills />
-              <JobPreference />
-              <WorkExperience />
-              <EducationalDetails />
-              <Projects />
-              <CoursesAndCertification />
-              <PersonalDetails />
-              <LanguagesKnown />
-              <AwardsAndAchievements />
-              <OnlinePresence />
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
+const CandidateProfilePage = props => {
+  return (
+    <Container style={{ marginBottom: "40px", marginTop: "40px" }}>
+      <h2 className="page__title">Profile</h2>
+      <Row>
+        <Col sm={4} className="bg-gray">
+          <ProfileInfoBox userId={props.userId} />
+        </Col>
+        <Col sm={8}>
+          <Box heading="Resume">hhhh</Box>
+          <ProfileDesc userId={props.userId} />
+          <Skills userId={props.userId} />
+          <JobPreference userId={props.userId} />
+          <WorkExperience userId={props.userId} />
+          <EducationalDetails userId={props.userId} />
+          {/* <Projects userId={props.userId} /> */}
+          <CoursesAndCertification userId={props.userId} />
+          <PersonalDetails userId={props.userId} />
+          <LanguagesKnown userId={props.userId} />
+          <AwardsAndAchievements userId={props.userId} />
+          <OnlinePresence userId={props.userId} />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default CandidateProfilePage;

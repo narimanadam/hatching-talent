@@ -8,7 +8,7 @@ import {
   Body
 } from "../styles/ThumbnailStyles";
 
-function Thumbnail({ imgSrc, title, body }) {
+const Thumbnail = ({ imgSrc, title, body }) => {
   return (
     <ThumbnailStyles>
       <ImgWrapper>
@@ -20,6 +20,6 @@ function Thumbnail({ imgSrc, title, body }) {
       </Info>
     </ThumbnailStyles>
   );
-}
+};
 
 export default Thumbnail;

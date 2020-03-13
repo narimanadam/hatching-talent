@@ -3,7 +3,7 @@ import { Container } from "react-grid-system";
 import SectionHeading from "../components/SectionHeading";
 import CandidateRegistertaionForm from "../components/CandidateRegisterationForm";
 
-function CandidateRegisterationPage() {
+const CandidateRegisterationPage = () => {
   return (
     <div className="main-colored">
       <Container>
@@ -12,6 +12,6 @@ function CandidateRegisterationPage() {
       </Container>
     </div>
   );
-}
+};
 
 export default CandidateRegisterationPage;

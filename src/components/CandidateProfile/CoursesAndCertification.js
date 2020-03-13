@@ -1,70 +1,133 @@
-import React, { Component } from "react";
-import Box from "../Box";
-import { MainOutlineButton, MainButton } from "../../styles/Button";
-import InputField from "../InputField";
-import { InlineList, InlineListItem } from "../../styles/ListStyle";
+import React, { useState, useContext, useEffect } from "react";
 import Labels from "../Labels";
+import Box from "../Box";
+import {
+  MainOutlineButton,
+  MainButton,
+  Button,
+  DefaultButtonOutline
+} from "../../styles/Button";
+import { InlineList, InlineListItem } from "../../styles/ListStyle";
+import { ADD_EDUCATION, GET_EDUCATIONS } from "../../helpers/apiUrls";
+import AuthContext from "../../context/AuthContext";
+import Message from "../Message";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "../Modal";
+import { Title } from "../../styles/ModalStyles";
+import InputField from "../InputField";
+import { Form } from "../../styles/FormStyles";
+import Textarea from "../Textarea";
+import CoursesAndCertificationItem from "./CoursesAndCertificationItem";
 
-class CoursesAndCertification extends Component {
-  state = {
-    course: "",
-    courses: [],
-    showAddNewCourse: false
+const CoursesAndCertification = ({ userId }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [courseName, setCourseName] = useState("");
+  const [courseDescription, setCourseDescription] = useState("");
+  const [courseGraduationYear, setCourseGraduationYear] = useState("");
+  const [courseSchoolName, setCourseSchoolName] = useState("");
+  const [courses, setCourses] = useState([]);
+  const [authenticated] = useContext(AuthContext);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
-  showAddNewInput = () => {
-    this.setState({
-      showAddNewCourse: true
-    });
+  const submitCourse = e => {
+    e.preventDefault();
+    fetch(`${ADD_EDUCATION}`, {
+      method: "POST",
+      headers: {
+        forUser: authenticated.userID,
+        name: courseName,
+        description: courseDescription,
+        graduationYear: courseGraduationYear,
+        placeName: courseSchoolName,
+        type: "course"
+      }
+    })
+      .then(res => res.json())
+      .then(data => window.location.reload())
+      .catch(error => console.log(error));
   };
 
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value
-    });
+  const getCourses = () => {
+    fetch(`${GET_EDUCATIONS}`, {
+      method: "POST",
+      headers: {
+        forUser: userId,
+        type: "course"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setCourses(data);
+      })
+      .catch(error => console.log(error));
   };
 
-  submit = () => {
-    this.state.courses.push(this.state.course);
-    this.setState({
-      ...this.state
-    });
-  };
+  useEffect(() => {
+    getCourses();
+  }, [courseName]);
 
-  render() {
-    return (
-      <Box
-        heading="Courses &amp; Certification"
-        body="Enter details of any professional course or certification you may have done"
-      >
-        {this.state.courses.map((course, index) => (
-          <Labels key={index} title={course} />
-        ))}
-        {this.state.showAddNewCourse && (
-          <InputField
-            type="text"
-            name="course"
-            placeholder="Add New Course"
-            handleInputChange={this.handleInputChange}
-          />
-        )}
-        <InlineList>
-          <InlineListItem>
-            <MainOutlineButton onClick={this.showAddNewInput} type="button">
-              Add New Course
-            </MainOutlineButton>
-          </InlineListItem>
-          {this.state.showAddNewCourse && (
-            <InlineListItem>
-              <MainButton onClick={this.submit} type="button">
-                Submit
-              </MainButton>
-            </InlineListItem>
-          )}
-        </InlineList>
-      </Box>
-    );
-  }
-}
+  return (
+    <Box heading="Courses &amp; Certification">
+      {!courses.length && (
+        <Message text="Enter details of any professional course or certification you may have done"></Message>
+      )}
+
+      {courses.map(({ place_name, name, description, id, graduation_year }) => (
+        <CoursesAndCertificationItem
+          desc={description}
+          courseName={name}
+          schoolName={place_name}
+          gradYear={graduation_year}
+          id={id}
+          key={id}
+          creatorUser={userId}
+        />
+      ))}
+
+      {showModal && (
+        <Modal>
+          <Title>Add New Course / Certificate</Title>
+          <Form onSubmit={submitCourse}>
+            <InputField
+              type="text"
+              name="courseName"
+              placeholder="Course / Certificate Name"
+              handleInputChange={e => setCourseName(e.target.value)}
+            />
+            <InputField
+              type="text"
+              name="courseSchoolName"
+              placeholder="Where did you take this course/ certificate ?"
+              handleInputChange={e => setCourseSchoolName(e.target.value)}
+            />
+            <InputField
+              type="text"
+              name="courseGraduationYear"
+              placeholder="Course Graduation Year"
+              handleInputChange={e => setCourseGraduationYear(e.target.value)}
+            />
+            <Textarea
+              name="courseDescription"
+              placeholder="Tell us more about this course / certificate"
+              handleInputChange={e => setCourseDescription(e.target.value)}
+            />
+            <DefaultButtonOutline type="submit">
+              Add Course
+            </DefaultButtonOutline>
+          </Form>
+        </Modal>
+      )}
+      {authenticated.userID == userId && (
+        <Button type="button" onClick={toggleModal} colored block>
+          <FontAwesomeIcon icon="plus" />
+          Add New Course
+        </Button>
+      )}
+    </Box>
+  );
+};
 
 export default CoursesAndCertification;

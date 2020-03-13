@@ -21,6 +21,7 @@ const theme = {
   gray: "#6c6e72",
   darkGray: "#686768",
   lightGray: "#f6f6f6",
+  grey: "#e6e6e6",
   black: "#333",
   success: "#28a745",
   error: "#dc3545",

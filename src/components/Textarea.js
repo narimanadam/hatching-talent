@@ -16,7 +16,14 @@ const TextareaStyle = styled.textarea`
   }
 `;
 
-function Textarea({ name, placeholder, label, handleInputChange, handleBlur }) {
+const Textarea = ({
+  name,
+  placeholder,
+  label,
+  handleInputChange,
+  handleBlur,
+  value
+}) => {
   return (
     <div className="form__group">
       {label && <label className="form__label">{label}</label>}
@@ -25,9 +32,10 @@ function Textarea({ name, placeholder, label, handleInputChange, handleBlur }) {
         placeholder={placeholder}
         onChange={handleInputChange}
         onBlur={handleBlur}
+        value={value}
       />
     </div>
   );
-}
+};
 
 export default Textarea;

@@ -1,12 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-grid-system";
-// import axios from 'axios';
 import JobThumbnail from "./JobThumbnail";
-import JobResultsProvider, {
-  Provider,
-  Consumer
-} from "../context/JobResultsContext";
-import JobResultsTab from "./Tabs/JobResultsTab";
+import JobResultsDetails from "./Tabs/JobResultsDetails";
 import {
   InlineList,
   InlineListItem,
@@ -14,15 +9,41 @@ import {
 } from "../styles/ListStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../styles/Button";
+import { SEARCH_JOBS, APPLY_SAVE_JOB, GET_USER_INFO } from "../helpers/apiUrls";
+import AuthContext from "../context/AuthContext";
 
-class JobResults extends Component {
-  applyJob = () => {
-    fetch("http://127.0.0.1:8080/app/resources/jobs/applySaveJob", {
+const JobResults = () => {
+  const [jobs, setJobs] = useState([]);
+  const [currentJob, setCurrentJob] = useState({});
+  const [authenticated] = useContext(AuthContext);
+  const handleJobThumbnailClick = itemIndex => {
+    setCurrentJob(jobs[itemIndex]);
+  };
+
+  useEffect(() => {
+    fetch(`${SEARCH_JOBS}`, {
       method: "POST",
       headers: {
-        jobId: 1,
-        userId: 1,
-        action: "Apply"
+        keyWord: authenticated.jobTitle,
+        jobLocation: "",
+        jobIndustry: ""
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setJobs(data);
+        setCurrentJob(data[0] || []);
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  const applyJob = () => {
+    fetch(`${APPLY_SAVE_JOB}`, {
+      method: "POST",
+      headers: {
+        jobId: currentJob.job_id,
+        userId: authenticated.userID,
+        action: "apply"
       }
     })
       .then(res => res.json())
@@ -30,67 +51,60 @@ class JobResults extends Component {
       .catch(error => console.log(error));
   };
 
-  render() {
-    return (
-      <div>
-        <Container>
-          <Row style={{ marginTop: "50px", marginBottom: "50px" }}>
-            <Consumer>
-              {context => (
-                <Fragment>
-                  <Col md={4}>
-                    <h3>Jobs</h3>
-                    {context.state.jobs.map((job, index) => (
-                      <JobThumbnail
-                        key={job.id}
-                        job={job}
-                        handleJobThumbnailClick={context.handleJobThumbnailClick.bind(
-                          this,
-                          index
-                        )}
-                      >
-                        {" "}
-                        {job.job_name}
-                      </JobThumbnail>
-                    ))}
-                  </Col>
-                  <Col md={8} align="left">
-                    <Row>
-                      <Col md={6}>
-                        <h3>{context.state.currentJob.job_name}</h3>
-                      </Col>
-                      <Col md={6} align="right">
-                        <InlineList>
-                          <InlineListItem center>
-                            <InlineListIcon>
-                              <FontAwesomeIcon
-                                className=""
-                                icon={["far", "heart"]}
-                              />
-                            </InlineListIcon>
-                            <p>Favourite</p>
-                          </InlineListItem>
-                          <InlineListItem center>
-                            <Button onClick={this.applyJob}>
-                              <InlineListIcon>
-                                <FontAwesomeIcon icon={["far", "edit"]} />
-                              </InlineListIcon>
-                              <span>Apply</span>
-                            </Button>
-                          </InlineListItem>
-                        </InlineList>
-                      </Col>
-                    </Row>
-                    <JobResultsTab currentJob={context.state.currentJob} />
-                  </Col>
-                </Fragment>
-              )}
-            </Consumer>
-          </Row>
-        </Container>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Container>
+        <Row style={{ marginTop: "50px", marginBottom: "50px" }}>
+          <>
+            <Col md={4}>
+              <h3>Jobs</h3>
+              {jobs.map((job, index) => (
+                <JobThumbnail
+                  key={job.job_id}
+                  name={job.job_name}
+                  description={job.job_description}
+                  jobLocation={job.location}
+                  employerId={job.employer_id}
+                  handleJobThumbnailClick={handleJobThumbnailClick.bind(
+                    this,
+                    index
+                  )}
+                >
+                  {job.job_name}
+                </JobThumbnail>
+              ))}
+            </Col>
+            <Col md={8} align="left">
+              <Row>
+                <Col md={6}>
+                  <h3>{currentJob.job_name}</h3>
+                </Col>
+                <Col md={6} align="right">
+                  <InlineList>
+                    {/* <InlineListItem center>
+                      <InlineListIcon>
+                        <FontAwesomeIcon className="" icon={["far", "heart"]} />
+                      </InlineListIcon>
+                      <p>Favourite</p>
+                    </InlineListItem> */}
+                    <InlineListItem center>
+                      <Button onClick={applyJob}>
+                        <InlineListIcon>
+                          <FontAwesomeIcon icon={["far", "share-square"]} />
+                        </InlineListIcon>
+                        <span>Apply</span>
+                      </Button>
+                    </InlineListItem>
+                  </InlineList>
+                </Col>
+              </Row>
+              <JobResultsDetails currentJob={currentJob} />
+            </Col>
+          </>
+        </Row>
+      </Container>
+    </div>
+  );
+};
 
 export default JobResults;

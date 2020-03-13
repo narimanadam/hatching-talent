@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-grid-system";
 import {
   EmployerLogo,
@@ -9,96 +9,116 @@ import {
 } from "../styles/JobDetails";
 import { InlineList, InlineListItem } from "../styles/ListStyle";
 import { MainOutlineButton, MainButton } from "../styles/Button";
-import { AuthConsumer } from "../context/AuthContext";
+import {
+  PENDING_JOBS_URL,
+  UPDATE_JOB_URL,
+  SEARCH_JOBS,
+  APPLY_SAVE_JOB
+} from "../helpers/apiUrls";
+import AuthContext from "../context/AuthContext";
+import { navigate } from "@reach/router";
 
-class JobDetailsPage extends Component {
-  state = {
-    job: {}
-  };
-  componentDidMount() {
-    fetch("http://www.somaku.com/users/", {
-      method: "GET"
+const JobDetailsPage = props => {
+  const [job, setJob] = useState({});
+  const [authenticated] = useContext(AuthContext);
+
+  useEffect(() => {
+    // GET: Job Details
+    fetch(`${PENDING_JOBS_URL}`, {
+      method: "POST"
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        let job = data.filter(job => job.id == this.props.id);
-        this.setState({
-          job: job[0]
-        });
+        let targetJob = data.filter(job => job.job_id == props.id);
+        setJob(targetJob[0]);
       })
       .catch(error => console.log(error));
-  }
-  render() {
-    const { name } = this.state.job;
-    return (
-      <AuthConsumer>
-        {Auth => (
-          <Container style={{ marginTop: "30px" }}>
-            <Row>
-              <Col sm={3} border>
-                <EmployerLogo
-                  src="https://freemuse.org/wp-content/uploads/2017/06/mbc-logo-590x300.jpg"
-                  alt=""
-                />
-                <EmployerName>{name}</EmployerName>
-              </Col>
-              <Col sm={9}>
-                <Jobtitle>Front End Developer</Jobtitle>
-                <JobLevel>Mid Level</JobLevel>
-                <JobDesc>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Facilis perferendis similique iusto, magnam tempore amet velit
-                  totam omnis nihil sunt iste voluptatem repellendus deserunt
-                  delectus, provident ratione voluptates. Dolores temporibus
-                  repudiandae maxime. Error molestiae dolores consequuntur
-                  debitis velit possimus maxime voluptatem reprehenderit
-                  voluptate fuga impedit quos eum, deleniti amet corrupti vel ut
-                  voluptatum enim voluptates eaque ratione sit doloremque.
-                  Animi, eveniet minima? Dolorem laudantium ipsum praesentium.
-                  Veritatis, quos repudiandae molestias ab ea cupiditate
-                  voluptate deleniti magni reprehenderit aspernatur doloremque
-                  nam delectus perferendis veniam! Excepturi, rerum odit fuga
-                  tempora reprehenderit nemo delectus temporibus, ipsa mollitia
-                  amet vel voluptatibus dignissimos facilis quam quasi deleniti
-                  magni. Veniam vero, voluptatibus fuga ipsam deleniti ex
-                  placeat tenetur neque sapiente! Quia maiores similique
-                  debitis, hic dolores aliquid eligendi harum numquam voluptate!
-                  Assumenda reiciendis perferendis perspiciatis modi voluptatem,
-                  nam quibusdam tempore aperiam numquam obcaecati iusto
-                  temporibus unde eos fugit doloribus fugiat? Sequi nihil
-                  dolores voluptas tempore quia! Et neque nemo tempore libero
-                  rem natus beatae eaque architecto ut culpa perferendis ducimus
-                  provident fuga nostrum non, incidunt eum veniam. Amet culpa
-                  illo animi qui cupiditate ullam, cum consequatur iste debitis
-                  earum tempore quia nihil harum sapiente dolores deserunt rem
-                  iure provident accusamus blanditiis? Neque nemo modi ea odit.
-                </JobDesc>
-              </Col>
-              {Auth.state.isLoggedIn && Auth.state.type == "candidate" && (
-                <InlineList>
-                  <InlineListItem>
-                    <MainOutlineButton>Apply to this job</MainOutlineButton>
-                  </InlineListItem>
-                </InlineList>
-              )}
+  }, []);
 
-              {Auth.state.isLoggedIn && Auth.state.type == "admin" && (
-                <InlineList>
-                  <InlineListItem>
-                    <MainButton>Approve</MainButton>
-                  </InlineListItem>
-                  <InlineListItem>
-                    <MainOutlineButton>Reject</MainOutlineButton>
-                  </InlineListItem>
-                </InlineList>
-              )}
-            </Row>
-          </Container>
+  const ApproveJob = () => {
+    fetch(`${UPDATE_JOB_URL}`, {
+      method: "POST",
+      headers: {
+        jobId: job.job_id,
+        status: "Active"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data[0].value === "Ok") {
+          navigate("/jobs-overview");
+        }
+      })
+      .catch(error => console.log(error));
+  };
+  const RejectJob = () => {
+    fetch(`${UPDATE_JOB_URL}`, {
+      method: "POST",
+      headers: {
+        jobId: job.job_id,
+        status: "Rejected"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data[0].value === "Ok") {
+          navigate("/jobs-overview");
+        }
+      })
+      .catch(error => console.log(error));
+  };
+
+  const applyJob = () => {
+    fetch(`${APPLY_SAVE_JOB}`, {
+      method: "POST",
+      headers: {
+        jobId: job.job_id,
+        userId: authenticated.userID,
+        action: "apply"
+      }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+  };
+
+  return (
+    <Container style={{ marginTop: "30px" }}>
+      <Row>
+        <Col sm={3}>
+          <EmployerLogo
+            src="https://freemuse.org/wp-content/uploads/2017/06/mbc-logo-590x300.jpg"
+            alt=""
+          />
+          <EmployerName>MBC</EmployerName>
+        </Col>
+        <Col sm={9}>
+          <Jobtitle>{job.job_name}</Jobtitle>
+          <JobLevel>{job.role}</JobLevel>
+          <JobDesc>{job.job_description}</JobDesc>
+        </Col>
+        {authenticated.type === "Candidate" && (
+          <InlineList>
+            <InlineListItem>
+              <MainOutlineButton onClick={applyJob}>
+                Apply to this job
+              </MainOutlineButton>
+            </InlineListItem>
+          </InlineList>
         )}
-      </AuthConsumer>
-    );
-  }
-}
+        {authenticated.type === "Admin" && (
+          <InlineList>
+            <InlineListItem>
+              <MainButton onClick={ApproveJob}>Approve</MainButton>
+            </InlineListItem>
+            <InlineListItem>
+              <MainOutlineButton onClick={RejectJob}>Reject</MainOutlineButton>
+            </InlineListItem>
+          </InlineList>
+        )}
+      </Row>
+    </Container>
+  );
+};
 
 export default JobDetailsPage;

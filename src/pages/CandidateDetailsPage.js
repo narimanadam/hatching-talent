@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-grid-system";
 import ProfileInfoBox from "../components/ProfileInfoBox";
 import Box from "../components/Box";
 
-class CandidateDetailsPage extends Component {
-  state = {
-    candidate: {}
-  };
-  componentDidMount() {
+const CandidateDetailsPage = () => {
+  const [candidate, setCandidate] = useState("");
+
+  const getCandidateInfo = () => {
     fetch("http://www.somaku.com/users/", {
       method: "GET"
     })
@@ -19,22 +18,23 @@ class CandidateDetailsPage extends Component {
         });
       })
       .catch(error => console.log(error));
-  }
-  render() {
-    const { name, email } = this.state.candidate;
-    return (
-      <Container>
-        <Row style={{ marginTop: "40px" }}>
-          <Col sm={4} className="bg-gray">
-            <ProfileInfoBox name={name} email={email} />
-          </Col>
-          <Col sm={8}>
-            <Box heading="Skills" text={["HTML", "CSS"]} />
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
+  };
+  useEffect(() => {
+    getCandidateInfo();
+  }, []);
+  const { name, email } = candidate;
+  return (
+    <Container>
+      <Row style={{ marginTop: "40px" }}>
+        <Col sm={4} className="bg-gray">
+          <ProfileInfoBox name={name} email={email} />
+        </Col>
+        <Col sm={8}>
+          <Box heading="Skills" text={["HTML", "CSS"]} />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default CandidateDetailsPage;

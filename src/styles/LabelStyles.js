@@ -13,8 +13,16 @@ const LabelStyles = styled.div`
   }
 `;
 
-const CloseIcon = styled.span`
-  margin-left: 10px;
+const LabelLink = styled.a`
+  color: ${props => props.theme.white};
+  text-decoration: none;
 `;
 
-export { LabelStyles, CloseIcon };
+const CloseIcon = styled.button`
+  margin-left: 10px;
+  background: none;
+  border: none;
+  color: ${props => props.theme.white};
+`;
+
+export { LabelStyles, CloseIcon, LabelLink };

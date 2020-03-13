@@ -1,192 +1,183 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Form } from "../styles/FormStyles";
 import { Row, Col } from "react-grid-system";
 import { DefaultButtonOutline } from "../styles/Button";
 import InputField from "../components/InputField";
 import Message from "../components/Message";
+import { REGISTER_URL } from "../helpers/apiUrls";
 
-class EmployerRegisterationForm extends Component {
-  state = {
-    fullName: "",
-    companyName: "",
-    email: "",
-    password: "",
-    isRegistered: false,
-    confirmEmail: "",
-    touched: {}
+const EmployerRegisterationForm = () => {
+  const [fullName, setFullName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [bluredInputs, setBluredInputs] = useState(false);
+
+  const setBlurred = e => {
+    setBluredInputs({ ...bluredInputs, [e.target.name]: true });
   };
 
-  handlePasswordMatching = () => {
-    const { password, confirmPassword } = this.state;
+  const handlePasswordMatching = () => {
     return password === confirmPassword;
   };
 
-  handleEmailMatching = () => {
-    const { email, confirmEmail } = this.state;
+  const handleEmailMatching = () => {
     return email === confirmEmail;
   };
 
-  handleBlur = ({ target: { name } }) => {
-    this.setState({
-      touched: { ...this.state.touched, [name]: true }
-    });
+  const validateFullName = () => {
+    return fullName.length > 5;
   };
 
-  validateFullName = () => {
-    return this.state.fullName.length > 5;
+  const validateCompanyName = () => {
+    return companyName !== "";
   };
 
-  validateCompanyName = () => {
-    return this.state.companyName !== "";
+  const validatePassword = () => {
+    return password.length > 8;
   };
 
-  validatePassword = () => {
-    return this.state.password.length > 8;
+  const validateEmail = () => {
+    return /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email);
   };
 
-  validateEmail = () => {
-    return /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email);
-  };
-
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value
-    });
-  };
-
-  register = e => {
+  const register = e => {
     e.preventDefault();
-    fetch("http://127.0.0.1:8080/app/resources/users/addUser", {
+    fetch(`${REGISTER_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         Accept: "application/json",
-        firstName: this.state.fullName,
-        companyName: this.state.companyName,
-        email: this.state.email,
-        userPassword: this.state.password,
+        firstName: fullName,
+        companyName,
+        email,
+        userPassword: password,
         userType: "Employer"
       },
       body: null
     })
       .then(data => {
         console.log("Request success: ", data);
-        this.setState({
-          isRegistered: true
-        });
+        setIsRegistered(true);
       })
       .catch(error => {
-        this.setState({
-          isRegistered: false
-        });
+        setIsRegistered(false);
         console.log("Request failure: ", error);
       });
   };
 
-  render() {
-    const { isRegistered, touched } = this.state;
-    const fullNameIsValid = this.validateFullName();
-    const companyNameIsValid = this.validateCompanyName();
-    const passwordIsValid = this.validatePassword();
-    const emailIsValid = this.validateEmail();
-    const emailMatching = this.handleEmailMatching();
-    const passwordMatching = this.handlePasswordMatching();
-    const formValid =
-      fullNameIsValid &&
-      companyNameIsValid &&
-      emailIsValid &&
-      passwordIsValid &&
-      passwordMatching &&
-      emailMatching;
+  const fullNameIsValid = validateFullName();
+  const companyNameIsValid = validateCompanyName();
+  const passwordIsValid = validatePassword();
+  const emailIsValid = validateEmail();
+  const emailMatching = handleEmailMatching();
+  const passwordMatching = handlePasswordMatching();
+  const formValid =
+    fullNameIsValid &&
+    companyNameIsValid &&
+    emailIsValid &&
+    passwordIsValid &&
+    passwordMatching &&
+    emailMatching;
 
-    return (
-      <Form onSubmit={this.register}>
-        <Row>
-          <Col sm={4}>
-            <InputField
-              type="text"
-              placeholder="Full Name"
-              name="fullName"
-              handleInputChange={this.handleInputChange}
-              handleBlur={this.handleBlur}
+  return (
+    <Form onSubmit={register}>
+      <Row>
+        <Col sm={4}>
+          <InputField
+            type="text"
+            placeholder="Full Name"
+            name="fullName"
+            handleInputChange={e => setFullName(e.target.value)}
+            handleBlur={setBlurred}
+          />
+          {bluredInputs.fullName && !fullNameIsValid && (
+            <Message
+              text="Full name should be at least 5 characters"
+              type="error"
             />
-            {touched.fullName && !fullNameIsValid && (
-              <p>Full name should be at least 5 characters</p>
-            )}
-          </Col>
-          <Col sm={4}>
-            <InputField
-              type="text"
-              placeholder="Company Name"
-              name="companyName"
-              handleInputChange={this.handleInputChange}
-              handleBlur={this.handleBlur}
-            />
-            {touched.companyName && !companyNameIsValid && (
-              <p>Comapny Name is Required</p>
-            )}
-          </Col>
-          <Col sm={4}>
-            <InputField
-              type="email"
-              placeholder="Email"
-              name="email"
-              handleInputChange={this.handleInputChange}
-              handleBlur={this.handleBlur}
-            />
-            {touched.email && !emailIsValid && (
-              <p>Email is not valid please fix</p>
-            )}
-          </Col>
-          <Col sm={4}>
-            <InputField
-              type="email"
-              placeholder="Confirm Email"
-              name="confirmEmail"
-              handleInputChange={this.handleInputChange}
-              handleBlur={this.handleEmailMatching}
-            />
-            {touched.confirmEmail && touched.email && !emailMatching && (
+          )}
+        </Col>
+        <Col sm={4}>
+          <InputField
+            type="text"
+            placeholder="Company Name"
+            name="companyName"
+            handleInputChange={e => setCompanyName(e.target.value)}
+            handleBlur={setBlurred}
+          />
+          {bluredInputs.companyName && !companyNameIsValid && (
+            <Message text="Comapny Name is Required" type="error" />
+          )}
+        </Col>
+        <Col sm={4}>
+          <InputField
+            type="email"
+            placeholder="Email"
+            name="email"
+            handleInputChange={e => setEmail(e.target.value)}
+            handleBlur={setBlurred}
+          />
+          {bluredInputs.email && !emailIsValid && (
+            <Message text="Email is not valid please fix" type="error" />
+          )}
+        </Col>
+        <Col sm={4}>
+          <InputField
+            type="email"
+            placeholder="Confirm Email"
+            name="confirmEmail"
+            handleInputChange={e => setConfirmEmail(e.target.value)}
+            handleBlur={handleEmailMatching}
+          />
+          {bluredInputs.confirmEmail &&
+            bluredInputs.email &&
+            !emailMatching && (
               <Message text="Email is not matching" type="error" />
             )}
-          </Col>
-          <Col sm={4}>
-            <InputField
-              type="password"
-              placeholder="Enter Password"
-              name="password"
-              handleInputChange={this.handleInputChange}
-              handleBlur={this.handleBlur}
+        </Col>
+        <Col sm={4}>
+          <InputField
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+            handleInputChange={e => setPassword(e.target.value)}
+            handleBlur={setBlurred}
+          />
+          {bluredInputs.password && !passwordIsValid && (
+            <Message
+              text="Password should be at least 8 characters"
+              type="error"
             />
-            {touched.password && !passwordIsValid && (
-              <p>Password should be at least 8 characters</p>
-            )}
-          </Col>
-          <Col sm={4}>
-            <InputField
-              type="password"
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              handleInputChange={this.handleInputChange}
-              handleBlur={this.handlePasswordMatching}
-            />
-            {touched.passwordMatching && !passwordMatching && (
-              <Message text="Password is not matching" type="error" />
-            )}
-          </Col>
-          <Col col={2} align="right">
-            <DefaultButtonOutline type="submit" disabled={!formValid}>
-              Register
-            </DefaultButtonOutline>
-          </Col>
-        </Row>
-        {isRegistered && (
-          <p className="message message-success">You Registered Successfully</p>
-        )}
-      </Form>
-    );
-  }
-}
+          )}
+        </Col>
+        <Col sm={4}>
+          <InputField
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            handleInputChange={e => setConfirmPassword(e.target.value)}
+            handleBlur={handlePasswordMatching}
+          />
+          {bluredInputs.passwordMatching && !passwordMatching && (
+            <Message text="Password is not matching" type="error" />
+          )}
+        </Col>
+        <Col col={2} align="right">
+          <DefaultButtonOutline type="submit" disabled={!formValid}>
+            Register
+          </DefaultButtonOutline>
+        </Col>
+      </Row>
+      {isRegistered && (
+        <Message text="You Registered Successfully" type="success" />
+      )}
+    </Form>
+  );
+};
 
 export default EmployerRegisterationForm;

@@ -1,19 +1,19 @@
 import React from "react";
 import SectionHeading from "../components/SectionHeading";
 import { Container } from "react-grid-system";
-import { AuthConsumer } from "../context/AuthContext";
+// import { AuthConsumer } from "../context/AuthContext";
 
 import LoginForm from "../components/LoginForm";
 
-function LoginPage() {
+const LoginPage = () => {
   return (
     <div className="main-colored">
       <Container>
         <SectionHeading boldText="Login" />
-        <AuthConsumer>{Auth => <LoginForm context={Auth} />}</AuthConsumer>
+        <LoginForm />
       </Container>
     </div>
   );
-}
+};
 
 export default LoginPage;

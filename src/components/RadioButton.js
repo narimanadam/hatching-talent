@@ -1,19 +1,24 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   RadioButtonField,
   RadioButtonLabel,
   RadioButtonText
 } from "../styles/RadioButtonStyles";
 
-const RadioButton = ({ name, label }) => {
+const RadioButton = ({ name, label, handleChange, value }) => {
   return (
-    <Fragment>
+    <>
       <div className="form__group radio inline">
-        <RadioButtonField type="radio" name={name} />
+        <RadioButtonField
+          type="radio"
+          name={name}
+          onChange={handleChange}
+          value={value}
+        />
         <RadioButtonLabel />
         <RadioButtonText>{label}</RadioButtonText>
       </div>
-    </Fragment>
+    </>
   );
 };
 

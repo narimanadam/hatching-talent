@@ -11,7 +11,7 @@ const SectionDesc = styled.p`
   color: ${props => props.theme.white};
 `;
 
-function EmployerRegisterPage() {
+const EmployerRegisterPage = () => {
   return (
     <div className="main-colored">
       <Container>
@@ -26,6 +26,6 @@ function EmployerRegisterPage() {
       </Container>
     </div>
   );
-}
+};
 
 export default EmployerRegisterPage;

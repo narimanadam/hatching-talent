@@ -1,71 +1,117 @@
-import React, { Component } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Labels from "../Labels";
 import Box from "../Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
 import InputField from "../InputField";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
-class Skills extends Component {
-  state = {
-    skill: "",
-    skills: [],
-    showAddNewSkillInput: false
+import {
+  ADD_SKILL_AND_LANG,
+  GET_SKILLS_AND_LANG,
+  DELETE_SKILLS_AND_LANG
+} from "../../helpers/apiUrls";
+import AuthContext from "../../context/AuthContext";
+import { Form } from "../../styles/FormStyles";
+import Message from "../../components/Message";
+
+const Skills = ({ userId }) => {
+  const [skill, setSkill] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [showAddNewSkill, setShowAddNewSkill] = useState(false);
+  const [authenticated] = useContext(AuthContext);
+
+  const showAddNewSkillInput = () => {
+    setShowAddNewSkill(true);
   };
 
-  showAddNewSkillInput = () => {
-    this.setState({
-      showAddNewSkill: true
-    });
+  const submitSkill = () => {
+    fetch(`${ADD_SKILL_AND_LANG}`, {
+      method: "POST",
+      headers: {
+        forUser: authenticated.userID,
+        name: skill,
+        type: "skill"
+      }
+    })
+      .then(res => res.json())
+      .then(data => getSkills())
+      .catch(error => console.log(error));
   };
 
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value
-    });
+  const deleteSkill = Id => {
+    fetch(`${DELETE_SKILLS_AND_LANG}`, {
+      method: "POST",
+      headers: {
+        id: Id
+      }
+    })
+      .then(res => res.json())
+      .then(data => getSkills())
+      .catch(error => console.log(error));
   };
 
-  submitSkill = () => {
-    this.state.skills.push(this.state.skill);
-    console.log(this.state);
-    this.setState({
-      ...this.state
-    });
+  useEffect(() => {
+    getSkills();
+  }, []);
+
+  const getSkills = () => {
+    fetch(`${GET_SKILLS_AND_LANG}`, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        forUser: userId,
+        type: "skill"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setSkills(data);
+      })
+      .catch(error => console.log(error));
   };
 
-  render() {
-    const { skills, showAddNewSkill } = this.state;
-    return (
-      <Box heading="Skills">
-        {skills.map((skill, index) => (
-          <Labels key={index} title={skill} />
-        ))}
-        {showAddNewSkill && (
+  return (
+    <Box heading="Skills">
+      {!skills.length && authenticated.userID == userId && (
+        <Message text="Add the skills you have"></Message>
+      )}
+
+      {skills.map((skill, index) => (
+        <Labels
+          key={index}
+          title={skill.name}
+          handleClick={deleteSkill.bind(this, skill.id)}
+          creatorUser={userId}
+        />
+      ))}
+
+      {showAddNewSkill && (
+        <Form>
           <InputField
             type="text"
             name="skill"
             placeholder="Add New Skill"
-            handleInputChange={this.handleInputChange}
+            handleInputChange={e => setSkill(e.target.value)}
           />
-        )}
+        </Form>
+      )}
+      {authenticated.userID == userId && (
         <InlineList>
           <InlineListItem>
-            <MainOutlineButton
-              onClick={this.showAddNewSkillInput}
-              type="button"
-            >
+            <MainOutlineButton onClick={showAddNewSkillInput} type="button">
               Add New Skill
             </MainOutlineButton>
           </InlineListItem>
           {showAddNewSkill && (
             <InlineListItem>
-              <MainButton onClick={this.submitSkill} type="button">
+              <MainButton onClick={submitSkill} type="button">
                 Submit
               </MainButton>
             </InlineListItem>
           )}
         </InlineList>
-      </Box>
-    );
-  }
-}
+      )}
+    </Box>
+  );
+};
 
 export default Skills;

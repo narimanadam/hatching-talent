@@ -34,6 +34,43 @@ const Form = styled.form`
       }
     }
   }
+
+  .list__search-results {
+    position: relative;
+    top: -15px;
+    background: #fff;
+    border-top: 1px solid #efefef;
+    list-style: none;
+    .list__search-results__item {
+      padding: 10px 15px;
+      border-bottom: 1px solid ${props => props.theme.grey};
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .react-datepicker {
+    &-wrapper {
+      width: 100%;
+    }
+    &__input-container {
+      input {
+        border: none;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        padding-left: 15px;
+        width: 100%;
+        background: ${props => props.theme.white};
+        outline: none;
+        :focus {
+          box-shadow: none;
+          outline: none;
+        }
+      }
+    }
+  }
 `;
 const DarkForm = styled(Form)`
   .form {

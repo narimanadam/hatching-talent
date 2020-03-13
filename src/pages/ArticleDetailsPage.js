@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import ArticleImage from "../assets/recent-articles.jpg";
 import styled from "styled-components";
 import { Container } from "react-grid-system";
+import { GET_ARTICLES } from "../helpers/apiUrls";
 
 const ArticleImg = styled.img`
   width: 100%;
@@ -18,43 +19,36 @@ const ArticleBody = styled.p`
   margin: 30px 0;
 `;
 
-class ArticleDetails extends Component {
-  state = {
-    articles: [],
-    articleDetais: []
-  };
-  componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          articles: data
-        });
-        let newList = this.state.articles.filter(
-          article => article.userId === 1
-        ); // Prints result from `response.json()` in getRequest
-        let articleDetailsArray = newList.filter(
-          article => article.id == this.props.articleId
-        );
-        this.setState({
-          articleDetais: articleDetailsArray[0]
-        });
-      })
-      .catch(error => console.error(error));
-  }
+const ArticleDetails = ({ articleId }) => {
+  const [article, setArticle] = useState({});
 
-  render() {
-    const { title, body } = this.state.articleDetais;
-    return (
-      <div>
-        <ArticleImg src={ArticleImage} />
-        <Container>
-          <ArticleTitle>{title}</ArticleTitle>
-          <ArticleBody>{body}</ArticleBody>
-        </Container>
-      </div>
-    );
-  }
-}
+  const getArticle = () => {
+    fetch(`${GET_ARTICLES}`, {
+      method: "POST"
+    })
+      .then(res => res.json())
+      .then(data => {
+        let targetArticle = data.filter(
+          article => article.article_id == articleId
+        );
+        setArticle(targetArticle[0]);
+      })
+      .catch(error => console.log(error));
+  };
+
+  useEffect(() => {
+    getArticle();
+  }, []);
+
+  return (
+    <>
+      <ArticleImg src={ArticleImage} />
+      <Container>
+        <ArticleTitle>{article.title}</ArticleTitle>
+        <ArticleBody>{article.article_description}</ArticleBody>
+      </Container>
+    </>
+  );
+};
 
 export default ArticleDetails;

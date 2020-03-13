@@ -24,4 +24,34 @@ const SelectStyles = {
   placeholder: styles => ({ ...styles, color: "#333", fontSize: "14px" })
 };
 
-export { SelectStyles };
+const SelectDefaultStyles = {
+  control: styles => ({
+    ...styles,
+    backgroundColor: "#fff",
+    color: "#fff",
+    borderRadius: "none",
+    boxShadow: "none",
+    border: "none",
+    marginBottom: "15px"
+  }),
+  option: styles => ({
+    ...styles,
+    transition: "0.3s",
+    "&:hover": {
+      backgroundColor: "#fff",
+      color: "#fff",
+      cursor: "pointer"
+    },
+    "&:checked": { backgroundColor: "#fff" }
+  }),
+  dropdownIndicator: styles => ({ ...styles, color: "#333" }),
+  menu: styles => ({
+    ...styles,
+    backgroundColor: "#fff",
+    color: "#333",
+    zIndex: 100
+  }),
+  placeholder: styles => ({ ...styles, color: "#333" })
+};
+
+export { SelectStyles, SelectDefaultStyles };

@@ -1,70 +1,110 @@
-import React, { Component } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import Labels from "../Labels";
 import Box from "../Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
 import InputField from "../InputField";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
-import Labels from "../Labels";
+import { ADD_AWARD, GET_AWARDS, DELETE_AWARD } from "../../helpers/apiUrls";
+import AuthContext from "../../context/AuthContext";
+import { Form } from "../../styles/FormStyles";
+import Message from "../../components/Message";
 
-class AwardsAndAchievements extends Component {
-  state = {
-    award: "",
-    awards: [],
-    showAddNewAward: false
+const AwardsAndAchievements = ({ userId }) => {
+  const [award, setAward] = useState("");
+  const [awards, setAwards] = useState([]);
+  const [showAddNewAward, setShowAddNewAward] = useState(false);
+  const [authenticated] = useContext(AuthContext);
+
+  const showAddNewAwardInput = () => {
+    setShowAddNewAward(true);
   };
 
-  showAddNewInput = () => {
-    this.setState({
-      showAddNewAward: true
-    });
+  const submitAward = () => {
+    fetch(`${ADD_AWARD}`, {
+      method: "POST",
+      headers: {
+        forUser: authenticated.userID,
+        name: award,
+        type: "award"
+      }
+    })
+      .then(res => res.json())
+      .then(data => getAwards())
+      .catch(error => console.log(error));
   };
 
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value
-    });
+  const deleteAward = Id => {
+    fetch(`${DELETE_AWARD}`, {
+      method: "POST",
+      headers: {
+        id: Id
+      }
+    })
+      .then(res => res.json())
+      .then(data => getAwards())
+      .catch(error => console.log(error));
   };
 
-  submit = () => {
-    this.state.awards.push(this.state.award);
-    this.setState({
-      ...this.state
-    });
+  const getAwards = () => {
+    fetch(`${GET_AWARDS}`, {
+      method: "POST",
+      headers: {
+        forUser: userId,
+        type: "award"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setAwards(data);
+      })
+      .catch(error => console.log(error));
   };
 
-  render() {
-    return (
-      <Box
-        heading="Awards &amp; Achievements"
-        body="Enter details of any awards you may have received"
-      >
-        {this.state.awards.map((award, index) => (
-          <Labels key={index} title={award} />
-        ))}
-        {this.state.showAddNewAward && (
+  useEffect(() => {
+    getAwards();
+  }, []);
+
+  return (
+    <Box heading="Awards &amp; Achievements">
+      {!awards.length && (
+        <Message text="Enter details of any awards you may have received"></Message>
+      )}
+      {awards.map((award, index) => (
+        <Labels
+          key={index}
+          title={award.name}
+          handleClick={deleteAward.bind(this, award.id)}
+          creatorUser={userId}
+        />
+      ))}
+      {showAddNewAward && (
+        <Form>
           <InputField
             type="text"
             name="award"
             placeholder="Add New Award"
-            handleInputChange={this.handleInputChange}
+            handleInputChange={e => setAward(e.target.value)}
           />
-        )}
-        <InlineList>
+        </Form>
+      )}
+      <InlineList>
+        {authenticated.userID == userId && (
           <InlineListItem>
-            <MainOutlineButton onClick={this.showAddNewInput} type="button">
+            <MainOutlineButton onClick={showAddNewAwardInput} type="button">
               Add New Award
             </MainOutlineButton>
           </InlineListItem>
-          {this.state.showAddNewAward && (
-            <InlineListItem>
-              <MainButton onClick={this.submit} type="button">
-                Submit
-              </MainButton>
-            </InlineListItem>
-          )}
-        </InlineList>
-      </Box>
-    );
-  }
-}
+        )}
+        {showAddNewAward && (
+          <InlineListItem>
+            <MainButton onClick={submitAward} type="button">
+              Submit
+            </MainButton>
+          </InlineListItem>
+        )}
+      </InlineList>
+    </Box>
+  );
+};
 
 export default AwardsAndAchievements;

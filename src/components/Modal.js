@@ -1,31 +1,22 @@
-import React, { Component } from "react";
-import { ModalStyles, Close, Title } from "../styles/ModalStyles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "../styles/Button";
+import React, { useEffect, useRef } from "react";
+import { ModalStyles } from "../styles/ModalStyles";
+import { createPortal } from "react-dom";
 
-class Modal extends Component {
-  render() {
-    const { children, show, handleClose, title } = this.props;
-    const showHideCls = show ? "modal open" : "";
-    return (
-      <ModalStyles className={showHideCls}>
-        <div className="modal-main">
-          <Title>{title}</Title>
-          {children}
-          <Close>
-            <Button>
-              <FontAwesomeIcon
-                icon="times"
-                size="1x"
-                style={{ color: "#333" }}
-                onClick={handleClose}
-              />
-            </Button>
-          </Close>
-        </div>
-      </ModalStyles>
-    );
+const Modal = ({ show, children }) => {
+  const showHideCls = show ? "modal open" : "";
+  const modalRoot = document.getElementById("modal");
+  const elRef = useRef(null);
+
+  if (!elRef.current) {
+    elRef.current = document.createElement("div");
   }
-}
+
+  useEffect(() => {
+    modalRoot.appendChild(elRef.current);
+    return () => modalRoot.removeChild(elRef.current);
+  }, []);
+
+  return createPortal(<ModalStyles>{children}</ModalStyles>, elRef.current);
+};
 
 export default Modal;

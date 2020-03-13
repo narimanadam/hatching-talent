@@ -1,11 +1,18 @@
-import React, { Fragment } from "react";
+import React from "react";
+import styled from "styled-components";
 
-function Message({ text, error }) {
-  return (
-    <Fragment>
-      <p>{text}</p>
-    </Fragment>
-  );
-}
+const MessageStyles = styled.p`
+  margin-bottom: 15px;
+  &.error {
+    color: red;
+  }
+  &.success {
+    color: green;
+  }
+`;
+
+const Message = ({ text, type }) => {
+  return <MessageStyles className={type}>{text}</MessageStyles>;
+};
 
 export default Message;

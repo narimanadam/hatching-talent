@@ -2,10 +2,20 @@ import styled from "styled-components";
 
 const Button = styled.button`
   background: transparent;
-  padding: 10px 25px;
+  height: ${props => (props.icon ? "" : "36px")};
+  line-height: ${props => (props.icon ? "" : "32px")};
+  padding: ${props => (props.icon ? "" : "0 15px")};
   font-size: ${props => (props.sm ? "14px" : "16px")};
   border: none;
   transition: 0.3s;
+  color: ${props =>
+    props.colored ? `${props.theme.main}` : `${props.theme.black}`};
+  width: ${props => (props.block ? "100%" : "auto")};
+  text-align: ${props => (props.block ? "center" : "left")};
+
+  svg {
+    margin-right: 15px;
+  }
   :hover {
     cursor: pointer;
   }

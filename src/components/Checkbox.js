@@ -1,6 +1,6 @@
 import React from "react";
 
-function Checkbox({ name, label }) {
+const Checkbox = ({ name, label }) => {
   return (
     <div className="form__group">
       <label htmlFor={name}>
@@ -8,6 +8,6 @@ function Checkbox({ name, label }) {
       </label>
     </div>
   );
-}
+};
 
 export default Checkbox;

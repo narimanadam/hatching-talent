@@ -5,6 +5,7 @@ const JobBoxStyles = styled.div`
   background: ${props => props.theme.lightGray};
   padding: 15px;
   margin-bottom: 15px;
+  width: 100%;
   &:last-child {
     margin-bottom: 0;
   }

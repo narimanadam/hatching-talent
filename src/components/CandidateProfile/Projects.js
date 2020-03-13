@@ -1,67 +1,82 @@
-import React, { Component } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import Labels from "../Labels";
 import Box from "../Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
 import InputField from "../InputField";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
-import Labels from "../Labels";
+import { ADD_PROJECT, GET_PROJECTS } from "../../helpers/apiUrls";
+import AuthContext from "../../context/AuthContext";
 
-class Projects extends Component {
-  state = {
-    project: "",
-    projects: [],
-    showAddNewProject: false
+const Projects = () => {
+  const [project, setProject] = useState("");
+  const [projects, setProjects] = useState([]);
+  const [showAddNewProject, setShowAddNewProject] = useState(false);
+  const [authenticated] = useContext(AuthContext);
+
+  const showAddNewProjectInput = () => {
+    setShowAddNewProject(true);
   };
 
-  showAddNewInput = () => {
-    this.setState({
-      showAddNewProject: true
-    });
+  const submitProject = () => {
+    fetch(`${ADD_PROJECT}`, {
+      method: "POST",
+      headers: {
+        forUser: authenticated.userID,
+        name: project,
+        type: "project"
+      }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
   };
 
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value
-    });
+  const getProjects = () => {
+    fetch(`${GET_PROJECTS}`, {
+      method: "POST",
+      headers: {
+        forUser: authenticated.userID,
+        type: "project"
+      }
+    })
+      .then(res => res.json())
+      .then(data => setProjects(data))
+      .catch(error => console.log(error));
   };
 
-  submit = () => {
-    this.state.projects.push(this.state.project);
-    this.setState({
-      ...this.state
-    });
-  };
+  useEffect(() => {
+    getProjects();
+  }, [projects]);
 
-  render() {
-    return (
-      <Box heading="Projects" body="Add projects that you want to show case">
-        {this.state.projects.map((project, index) => (
-          <Labels key={index} title={project} />
-        ))}
-        {this.state.showAddNewProject && (
-          <InputField
-            type="text"
-            name="project"
-            placeholder="Add New Project"
-            handleInputChange={this.handleInputChange}
-          />
-        )}
-        <InlineList>
+  return (
+    <Box heading="Projects">
+      {projects.map((project, index) => (
+        <Labels key={index} title={project.name} />
+      ))}
+      {showAddNewProject && (
+        <InputField
+          type="text"
+          name="project"
+          placeholder="Add New Project"
+          handleInputChange={e => setProject(e.target.value)}
+        />
+      )}
+      <InlineList>
+        <InlineListItem>
+          <MainOutlineButton onClick={showAddNewProjectInput} type="button">
+            Add New Project
+          </MainOutlineButton>
+        </InlineListItem>
+        {showAddNewProjectInput && (
           <InlineListItem>
-            <MainOutlineButton onClick={this.showAddNewInput} type="button">
-              Add New Project
-            </MainOutlineButton>
+            <MainButton onClick={submitProject} type="button">
+              Submit
+            </MainButton>
           </InlineListItem>
-          {this.state.showAddNewProject && (
-            <InlineListItem>
-              <MainButton onClick={this.submit} type="button">
-                Submit
-              </MainButton>
-            </InlineListItem>
-          )}
-        </InlineList>
-      </Box>
-    );
-  }
-}
+        )}
+      </InlineList>
+    </Box>
+  );
+};
 
 export default Projects;
