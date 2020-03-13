@@ -1,4 +1,4 @@
-const apiURL = "https://138.68.95.204:8181/app/resources";
+const apiURL = "http://138.68.95.204:8080/app/resources";
 
 export const ADD_LOOKUP = `${apiURL}/general/addLookUp`;
 export const GET_LOOKUPs = `${apiURL}/general/getLookupValues`;
