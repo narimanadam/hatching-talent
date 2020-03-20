@@ -73,7 +73,7 @@ const CandidateDashboardPage = props => {
         </Col>
         <Col sm={8}>
           <h3 className="page__subtitle">Recommended Jobs for You</h3>
-          {jobs.map(job => (
+          {jobs.map((job, i) => (
             <RecommendedJobBox
               jobName={job.job_name}
               jobLocation={job.location}
@@ -81,7 +81,7 @@ const CandidateDashboardPage = props => {
               jobRole={job.role}
               employerId={job.employer_id}
               id={job.job_id}
-              key={job.job_id}
+              key={i}
             />
           ))}
         </Col>

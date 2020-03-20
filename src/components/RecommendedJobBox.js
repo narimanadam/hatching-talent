@@ -43,7 +43,8 @@ const RecommendedJobBox = ({
       >
         <Title>{jobName}</Title>
         <CompanyInfo>
-          {employerInfo.first_name} {employerInfo.last_name} - {jobLocation}
+          {employerInfo && employerInfo.first_name}
+          {employerInfo && employerInfo.last_name} - {jobLocation}
         </CompanyInfo>
         <DefinitionList term="career level" desc={jobRole} />
         <Description>{jobDesc}</Description>

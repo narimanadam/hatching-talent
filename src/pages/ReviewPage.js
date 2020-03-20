@@ -118,7 +118,7 @@ const ReviewPage = () => {
                     />
                     {searchActive && (
                       <ul className="list__search-results" ref={searchResults}>
-                        {employers.map(employer => (
+                        {employers.map((employer, i) => (
                           <li
                             className="list__search-results__item"
                             onClick={getEmployerId.bind(
@@ -126,6 +126,7 @@ const ReviewPage = () => {
                               employer.user_id,
                               employer.company_name
                             )}
+                            key={i}
                           >
                             {employer.company_name}
                           </li>

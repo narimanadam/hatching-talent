@@ -8,6 +8,7 @@ import Checkbox from "../components/Checkbox";
 import Box from "../components/Box";
 import { ADD_REVIEW } from "../helpers/apiUrls";
 import AuthContext from "../context/AuthContext";
+import { navigate } from "@reach/router";
 // import SelectLookup from "../components/SelectLookup";
 
 const CompanyReviewPage = () => {
@@ -38,7 +39,7 @@ const CompanyReviewPage = () => {
       }
     })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => navigate("/review"))
       .catch(error => console.log(error));
   };
 

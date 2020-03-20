@@ -7,11 +7,13 @@ import { Row, Col } from "react-grid-system";
 import { Form } from "../styles/FormStyles";
 import AuthContext from "../context/AuthContext";
 import { LOGIN_URL } from "../helpers/apiUrls";
+import Message from "../components/Message";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useContext(AuthContext);
+  const [loginError, setLoginError] = useState(false);
 
   const login = e => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const LoginForm = () => {
     })
       .then(res => res.json())
       .then(data => {
-        if (data) {
+        if (data[0].user_type) {
           let userData =
             {
               id: data[0].user_id,
@@ -59,6 +61,8 @@ const LoginForm = () => {
             default:
               console.log("hiii");
           }
+        } else {
+          setLoginError(true);
         }
       })
       .catch(function(error) {
@@ -100,6 +104,9 @@ const LoginForm = () => {
           <DefaultButtonOutline type="submit">Sign In</DefaultButtonOutline>
         </Col>
       </Row>
+      {loginError && (
+        <Message type="error" text="Email or Password is not correct" />
+      )}
     </Form>
   );
 };

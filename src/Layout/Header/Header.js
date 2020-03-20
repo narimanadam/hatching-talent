@@ -42,10 +42,11 @@ const Header = () => {
     })
       .then(res => res.json())
       .then(data => {
-        let fullName = `${
-          data[0].first_name !== null ? data[0].first_name : ""
-        } ${data[0].last_name !== null ? data[0].last_name : ""}`;
-        setUserFullName(fullName);
+        if ((data[0] && data[0].user_type === "Canidate") || "Employer") {
+          let fullName = `${data[0].first_name && data[0].first_name} ${data[0]
+            .last_name && data[0].last_name}`;
+          setUserFullName(fullName);
+        }
       })
       .catch(error => console.log(error));
   };
