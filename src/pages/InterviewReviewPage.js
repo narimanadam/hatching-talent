@@ -2,19 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import Select from "react-select";
 
 import { Container, Row, Col } from "react-grid-system";
-import { BoxStyles, Heading, Text } from "../styles/BoxStyles";
 import { Form } from "../styles/FormStyles";
-import RadioButton from "../components/RadioButton";
-import { RadioButtonHeading } from "../styles/RadioButtonStyles";
-import InputField from "../components/InputField";
-import Textarea from "../components/Textarea";
+import RadioButton from "../common/components/RadioButton";
+import Input from "../common/components/Input";
+import Textarea from "../common/components/Textarea/Textarea";
 import { MainButton } from "../styles/Button";
-import Checkbox from "../components/Checkbox";
-import Box from "../components/Box";
+import Checkbox from "../common/components/Checkbox/Checkbox";
+import Box from "../common/components/Box";
 import SelectLookup from "../components/SelectLookup";
 import { SelectDefaultStyles } from "../styles/SelectStyles";
-import { ADD_REVIEW } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+import { ADD_REVIEW } from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 
 const InterviewReviewPage = () => {
   const [role, setRole] = useState("");
@@ -28,7 +26,7 @@ const InterviewReviewPage = () => {
   const [advice, setAdvice] = useState("");
   const [employerId, setEmployerId] = useState("");
   const [employmentStatus, setEmploymentStatus] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const interviewLevel = [
     { label: "Easy", value: "medium" },
@@ -59,7 +57,7 @@ const InterviewReviewPage = () => {
         difficulty: interviewDifficulty,
         employemntStatus: employmentStatus,
         toEmployer: employerId,
-        createUser: authenticated.userID
+        createUser: AuthState.userID
       }
     })
       .then(res => res.json())
@@ -123,7 +121,7 @@ const InterviewReviewPage = () => {
                   />
                 </Col>
               </Row>
-              <InputField
+              <Input
                 placeholder="Title"
                 label="Review Title"
                 name="reviewTitle"

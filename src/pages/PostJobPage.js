@@ -1,17 +1,12 @@
 import React from "react";
-import SectionHeading from "../components/SectionHeading";
-import { Container } from "react-grid-system";
 import PostJobForm from "../components/PostJobForm";
+import PageHeader from "../common/components/PageHeader";
+import useDocumentTitle from "../common/hooks/useDocumentTitle";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const PostJobPage = () => {
-  return (
-    <div className="main-colored">
-      <Container>
-        <SectionHeading boldText="Post" normalText="a Job" />
-        <PostJobForm />
-      </Container>
-    </div>
-  );
+  useDocumentTitle("Post Job | Hatching Talent");
+  return <PostJobForm />;
 };
 
-export default PostJobPage;
+export default withSecondaryLayout(PostJobPage);

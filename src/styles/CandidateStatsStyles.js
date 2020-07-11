@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
-const CandidateStatsStyles = styled.div`
-  background: ${props => props.theme.white};
-  border: 1px solid ${props => props.theme.lightGray};
+export const CandidateStatsStyles = styled.div`
+  background: #fff;
+  border: 1px solid #f6f7f9;
   padding: 15px 20px;
-  box-shadow: ${props => props.theme.boxShadow};
+  box-shadow: 2px 3px 3px #eee;
 `;
 
-const Icon = styled.img``;
+export const Icon = styled.img``;
 
-const Number = styled.span`
+export const Number = styled.span`
   display: block;
   font-size: 36px;
   font-weight: 500;
@@ -17,9 +17,7 @@ const Number = styled.span`
   margin-top: 5px;
 `;
 
-const Text = styled.span`
+export const Text = styled.span`
   display: block;
   font-size: 16px;
 `;
-
-export { CandidateStatsStyles, Icon, Number, Text };

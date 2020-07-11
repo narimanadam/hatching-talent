@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { SelectStyles, SelectDefaultStyles } from "../styles/SelectStyles";
-import { GET_LOOKUPs } from "../helpers/apiUrls";
+import { GET_LOOKUPs } from "../common/helpers/apiUrls";
+import Message from "../common/components/Message";
 
 const SelectLookup = ({
   placeholder,
   name,
-  options,
   handleSelectChange,
+  handleSelectBlur,
   typeId,
-  type
+  type,
+  validationMessage
 }) => {
   const [lookupTypeId, setLookupTypeId] = useState("");
   const [lookupValues, setLookupValues] = useState([]);
@@ -31,9 +33,10 @@ const SelectLookup = ({
     getLookups(typeId);
   }, []);
 
-  selectOptions = lookupValues.map(options => ({
-    value: options.value,
-    label: options.value
+  selectOptions = lookupValues.map(option => ({
+    value: option.value,
+    label: option.value,
+    name
   }));
   return (
     <div>
@@ -42,8 +45,12 @@ const SelectLookup = ({
         name={name}
         styles={type === "default" ? SelectDefaultStyles : SelectStyles}
         onChange={handleSelectChange}
+        onBlur={e => handleSelectBlur(name, e.target.value)}
         options={selectOptions}
       />
+      {validationMessage && (
+        <Message type="error" text={validationMessage || ""} />
+      )}
     </div>
   );
 };

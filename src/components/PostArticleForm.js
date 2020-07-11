@@ -1,36 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form } from "../styles/FormStyles";
-import InputField from "./InputField";
-import Textarea from "./Textarea";
-import { DefaultButtonOutline } from "../styles/Button";
-import { ADD_ARTICLE } from "../helpers/apiUrls";
-import Message from "../components/Message";
+import Input from "../common/components/Input";
+import Textarea from "../common/components/Textarea";
+import { ADD_ARTICLE } from "../common/helpers/apiUrls";
 import { navigate } from "@reach/router";
+import useForm from "../common/hooks/useForm";
+import Button from "../common/components/Button";
+import PageHeader from "../common/components/PageHeader";
+import { Container } from "react-grid-system";
 
 const PostArticleForm = () => {
-  const [articleTitle, setArticleTitle] = useState("");
-  const [articleBody, setArticleBody] = useState("");
-  const [bluredInputs, setBluredInputs] = useState(false);
-
-  const setBlurred = e => {
-    setBluredInputs({ ...bluredInputs, [e.target.name]: true });
-  };
-
-  const validateArticleTitle = () => {
-    return articleTitle !== "";
-  };
-
-  const validateArticleBody = () => {
-    return articleBody !== "";
-  };
-
-  const postArticle = e => {
-    e.preventDefault();
+  const postArticle = () => {
     fetch(`${ADD_ARTICLE}`, {
       method: "POST",
       headers: {
-        title: articleTitle,
-        articleDescription: articleBody
+        title: values.articleTitle,
+        articleDescription: values.articleBody
       }
     })
       .then(data => {
@@ -41,39 +26,46 @@ const PostArticleForm = () => {
       .catch(error => console.log(error));
   };
 
-  const articleTitleIsValid = validateArticleTitle();
-  const articleBodyIsValid = validateArticleBody();
-  const formIsValid = articleTitleIsValid && articleBodyIsValid;
-  return (
-    <Form onSubmit={postArticle}>
-      <InputField
-        name="articleTitle"
-        type="text"
-        label="Article Title"
-        placeholder="Article Title"
-        handleInputChange={e => setArticleTitle(e.target.value)}
-        handleBlur={setBlurred}
-      />
-      {bluredInputs.articleTitle && !articleTitleIsValid && (
-        <Message text="Article title is Required" type="error"></Message>
-      )}
-      <Textarea
-        name="articleBody"
-        label="ArticleBody"
-        placeholder="Article Body"
-        handleInputChange={e => setArticleBody(e.target.value)}
-        handleBlur={setBlurred}
-      />
-      {bluredInputs.articleBody && !articleBodyIsValid && (
-        <Message text="Article Body is Required" type="error"></Message>
-      )}
+  const {
+    values,
+    handleBlur,
+    handleSubmit,
+    handleChange,
+    formIsValid,
+    errors
+  } = useForm({ articleTitle: "", articleBody: "" }, postArticle);
 
-      {/* <Link to="/articles"> */}
-      <DefaultButtonOutline disabled={!formIsValid}>
-        Post Article
-      </DefaultButtonOutline>
-      {/* </Link> */}
-    </Form>
+  return (
+    <>
+      <PageHeader boldText="Post" normalText="an article" />
+      <Form onSubmit={handleSubmit} hasBgColor>
+        <Input
+          name="articleTitle"
+          type="text"
+          label="Article Title"
+          placeholder="Article Title"
+          handleInputChange={handleChange}
+          handleBlur={handleBlur}
+          validationMessage={errors.articleTitle}
+          variant="darkFormField"
+        />
+        <Textarea
+          name="articleBody"
+          label="Article Body"
+          placeholder="Article Body"
+          handleInputChange={handleChange}
+          handleBlur={handleBlur}
+          validationMessage={errors.articleBody}
+          variant="darkFormField"
+        />
+        <Button
+          text="Post Article"
+          disabled={!formIsValid}
+          type="submit"
+          variant="primaryButton"
+        />
+      </Form>
+    </>
   );
 };
 

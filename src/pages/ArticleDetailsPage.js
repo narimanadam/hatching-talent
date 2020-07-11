@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import ArticleImage from "../assets/recent-articles.jpg";
 import styled from "styled-components";
 import { Container } from "react-grid-system";
-import { GET_ARTICLES } from "../helpers/apiUrls";
+import { GET_ARTICLES } from "../common/helpers/apiUrls";
+import useDocumentTitle from "../common/hooks/useDocumentTitle";
+import withMainLayout from "../Layout/MainLayout/WithMainLayout";
 
 const ArticleImg = styled.img`
   width: 100%;
@@ -21,6 +23,7 @@ const ArticleBody = styled.p`
 
 const ArticleDetails = ({ articleId }) => {
   const [article, setArticle] = useState({});
+  useDocumentTitle(`${article.title}`);
 
   const getArticle = () => {
     fetch(`${GET_ARTICLES}`, {
@@ -51,4 +54,4 @@ const ArticleDetails = ({ articleId }) => {
   );
 };
 
-export default ArticleDetails;
+export default withMainLayout(ArticleDetails);

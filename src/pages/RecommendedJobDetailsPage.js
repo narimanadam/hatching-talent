@@ -10,18 +10,17 @@ import {
 import { InlineList, InlineListItem } from "../styles/ListStyle";
 import { MainOutlineButton, MainButton } from "../styles/Button";
 import {
-  PENDING_JOBS_URL,
   UPDATE_JOB_URL,
   SEARCH_JOBS,
   APPLY_SAVE_JOB,
   GET_JOB_APPLICANT_INFO
-} from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+} from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 import { navigate } from "@reach/router";
 
 const RecommendedJobDetailsPage = props => {
   const [job, setJob] = useState({});
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   useEffect(() => {
     getApplicantInfo();
@@ -29,7 +28,7 @@ const RecommendedJobDetailsPage = props => {
     fetch(`${SEARCH_JOBS}`, {
       method: "POST",
       headers: {
-        keyWord: authenticated.jobTitle,
+        keyWord: AuthState.jobTitle,
         jobLocation: "",
         jobIndustry: ""
       }
@@ -80,7 +79,7 @@ const RecommendedJobDetailsPage = props => {
       method: "POST",
       headers: {
         jobId: job.job_id,
-        userId: authenticated.userID,
+        userId: AuthState.userID,
         action: "apply"
       }
     })
@@ -116,7 +115,7 @@ const RecommendedJobDetailsPage = props => {
           <JobLevel>{job.role}</JobLevel>
           <JobDesc>{job.job_description}</JobDesc>
         </Col>
-        {authenticated.type === "Candidate" && (
+        {AuthState.type === "Candidate" && (
           <InlineList>
             <InlineListItem>
               <MainOutlineButton onClick={applyJob}>
@@ -125,7 +124,7 @@ const RecommendedJobDetailsPage = props => {
             </InlineListItem>
           </InlineList>
         )}
-        {authenticated.type === "Admin" && (
+        {AuthState.type === "Admin" && (
           <InlineList>
             <InlineListItem>
               <MainButton onClick={ApproveJob}>Approve</MainButton>

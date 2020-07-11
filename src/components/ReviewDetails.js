@@ -11,8 +11,8 @@ import { InlineList, InlineListItem } from "../styles/ListStyle";
 import { MainButton, MainOutlineButton } from "../styles/Button";
 import { Row, Col } from "react-grid-system";
 import DefinitionList from "./DefinitionList";
-import { REVIEW_ACTION } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+import { REVIEW_ACTION } from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 
 const ReviewDetails = ({
   name,
@@ -27,7 +27,7 @@ const ReviewDetails = ({
   reviewId,
   employerName
 }) => {
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
   const approveReview = e => {
     e.preventDefault();
     fetch(`${REVIEW_ACTION}`, {
@@ -112,7 +112,7 @@ const ReviewDetails = ({
           <Body>{advice}</Body>
         </Col>
       </Row>
-      {authenticated.type == "Admin" && (
+      {AuthState.type == "Admin" && (
         <InlineList>
           <InlineListItem>
             <MainButton onClick={approveReview} type="submit">

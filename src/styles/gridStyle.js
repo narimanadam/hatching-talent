@@ -1,18 +1,25 @@
-import styled from "styled-components";
+import styled from "@emotion/styled";
+import { Box } from "reflexbox";
 
-const Grid = styled.div`
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(3, 1fr);
+export const Grid = styled(Box)`
   justify-content: center;
-  margin-top: 20px;
+  // margin-top: 20px;
   margin-bottom: 20px;
 `;
 
-const GridItem = styled.div`
+Grid.defaultProps = {
+  sx: {
+    display: "grid",
+    gridGap: ["30px"],
+    gridTemplateColumns: ["repeat(3, 1fr)"]
+  }
+};
+export const Item = styled(Box)`
   box-shadow: 2px 2px 10px #ddd;
   max-width: 100%;
-  position: relative;
 `;
 
-export { Grid, GridItem };
+Item.defaultProps = {
+  bg: "white",
+  p: [4]
+};

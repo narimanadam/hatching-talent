@@ -1,12 +1,12 @@
 const SelectStyles = {
   control: styles => ({
     ...styles,
-    backgroundColor: "#fff",
-    color: "#686768",
+    backgroundColor: "#f6f7f9",
+    color: "#333",
     minWidth: "200px",
     borderRadius: "none",
     boxShadow: "none",
-    border: "2px solid #fff"
+    border: "2px solid #f6f7f9"
   }),
   option: styles => ({
     ...styles,

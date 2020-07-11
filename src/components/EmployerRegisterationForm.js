@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Form } from "../styles/FormStyles";
 import { Row, Col } from "react-grid-system";
-import { DefaultButtonOutline } from "../styles/Button";
-import InputField from "../components/InputField";
-import Message from "../components/Message";
-import { REGISTER_URL } from "../helpers/apiUrls";
+import Input from "../common/components/Input";
+import Message from "../common/components/Message";
+import { REGISTER_URL } from "../common/helpers/apiUrls";
+import Button from "../common/components/Button";
 
 const EmployerRegisterationForm = () => {
   const [fullName, setFullName] = useState("");
@@ -85,10 +85,10 @@ const EmployerRegisterationForm = () => {
     emailMatching;
 
   return (
-    <Form onSubmit={register}>
+    <Form onSubmit={register} hasBgColor>
       <Row>
         <Col sm={4}>
-          <InputField
+          <Input
             type="text"
             placeholder="Full Name"
             name="fullName"
@@ -103,7 +103,7 @@ const EmployerRegisterationForm = () => {
           )}
         </Col>
         <Col sm={4}>
-          <InputField
+          <Input
             type="text"
             placeholder="Company Name"
             name="companyName"
@@ -115,7 +115,7 @@ const EmployerRegisterationForm = () => {
           )}
         </Col>
         <Col sm={4}>
-          <InputField
+          <Input
             type="email"
             placeholder="Email"
             name="email"
@@ -127,7 +127,7 @@ const EmployerRegisterationForm = () => {
           )}
         </Col>
         <Col sm={4}>
-          <InputField
+          <Input
             type="email"
             placeholder="Confirm Email"
             name="confirmEmail"
@@ -141,7 +141,7 @@ const EmployerRegisterationForm = () => {
             )}
         </Col>
         <Col sm={4}>
-          <InputField
+          <Input
             type="password"
             placeholder="Enter Password"
             name="password"
@@ -156,7 +156,7 @@ const EmployerRegisterationForm = () => {
           )}
         </Col>
         <Col sm={4}>
-          <InputField
+          <Input
             type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
@@ -168,9 +168,12 @@ const EmployerRegisterationForm = () => {
           )}
         </Col>
         <Col col={2} align="right">
-          <DefaultButtonOutline type="submit" disabled={!formValid}>
-            Register
-          </DefaultButtonOutline>
+          <Button
+            variant="primaryButton"
+            text="Register"
+            type="submit"
+            disabled={!formValid}
+          />
         </Col>
       </Row>
       {isRegistered && (

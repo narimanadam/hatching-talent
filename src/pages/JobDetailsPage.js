@@ -14,13 +14,14 @@ import {
   UPDATE_JOB_URL,
   SEARCH_JOBS,
   APPLY_SAVE_JOB
-} from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+} from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 import { navigate } from "@reach/router";
+import Button from "../common/components/Button";
 
 const JobDetailsPage = props => {
   const [job, setJob] = useState({});
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   useEffect(() => {
     // GET: Job Details
@@ -73,7 +74,7 @@ const JobDetailsPage = props => {
       method: "POST",
       headers: {
         jobId: job.job_id,
-        userId: authenticated.userID,
+        userId: AuthState.userID,
         action: "apply"
       }
     })
@@ -93,11 +94,11 @@ const JobDetailsPage = props => {
           <EmployerName>MBC</EmployerName>
         </Col>
         <Col sm={9}>
-          <Jobtitle>{job.job_name}</Jobtitle>
-          <JobLevel>{job.role}</JobLevel>
-          <JobDesc>{job.job_description}</JobDesc>
+          <Jobtitle>{job && job.job_name}</Jobtitle>
+          <JobLevel>{job && job.role}</JobLevel>
+          <JobDesc>{job && job.job_description}</JobDesc>
         </Col>
-        {authenticated.type === "Candidate" && (
+        {AuthState.type === "Candidate" && (
           <InlineList>
             <InlineListItem>
               <MainOutlineButton onClick={applyJob}>
@@ -106,13 +107,23 @@ const JobDetailsPage = props => {
             </InlineListItem>
           </InlineList>
         )}
-        {authenticated.type === "Admin" && (
+        {AuthState.type === "Admin" && (
           <InlineList>
             <InlineListItem>
-              <MainButton onClick={ApproveJob}>Approve</MainButton>
+              <Button
+                text="Approve"
+                handleClick={ApproveJob}
+                type="submit"
+                variant="primaryButton"
+              />
             </InlineListItem>
             <InlineListItem>
-              <MainOutlineButton onClick={RejectJob}>Reject</MainOutlineButton>
+              <Button
+                text="Reject"
+                handleClick={RejectJob}
+                type="submit"
+                variant="primaryOutlineButton"
+              />
             </InlineListItem>
           </InlineList>
         )}

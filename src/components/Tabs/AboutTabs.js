@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import TabList from "./TabList";
-import TabTitle from "../Tabs/TabTitle";
-import TabContent from "../Tabs/TabContent";
-import { TabsStyled } from "../../styles/TabStyles";
+import TabList from "../../common/components/Tabs/TabList";
+import TabTitle from "../../common/components/Tabs/TabTitle";
+import TabContent from "../../common/components/Tabs/TabContent";
+import { TabsStyled } from "../../common/components/Tabs/Tab.styles";
 import { Row, Col } from "react-grid-system";
 import { MainOutlineButton } from "../../styles/Button";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";

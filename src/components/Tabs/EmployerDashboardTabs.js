@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import TabList from "./TabList";
-import TabTitle from "../Tabs/TabTitle";
-import TabContent from "../Tabs/TabContent";
-import { TabsHorizontal } from "../../styles/TabStyles";
-import { Container } from "react-grid-system";
-import JobStats from "../JobStats";
+import TabList from "../../common/components/Tabs/TabList";
+import TabTitle from "../../common/components/Tabs/TabTitle";
+import TabContent from "../../common/components/Tabs/TabContent";
+import { TabsStyled } from "../../common/components/Tabs/Tab.styles";
 import ActiveJobs from "../ActiveJobs";
 import PendingJobs from "../PendingJobs";
 import ClosedJobs from "../ClosedJobs";
 import RejectedJobs from "../RejectedJobs";
+import PageHeader from "../../common/components/PageHeader";
+import Logo from "../../assets/logo.png";
 
 const EmployerDashboardTabs = () => {
   const [tabSelected, setTabSelected] = useState(0);
@@ -40,9 +40,11 @@ const EmployerDashboardTabs = () => {
     }
   ];
   return (
-    <TabsHorizontal horizontal>
-      <Container>
+    <>
+      <PageHeader boldText="Employer" normalText="Dashboard" />
+      <TabsStyled>
         <TabList>
+          {/* <img src={Logo} width="150px" style={{ margin: "32px 24px" }} /> */}
           {data.map((tabItem, index) => (
             <TabTitle
               title={tabItem.title}
@@ -68,8 +70,8 @@ const EmployerDashboardTabs = () => {
             <PendingJobs />
           </TabContent>
         </div>
-      </Container>
-    </TabsHorizontal>
+      </TabsStyled>
+    </>
   );
 };
 

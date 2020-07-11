@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Container, Row, Col } from "react-grid-system";
 import { Form } from "../styles/FormStyles";
-import InputField from "../components/InputField";
-import Textarea from "../components/Textarea";
+import Input from "../common/components/Input";
+import Textarea from "../common/components/Textarea";
 import { MainButton } from "../styles/Button";
-import Checkbox from "../components/Checkbox";
-import Box from "../components/Box";
-import { ADD_REVIEW } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+import Checkbox from "../common/components/Checkbox";
+import Box from "../common/components/Box";
+import { ADD_REVIEW } from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 import { navigate } from "@reach/router";
 // import SelectLookup from "../components/SelectLookup";
 
@@ -19,7 +19,7 @@ const CompanyReviewPage = () => {
   const [advice, setAdvice] = useState("");
   const [employerId, setEmployerId] = useState("");
   const [employmentStatus, setEmploymentStatus] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
   // const handleJobLocationChange = ({ value }) => {
   //   setLocation({ value });
   // };
@@ -35,7 +35,7 @@ const CompanyReviewPage = () => {
         advice,
         employemntStatus: employmentStatus,
         toEmployer: employerId,
-        createUser: authenticated.userID
+        createUser: AuthState.userID
       }
     })
       .then(res => res.json())
@@ -72,7 +72,7 @@ const CompanyReviewPage = () => {
                   ></SelectLookup>
                 </Col>
               </Row> */}
-              <InputField
+              <Input
                 placeholder="Title"
                 label="Review Title"
                 name="reviewTitle"

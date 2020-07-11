@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
-import Modal from "../Modal";
-import Box from "../Box";
+import Modal from "../../common/components/Modal/Modal";
+import Box from "../../common/components/Box";
 import { Form } from "../../styles/FormStyles";
-import InputField from "../../components/InputField";
-import Textarea from "../../components/Textarea";
+import Input from "../../common/components/Input";
+import Textarea from "../../common/components/Textarea/Textarea";
 import DatePicker from "react-datepicker";
-import { Close, Title } from "../../styles/ModalStyles";
+import * as Styled from "../../common/components/Modal/Modal.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button, DefaultButtonOutline } from "../../styles/Button";
 import { Row, Col } from "react-grid-system";
-import { ADD_EXPERIENCE, GET_EXPERIENCE } from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
+import { ADD_EXPERIENCE, GET_EXPERIENCE } from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
 import WorkExperienceItem from "./WorkExperienceItem";
-import Message from "../Message";
+import Message from "../../common/components/Message/Message";
 
 const WorkExperience = ({ userId }) => {
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +25,7 @@ const WorkExperience = ({ userId }) => {
   const [endDate, setEndDate] = useState(new Date());
   const [formattedStartDate, setFormattedStartDate] = useState("");
   const [formattedEndDate, setFormattedEndDate] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
   const [workExperience, setWorkExperience] = useState([]);
 
   let formatStartDate;
@@ -46,13 +46,9 @@ const WorkExperience = ({ userId }) => {
       .split("T")[0]
       .split("-");
 
-    let startDateFormatted = `${formatStartDate[0]}-${formatStartDate[1]}- ${
-      formatStartDate[2]
-    }`;
+    let startDateFormatted = `${formatStartDate[0]}-${formatStartDate[1]}- ${formatStartDate[2]}`;
 
-    let endDateFormatted = `${formatEndDate[0]}-${formatEndDate[1]}-${
-      formatEndDate[2]
-    }`;
+    let endDateFormatted = `${formatEndDate[0]}-${formatEndDate[1]}-${formatEndDate[2]}`;
 
     setFormattedStartDate(startDateFormatted);
     setFormattedEndDate(endDateFormatted);
@@ -63,7 +59,7 @@ const WorkExperience = ({ userId }) => {
     fetch(`${ADD_EXPERIENCE}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         type: "workExperience",
         name: companyName,
         jobTitle: jobTitle,
@@ -99,7 +95,7 @@ const WorkExperience = ({ userId }) => {
 
   return (
     <Box heading="Work Experience">
-      {!workExperience.length && authenticated.userID != userId && (
+      {!workExperience.length && AuthState.userID != userId && (
         <Message text="No work experience added yet" />
       )}
       {workExperience.map(experience => (
@@ -117,12 +113,12 @@ const WorkExperience = ({ userId }) => {
       ))}
       {showModal && (
         <Modal>
-          <Title>Add Work Experience</Title>
+          <Styled.Title>Add Work Experience</Styled.Title>
           <p>Work experience</p>
           <Form style={{ marginTop: "25px" }} onSubmit={submitWorkExperience}>
             <Row>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Job Title"
                   label="Job Title"
@@ -130,7 +126,7 @@ const WorkExperience = ({ userId }) => {
                 />
               </Col>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Company Name"
                   label="Company Name"
@@ -158,7 +154,7 @@ const WorkExperience = ({ userId }) => {
                 </div>
               </Col>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Notice Period"
                   label="Notice Period"
@@ -175,7 +171,7 @@ const WorkExperience = ({ userId }) => {
             </Row>
             <DefaultButtonOutline type="submit">Submit</DefaultButtonOutline>
           </Form>
-          <Close>
+          <Styled.Close>
             <Button type="button" onClick={toggleModal}>
               <FontAwesomeIcon
                 icon="times"
@@ -183,10 +179,10 @@ const WorkExperience = ({ userId }) => {
                 style={{ color: "#333" }}
               />
             </Button>
-          </Close>
+          </Styled.Close>
         </Modal>
       )}
-      {authenticated.userID == userId && (
+      {AuthState.userID == userId && (
         <Button type="button" onClick={toggleModal} colored block>
           <FontAwesomeIcon icon="plus" />
           Add New Work Experience

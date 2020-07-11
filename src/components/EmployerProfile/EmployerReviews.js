@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { TabsHorizontal } from "../../styles/TabStyles";
-import TabList from "../Tabs/TabList";
-import TabItem from "../Tabs/TabTitle";
-import Box from "../Box";
-import TabContent from "../Tabs/TabContent";
-import { GET_EMPLOYER_REVIEW } from "../../helpers/apiUrls";
+import Box from "../../common/components/Box";
+import { GET_EMPLOYER_REVIEW } from "../../common/helpers/apiUrls";
 import ReviewDetails from "../ReviewDetails";
 
 const EmployerReviews = ({ userId }) => {

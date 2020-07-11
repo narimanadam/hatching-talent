@@ -5,32 +5,45 @@ import CandidateStats from "../components/CandidateStats";
 import ViewedProfile from "../assets/view-profile.png";
 import ContactedYou from "../assets/contacted-you.png";
 import CompaniesFollowed from "../assets/companies-followed.png";
-import { SEARCH_JOBS, GET_USER_INFO } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+import { SEARCH_JOBS, GET_USER_INFO } from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 import RecommendedJobBox from "../components/RecommendedJobBox";
+import useDocumentTitle from "../common/hooks/useDocumentTitle";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const CandidateDashboardPage = props => {
   const [jobs, setJobs] = useState([]);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
+  const [authUser, setAuthUser] = useState({});
+  useDocumentTitle(
+    `${authUser && authUser.first_name} ${authUser &&
+      authUser.last_name} | Dashboard`
+  );
 
   const getEmployerInfo = () => {
     fetch(`${GET_USER_INFO}`, {
       method: "POST",
-      headers: {}
-    });
-  };
-  const getRecommendedJobs = () => {
-    fetch(`${SEARCH_JOBS}`, {
-      method: "POST",
       headers: {
-        keyWord: authenticated.jobTitle,
-        jobLocation: "",
-        jobIndustry: ""
+        userId: AuthState.userID
       }
     })
       .then(res => res.json())
-      .then(data => setJobs(data))
+      .then(data => setAuthUser(data[0]))
       .catch(error => console.log(error));
+  };
+
+  const getRecommendedJobs = () => {
+    // fetch(`${SEARCH_JOBS}`, {
+    //   method: "POST",
+    //   headers: {
+    //     keyWord: AuthState.jobTitle,
+    //     jobLocation: "",
+    //     jobIndustry: ""
+    //   }
+    // })
+    //   .then(res => res.json())
+    //   .then(data => setJobs(data))
+    //   .catch(error => console.log(error));
   };
 
   useEffect(() => {
@@ -90,4 +103,4 @@ const CandidateDashboardPage = props => {
   );
 };
 
-export default CandidateDashboardPage;
+export default withSecondaryLayout(CandidateDashboardPage);

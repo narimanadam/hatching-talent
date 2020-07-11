@@ -2,9 +2,7 @@ import styled from "styled-components";
 
 const List = styled.ul``;
 
-const ListItem = styled.li`
-  list-style: none;
-`;
+const ListItem = styled.li``;
 
 const InlineList = styled.ul`
   display: table;
@@ -13,7 +11,6 @@ const InlineList = styled.ul`
 `;
 
 const InlineListItem = styled.li`
-  list-style: none;
   display: table-cell;
   padding-right: 20px;
   text-align: ${props => (props.center ? "center" : "left")};

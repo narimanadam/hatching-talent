@@ -9,13 +9,17 @@ import {
 } from "../styles/ListStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../styles/Button";
-import { SEARCH_JOBS, APPLY_SAVE_JOB, GET_USER_INFO } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+import {
+  SEARCH_JOBS,
+  APPLY_SAVE_JOB,
+  GET_USER_INFO
+} from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 
 const JobResults = () => {
   const [jobs, setJobs] = useState([]);
   const [currentJob, setCurrentJob] = useState({});
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
   const handleJobThumbnailClick = itemIndex => {
     setCurrentJob(jobs[itemIndex]);
   };
@@ -24,7 +28,7 @@ const JobResults = () => {
     fetch(`${SEARCH_JOBS}`, {
       method: "POST",
       headers: {
-        keyWord: authenticated.jobTitle,
+        keyWord: AuthState.jobTitle,
         jobLocation: "",
         jobIndustry: ""
       }
@@ -42,7 +46,7 @@ const JobResults = () => {
       method: "POST",
       headers: {
         jobId: currentJob.job_id,
-        userId: authenticated.userID,
+        userId: AuthState.userID,
         action: "apply"
       }
     })

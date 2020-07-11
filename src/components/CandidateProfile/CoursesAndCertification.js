@@ -1,22 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import Labels from "../Labels";
-import Box from "../Box";
-import {
-  MainOutlineButton,
-  MainButton,
-  Button,
-  DefaultButtonOutline
-} from "../../styles/Button";
-import { InlineList, InlineListItem } from "../../styles/ListStyle";
-import { ADD_EDUCATION, GET_EDUCATIONS } from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
-import Message from "../Message";
+import Box from "../../common/components/Box";
+import { Button, DefaultButtonOutline } from "../../styles/Button";
+import { ADD_EDUCATION, GET_EDUCATIONS } from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
+import Message from "../../common/components/Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from "../Modal";
-import { Title } from "../../styles/ModalStyles";
-import InputField from "../InputField";
+import Modal from "../../common/components/Modal/Modal";
+import * as Styled from "../../common/components/Modal/Modal.styles";
+import Input from "../../common/components/Input";
 import { Form } from "../../styles/FormStyles";
-import Textarea from "../Textarea";
+import Textarea from "../../common/components/Textarea/Textarea";
 import CoursesAndCertificationItem from "./CoursesAndCertificationItem";
 
 const CoursesAndCertification = ({ userId }) => {
@@ -26,7 +20,7 @@ const CoursesAndCertification = ({ userId }) => {
   const [courseGraduationYear, setCourseGraduationYear] = useState("");
   const [courseSchoolName, setCourseSchoolName] = useState("");
   const [courses, setCourses] = useState([]);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -37,7 +31,7 @@ const CoursesAndCertification = ({ userId }) => {
     fetch(`${ADD_EDUCATION}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         name: courseName,
         description: courseDescription,
         graduationYear: courseGraduationYear,
@@ -88,22 +82,21 @@ const CoursesAndCertification = ({ userId }) => {
       ))}
 
       {showModal && (
-        <Modal>
-          <Title>Add New Course / Certificate</Title>
+        <Modal title="Add New Course / Certificate">
           <Form onSubmit={submitCourse}>
-            <InputField
+            <Input
               type="text"
               name="courseName"
               placeholder="Course / Certificate Name"
               handleInputChange={e => setCourseName(e.target.value)}
             />
-            <InputField
+            <Input
               type="text"
               name="courseSchoolName"
               placeholder="Where did you take this course/ certificate ?"
               handleInputChange={e => setCourseSchoolName(e.target.value)}
             />
-            <InputField
+            <Input
               type="text"
               name="courseGraduationYear"
               placeholder="Course Graduation Year"
@@ -120,7 +113,7 @@ const CoursesAndCertification = ({ userId }) => {
           </Form>
         </Modal>
       )}
-      {authenticated.userID == userId && (
+      {AuthState.userID == userId && (
         <Button type="button" onClick={toggleModal} colored block>
           <FontAwesomeIcon icon="plus" />
           Add New Course

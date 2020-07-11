@@ -12,16 +12,18 @@ import {
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, DefaultButtonOutline } from "../../styles/Button";
-import { DELETE_EDUCATION, UPDATE_EDUCATION } from "../../helpers/apiUrls";
+import {
+  DELETE_EDUCATION,
+  UPDATE_EDUCATION
+} from "../../common/helpers/apiUrls";
 
-import Modal from "../../components/Modal";
+import Modal from "../../common/components/Modal/Modal";
 import { Form } from "../../styles/FormStyles";
-import InputField from "../../components/InputField";
-import Textarea from "../../components/Textarea";
-import { Close } from "../../styles/ModalStyles";
+import Input from "../../common/components/Input";
+import Textarea from "../../common/components/Textarea/Textarea";
+import * as Styled from "../../common/components/Modal/Modal.styles";
 import { Row, Col } from "react-grid-system";
-import { Title } from "../../styles/ModalStyles";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../common/context/AuthContext";
 
 const EducationItem = ({
   schoolName,
@@ -38,7 +40,7 @@ const EducationItem = ({
   const [gradeState, setGrade] = useState(grade);
   const [degreeState, setDegree] = useState(degree);
   const [descState, setDesc] = useState(desc);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -82,7 +84,7 @@ const EducationItem = ({
         <Grade>Grade: {grade}</Grade>
         <Desc>{desc}</Desc>
       </Info>
-      {authenticated.userID == creatorUser && (
+      {AuthState.userID == creatorUser && (
         <Actions>
           <InlineList>
             <InlineListItem>
@@ -101,11 +103,11 @@ const EducationItem = ({
 
       {showModal && (
         <Modal>
-          <Title>Edit Educational Details</Title>
+          <Styled.Title>Edit Educational Details</Styled.Title>
           <Form style={{ marginTop: "25px" }} onSubmit={updateEducation}>
             <Row>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Degree"
                   label="Degree"
@@ -114,7 +116,7 @@ const EducationItem = ({
                 />
               </Col>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="School Name"
                   label="School Name"
@@ -123,7 +125,7 @@ const EducationItem = ({
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Grade"
                   label="Grade"
@@ -132,7 +134,7 @@ const EducationItem = ({
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Graduation Year"
                   label="Graduation Year"
@@ -151,7 +153,7 @@ const EducationItem = ({
             </Row>
             <DefaultButtonOutline type="submit">Submit</DefaultButtonOutline>
           </Form>
-          <Close>
+          <Styled.Close>
             <Button type="button" onClick={toggleModal}>
               <FontAwesomeIcon
                 icon="times"
@@ -159,7 +161,7 @@ const EducationItem = ({
                 style={{ color: "#333" }}
               />
             </Button>
-          </Close>
+          </Styled.Close>
         </Modal>
       )}
     </EducationItemStyled>

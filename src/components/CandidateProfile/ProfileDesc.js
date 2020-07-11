@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, MainButton } from "../../styles/Button";
 import { Form } from "../../styles/FormStyles";
-import Textarea from "../Textarea";
-import { GET_USER_INFO, EDIT_USER_INFO } from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
-import Message from "../Message";
+import Textarea from "../../common/components/Textarea/Textarea";
+import { GET_USER_INFO, EDIT_USER_INFO } from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
+import Message from "../../common/components/Message";
 
 const ProfileDesc = ({ userId }) => {
   const [editMode, setEditMode] = useState(false);
   const [bio, setBio] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -63,7 +63,7 @@ const ProfileDesc = ({ userId }) => {
           <MainButton type="submit">Update Bio</MainButton>
         </Form>
       )}
-      {!editMode && authenticated.userID == userId && (
+      {!editMode && AuthState.userID == userId && (
         <Button colored onClick={toggleEditMode}>
           <FontAwesomeIcon icon="edit" />
           Edit Bio

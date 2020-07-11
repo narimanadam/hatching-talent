@@ -2,15 +2,14 @@ import React, { useState, useRef, forwardRef } from "react";
 import { Container, Row, Col } from "react-grid-system";
 import { List, ListItem } from "../styles/ListStyle";
 import { Form } from "../styles/FormStyles";
-import RadioInput from "../components/RadioInput";
-import { Text } from "../styles/BoxStyles";
-import RadioButton from "../components/RadioButton";
-import { RadioButtonHeading } from "../styles/RadioButtonStyles";
-import InputField from "../components/InputField";
+import RadioInput from "../common/components/RadioInput/RadioInput";
+import { Text } from "../common/components/Box/Box.styles";
+import RadioButton from "../common/components/RadioButton";
+import Input from "../common/components/Input";
 import { MainButton } from "../styles/Button";
-import Box from "../components/Box";
+import Box from "../common/components/Box";
 import { Link } from "@reach/router";
-import { FIND_EMPLOYER } from "../helpers/apiUrls";
+import { FIND_EMPLOYER } from "../common/helpers/apiUrls";
 
 const ReviewPage = () => {
   const [reviewType, setReviewType] = useState("");
@@ -90,12 +89,12 @@ const ReviewPage = () => {
                 </Form>
               </List>
               <Form>
-                <RadioButtonHeading>Employer Status</RadioButtonHeading>
                 <RadioButton
                   label="Current"
                   name="employerStatus"
                   button
                   value="Current"
+                  heading="Employer Status"
                   handleChange={e => setEmploymentStatus(e.target.value)}
                 />
                 <RadioButton
@@ -107,7 +106,7 @@ const ReviewPage = () => {
                 />
                 <Row>
                   <Col sm={6}>
-                    <InputField
+                    <Input
                       type="text"
                       placeholder="Employer Name"
                       name="employername"

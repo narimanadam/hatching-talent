@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import Modal from "../Modal";
-import Box from "../Box";
+import Modal from "../../common/components/Modal/Modal";
+import Box from "../../common/components/Box";
 import DefinitionList from "../DefinitionList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col } from "react-grid-system";
 import { Button, DefaultButtonOutline } from "../../styles/Button";
-import { Title } from "../../styles/ModalStyles";
+import * as Styled from "../../common/components/Modal/Modal.styles";
 import { Form } from "../../styles/FormStyles";
-import InputField from "../InputField";
-import { EDIT_USER_INFO, GET_USER_INFO } from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
+import Input from "../../common/components/Input";
+import { EDIT_USER_INFO, GET_USER_INFO } from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
 
 const JobPreference = () => {
   const [showModal, setShowModal] = useState(false);
@@ -24,7 +24,7 @@ const JobPreference = () => {
   const [expectedSalary, setExpectedSalary] = useState("");
   const [isSixSaysWork, setIsSixSaysWork] = useState("");
   const [isEarlyStage, setIsEarlyStage] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -35,7 +35,7 @@ const JobPreference = () => {
     fetch(`${EDIT_USER_INFO}`, {
       method: "POST",
       headers: {
-        userId: authenticated.userID,
+        userId: AuthState.userID,
         // employemntType: employmentType,
         // prferedShift: preferredShift,
         // prferedLocation: preferredLocation,
@@ -55,7 +55,7 @@ const JobPreference = () => {
     fetch(`${GET_USER_INFO}`, {
       method: "POST",
       headers: {
-        userId: authenticated.userID
+        userId: AuthState.userID
       }
     })
       .then(res => res.json())
@@ -133,11 +133,11 @@ const JobPreference = () => {
 
       {showModal && (
         <Modal handleClose={toggleModal}>
-          <Title>Edit Job Preference</Title>
+          <Styled.Title>Edit Job Preference</Styled.Title>
           <Form onSubmit={EditJobPreference}>
             <Row>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Industry"
                   value={industry}
@@ -145,7 +145,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Job Function"
                   value={jobFunction}
@@ -153,7 +153,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Role"
                   value={role}
@@ -161,7 +161,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Job Type"
                   value={jobType}
@@ -169,7 +169,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Employment Type"
                   value={employmentType}
@@ -177,7 +177,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Preferred Shift"
                   value={preferredShift}
@@ -185,7 +185,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Preferred Location"
                   value={preferredLocation}
@@ -193,7 +193,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Expected Salary"
                   value={expectedSalary}
@@ -201,7 +201,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Availability to work 6 days"
                   value={isSixSaysWork}
@@ -209,7 +209,7 @@ const JobPreference = () => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Join Early Stage Startup"
                   value={isEarlyStage}

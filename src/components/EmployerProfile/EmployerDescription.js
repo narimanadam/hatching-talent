@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import { Form } from "../../styles/FormStyles";
-import Textarea from "../Textarea";
+import Textarea from "../../common/components/Textarea";
 import { MainButton, Button } from "../../styles/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { GET_USER_INFO, EDIT_USER_INFO } from "../../helpers/apiUrls";
+import { GET_USER_INFO, EDIT_USER_INFO } from "../../common/helpers/apiUrls";
 
 const EmployerDescription = ({ userId }) => {
   const [editMode, setEditMode] = useState(false);

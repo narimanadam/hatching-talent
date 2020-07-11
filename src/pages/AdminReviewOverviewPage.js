@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-grid-system";
 import ReviewDetails from "../components/ReviewDetails";
-import Message from "../components/Message";
-import { GET_PENDING_REVIEWS } from "../helpers/apiUrls";
+import Message from "../common/components/Message";
+import { GET_PENDING_REVIEWS } from "../common/helpers/apiUrls";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const AdminReviewOverviewPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -44,4 +45,4 @@ const AdminReviewOverviewPage = () => {
   );
 };
 
-export default AdminReviewOverviewPage;
+export default withSecondaryLayout(AdminReviewOverviewPage);

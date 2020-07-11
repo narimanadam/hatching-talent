@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReviewDetails from "./ReviewDetails";
-import { GET_EMPLOYER_REVIEW } from "../helpers/apiUrls";
-import Message from "../components/Message";
+import { GET_EMPLOYER_REVIEW } from "../common/helpers/apiUrls";
+import Message from "../common/components/Message";
 
 const Reviews = ({ employerId }) => {
   const [reviews, setReviews] = useState([]);

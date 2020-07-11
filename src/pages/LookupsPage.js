@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Container } from "react-grid-system";
-import InputField from "../components/InputField";
+import Input from "../common/components/Input";
 import { Form } from "../styles/FormStyles";
 import { MainOutlineButton, DefaultButton } from "../styles/Button";
-import { ADD_LOOKUP } from "../helpers/apiUrls";
+import { ADD_LOOKUP } from "../common/helpers/apiUrls";
 import Select from "react-select";
 import { SelectStyles } from "../styles/SelectStyles";
 import { Link } from "@reach/router";
 import { InlineList, InlineListItem } from "../styles/ListStyle";
+import PageHeader from "../common/components/PageHeader";
+import Button from "../common/components/Button";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const LookupsPage = () => {
   const [lookupValue, setLookupValue] = useState("");
@@ -42,37 +45,36 @@ const LookupsPage = () => {
   };
 
   return (
-    <div className="main-colored">
-      <Container>
-        <Form onSubmit={submitLookupForm}>
-          <InputField
-            name="lookupValue"
-            placeholder="Add Lookup"
-            handleInputChange={e => setLookupValue(e.target.value)}
-          ></InputField>
-          <div className="form__group">
-            <Select
-              options={lookupTypes}
-              placeholder="Select Job Role"
-              name="jobRole"
-              styles={SelectStyles}
-              onChange={handleLookupTypeChange}
-            />
-          </div>
-          <InlineList>
-            <InlineListItem>
-              <MainOutlineButton type="submit">Submit</MainOutlineButton>
-            </InlineListItem>
-            <InlineListItem>
-              <Link to="/view-lookups">
-                <DefaultButton>View Lookups</DefaultButton>
-              </Link>
-            </InlineListItem>
-          </InlineList>
-        </Form>
-      </Container>
-    </div>
+    <PageHeader>
+      <Form onSubmit={submitLookupForm} hasBgColor>
+        <Input
+          name="lookupValue"
+          placeholder="Add Lookup"
+          handleInputChange={e => setLookupValue(e.target.value)}
+          variant="darkFormField"
+        ></Input>
+        <div className="form__group">
+          <Select
+            options={lookupTypes}
+            placeholder="Select Job Role"
+            name="jobRole"
+            styles={SelectStyles}
+            onChange={handleLookupTypeChange}
+          />
+        </div>
+        <InlineList>
+          <InlineListItem>
+            <Button text="Submit" type="submit" variant="primaryButton" />
+          </InlineListItem>
+          <InlineListItem>
+            <Link to="/view-lookups">
+              <Button text="View Lookups" variant="primaryOutlineButton" />
+            </Link>
+          </InlineListItem>
+        </InlineList>
+      </Form>
+    </PageHeader>
   );
 };
 
-export default LookupsPage;
+export default withSecondaryLayout(LookupsPage);

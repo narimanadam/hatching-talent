@@ -11,13 +11,16 @@ import {
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
 import { Button, DefaultButtonOutline } from "../../styles/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { DELETE_EDUCATION, UPDATE_EDUCATION } from "../../helpers/apiUrls";
-import Modal from "../Modal";
-import { Title } from "../../styles/ModalStyles";
-import InputField from "../InputField";
+import {
+  DELETE_EDUCATION,
+  UPDATE_EDUCATION
+} from "../../common/helpers/apiUrls";
+import Modal from "../../common/components/Modal/Modal";
+import * as Styled from "../../common/components/Modal/Modal.styles";
+import Input from "../../common/components/Input";
 import { Form } from "../../styles/FormStyles";
-import Textarea from "../Textarea";
-import AuthContext from "../../context/AuthContext";
+import Textarea from "../../common/components/Textarea/Textarea";
+import AuthContext from "../../common/context/AuthContext";
 
 const CoursesAndCertificationItem = ({
   schoolName,
@@ -32,7 +35,7 @@ const CoursesAndCertificationItem = ({
   const [courseSchoolName, setCourseSchoolName] = useState(schoolName);
   const [courseGradYear, setCourseGradYear] = useState(gradYear);
   const [courseDesc, setCourseDesc] = useState(desc);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -75,7 +78,7 @@ const CoursesAndCertificationItem = ({
         <GradYear>{gradYear}</GradYear>
         <Desc>{desc}</Desc>
       </Info>
-      {authenticated.userID == creatorUser && (
+      {AuthState.userID == creatorUser && (
         <Actions>
           <InlineList>
             <InlineListItem>
@@ -93,23 +96,23 @@ const CoursesAndCertificationItem = ({
       )}
       {showModal && (
         <Modal>
-          <Title>Edit Course &amp; Certifications</Title>
+          <Styled.Title>Edit Course &amp; Certifications</Styled.Title>
           <Form onSubmit={updateCourse}>
-            <InputField
+            <Input
               type="text"
               name="courseName"
               placeholder="Course / Certificate Name"
               value={courseNameState}
               handleInputChange={e => setCourseName(e.target.value)}
             />
-            <InputField
+            <Input
               type="text"
               name="courseSchoolName"
               placeholder="Where did you take this course/ certificate ?"
               value={courseSchoolName}
               handleInputChange={e => setCourseSchoolName(e.target.value)}
             />
-            <InputField
+            <Input
               type="text"
               name="courseGraduationYear"
               placeholder="Course Graduation Year"

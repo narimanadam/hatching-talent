@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import DefinitionList from "../DefinitionList";
 import { Row, Col } from "react-grid-system";
-import { GET_USER_INFO } from "../../helpers/apiUrls";
+import { GET_USER_INFO } from "../../common/helpers/apiUrls";
 const PersonalDetails = props => {
   const [userInfo, setUserInfo] = useState({});
   const getUserInfo = () => {

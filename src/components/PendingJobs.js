@@ -1,15 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
-import { GET_JOBS_URL } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
-import NotMatching from "../components/NotMatching";
+import { GET_JOBS_URL } from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
 import JobStats from "../components/JobStats";
+import Message from "../common/components/Message/Message";
+import * as Styled from "../styles/gridStyle";
+import JobCard from "./JobCard/";
 
 const PendingJobs = () => {
   useEffect(() => {
     fetch(`${GET_JOBS_URL}`, {
       method: "POST",
       headers: {
-        employerId: authenticated.userID,
+        employerId: AuthState.userID,
         jobStatus: "Pending"
       }
     })
@@ -21,21 +23,39 @@ const PendingJobs = () => {
   }, []);
 
   const [jobs, setJobs] = useState([]);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   return (
     <div>
       {!jobs.length && (
-        <NotMatching message="You have no Active Jobs for now"></NotMatching>
+        <Message
+          text="You have no Active Jobs for now"
+          type="default"
+        ></Message>
       )}
-      {jobs.map(job => (
-        <JobStats
-          name={job.job_name}
-          desc={job.job_description}
-          applicants={job.applicants_no}
-          pending="true"
-        />
-      ))}
+      <Styled.Grid>
+        {jobs.map(
+          ({
+            job_name,
+            job_description,
+            applicants_no,
+            job_id,
+            location,
+            industry,
+            role
+          }) => (
+            <JobCard
+              jobTitle={job_name}
+              jobLocation={location}
+              jobDesc={job_description}
+              noOfApplicants={applicants_no}
+              jobIndustry={industry}
+              jobRole={role}
+              pending={true}
+            />
+          )
+        )}
+      </Styled.Grid>
     </div>
   );
 };

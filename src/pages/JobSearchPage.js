@@ -1,18 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-grid-system";
 
-import SectionHeading from "../components/SectionHeading";
-import InputField from "../components/InputField";
+import Input from "../common/components/Input";
 import { DefaultButtonOutline } from "../styles/Button";
 import JobResults from "../components/JobResults";
 import { Form } from "../styles/FormStyles";
-import { SEARCH_JOBS } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
+import { SEARCH_JOBS } from "../common/helpers/apiUrls";
+import PageHeader from "../common/components/PageHeader";
 
 const JobSearchPage = () => {
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
-  const [authenticated] = useContext(AuthContext);
 
   const searchJob = () => {
     fetch(`${SEARCH_JOBS}`, {
@@ -30,30 +28,25 @@ const JobSearchPage = () => {
 
   return (
     <>
-      <div className="main-colored">
-        <Container>
-          <SectionHeading boldText="Job" normalText="Search" />
-          <Form onSubmit={searchJob}>
-            <Row>
-              <Col md={10}>
-                <InputField
-                  type="text"
-                  placeholder="Search Keyword ..."
-                  handleInputChange={e => setQuery(e.target.value)}
-                />
-              </Col>
-              {/* <Col md={4}>
-                <InputField type="text" placeholder="Newyork, NY" />
+      <PageHeader boldText="Job" normalText="Search">
+        <Form onSubmit={searchJob}>
+          <Row>
+            <Col md={10}>
+              <Input
+                type="text"
+                placeholder="Search Keyword ..."
+                handleInputChange={e => setQuery(e.target.value)}
+              />
+            </Col>
+            {/* <Col md={4}>
+                <Input type="text" placeholder="Newyork, NY" />
               </Col> */}
-              <Col md={2}>
-                <DefaultButtonOutline type="submit">
-                  Search
-                </DefaultButtonOutline>
-              </Col>
-            </Row>
-          </Form>
-        </Container>
-      </div>
+            <Col md={2}>
+              <DefaultButtonOutline type="submit">Search</DefaultButtonOutline>
+            </Col>
+          </Row>
+        </Form>
+      </PageHeader>
       <Container>
         <JobResults />
       </Container>

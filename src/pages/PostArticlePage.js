@@ -1,17 +1,12 @@
 import React from "react";
-import SectionHeading from "../components/SectionHeading";
-import { Container } from "react-grid-system";
 import PostArticleForm from "../components/PostArticleForm";
+import PageHeader from "../common/components/PageHeader";
+import useDocumentTitle from "../common/hooks/useDocumentTitle";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const PostArticlePage = () => {
-  return (
-    <div className="main-colored">
-      <Container>
-        <SectionHeading boldText="Post" normalText="an article" />
-        <PostArticleForm />
-      </Container>
-    </div>
-  );
+  useDocumentTitle("Post Article | Hatching Talent");
+  return <PostArticleForm />;
 };
 
-export default PostArticlePage;
+export default withSecondaryLayout(PostArticlePage);

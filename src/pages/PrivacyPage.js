@@ -1,15 +1,14 @@
 import React from "react";
-import SectionHeading from "../components/SectionHeading";
 import { Container } from "react-grid-system";
+import PageHeader from "../common/components/PageHeader";
+import useDocumentTitle from "../common/hooks/useDocumentTitle";
+import withMainLayout from "../Layout/MainLayout/WithMainLayout";
 
 const PrivacyPage = () => {
+  useDocumentTitle("Privacy &amp; Policy | Hatching Talent");
   return (
     <>
-      <div className="main-colored">
-        <Container>
-          <SectionHeading boldText="Privacy" normalText="Policy" />
-        </Container>
-      </div>
+      <PageHeader boldText="Privacy" normalText="Policy"></PageHeader>
       <Container>
         <ul className="list__def">
           <li className="list__def__item">
@@ -57,4 +56,4 @@ const PrivacyPage = () => {
   );
 };
 
-export default PrivacyPage;
+export default withMainLayout(PrivacyPage);

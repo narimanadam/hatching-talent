@@ -12,16 +12,19 @@ import {
 } from "../../styles/WorkExperienceItemStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
-import { DELETE_EXPERIENCE, UPDATE_EXPERIENCE } from "../../helpers/apiUrls";
-import Modal from "../Modal";
+import {
+  DELETE_EXPERIENCE,
+  UPDATE_EXPERIENCE
+} from "../../common/helpers/apiUrls";
+import Modal from "../../common/components/Modal/Modal";
 import { Form } from "../../styles/FormStyles";
-import InputField from "../../components/InputField";
-import Textarea from "../../components/Textarea";
+import Input from "../../common/components/Input";
+import Textarea from "../../common/components/Textarea/Textarea";
 import DatePicker from "react-datepicker";
-import { Close } from "../../styles/ModalStyles";
+import * as Styled from "../../common/components/Modal/Modal.styles";
 import { Row, Col } from "react-grid-system";
 import { Button, DefaultButtonOutline } from "../../styles/Button";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../common/context/AuthContext";
 
 const WorkExperienceItem = ({
   desc,
@@ -42,7 +45,7 @@ const WorkExperienceItem = ({
   const [endDateState, setEndDateState] = useState(endDate);
   const [selectedStartDate, setSelectedStartDate] = useState("");
   const [selectedEndDate, setSelectedEndDate] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -54,9 +57,7 @@ const WorkExperienceItem = ({
         .toISOString()
         .split("T")[0]
         .split("-");
-      let start = `${selectedStartDateFormatted[0]}-${
-        selectedStartDateFormatted[1]
-      }-${selectedStartDateFormatted[2]}`;
+      let start = `${selectedStartDateFormatted[0]}-${selectedStartDateFormatted[1]}-${selectedStartDateFormatted[2]}`;
       setStartDateState(start);
     }
 
@@ -65,9 +66,7 @@ const WorkExperienceItem = ({
         .toISOString()
         .split("T")[0]
         .split("-");
-      let end = `${endDateformatted[0]}-${endDateformatted[1]}-${
-        endDateformatted[2]
-      }`;
+      let end = `${endDateformatted[0]}-${endDateformatted[1]}-${endDateformatted[2]}`;
       setEndDateState(end);
     }
   }, [startDateState, endDateState, selectedEndDate, selectedStartDate]);
@@ -113,7 +112,7 @@ const WorkExperienceItem = ({
         <Dates>
           {startDate} - {endDate}
         </Dates>
-        {authenticated.userID == creator && (
+        {AuthState.userID == creator && (
           <Actions>
             <InlineList>
               <InlineListItem>
@@ -139,7 +138,7 @@ const WorkExperienceItem = ({
           <Form style={{ marginTop: "25px" }} onSubmit={updateWorkExperience}>
             <Row>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Job Title"
                   label="Job Title"
@@ -148,7 +147,7 @@ const WorkExperienceItem = ({
                 />
               </Col>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Company Name"
                   label="Company Name"
@@ -179,7 +178,7 @@ const WorkExperienceItem = ({
                 </div>
               </Col>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Notice Period"
                   label="Notice Period"
@@ -198,7 +197,7 @@ const WorkExperienceItem = ({
             </Row>
             <DefaultButtonOutline type="submit">Submit</DefaultButtonOutline>
           </Form>
-          <Close>
+          <Styled.Close>
             <Button type="button" onClick={toggleModal}>
               <FontAwesomeIcon
                 icon="times"
@@ -206,7 +205,7 @@ const WorkExperienceItem = ({
                 style={{ color: "#333" }}
               />
             </Button>
-          </Close>
+          </Styled.Close>
         </Modal>
       )}
     </WorkExperienceItemStyles>

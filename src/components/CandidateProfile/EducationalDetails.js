@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import Modal from "../Modal";
-import Box from "../Box";
+import Modal from "../../common/components/Modal/Modal";
+import Box from "../../common/components/Box";
 import { Form } from "../../styles/FormStyles";
-import InputField from "../../components/InputField";
-import Textarea from "../../components/Textarea";
-import { Close, Title } from "../../styles/ModalStyles";
+import Input from "../../common/components/Input";
+import Textarea from "../../common/components/Textarea/Textarea";
+import * as Styled from "../../common/components/Modal/Modal.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button, DefaultButtonOutline } from "../../styles/Button";
 import { Row, Col } from "react-grid-system";
-import { ADD_EDUCATION, GET_EDUCATIONS } from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
+import { ADD_EDUCATION, GET_EDUCATIONS } from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
 import EducationItem from "./EducationItem";
 
 const EducationalDetails = ({ userId }) => {
@@ -21,7 +21,7 @@ const EducationalDetails = ({ userId }) => {
   const [graduationYear, setGraduationYear] = useState(new Date());
   const [desc, setDesc] = useState("");
   const [educations, setEducations] = useState([]);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -47,7 +47,7 @@ const EducationalDetails = ({ userId }) => {
     fetch(`${ADD_EDUCATION}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         type: "education",
         name: degree,
         placeName: schoolName,
@@ -82,13 +82,12 @@ const EducationalDetails = ({ userId }) => {
         )
       )}
       {showModal && (
-        <Modal>
-          <Title>Add Educational Details</Title>
+        <Modal title="Add Educational Details">
           <p>Work experience</p>
           <Form style={{ marginTop: "25px" }} onSubmit={submitEducation}>
             <Row>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Degree"
                   label="Degree"
@@ -96,7 +95,7 @@ const EducationalDetails = ({ userId }) => {
                 />
               </Col>
               <Col md={12}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="School Name"
                   label="School Name"
@@ -104,7 +103,7 @@ const EducationalDetails = ({ userId }) => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Grade"
                   label="Grade"
@@ -112,7 +111,7 @@ const EducationalDetails = ({ userId }) => {
                 />
               </Col>
               <Col md={6}>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Graduation Year"
                   label="Graduation Year"
@@ -129,18 +128,9 @@ const EducationalDetails = ({ userId }) => {
             </Row>
             <DefaultButtonOutline type="submit">Submit</DefaultButtonOutline>
           </Form>
-          <Close>
-            <Button type="button" onClick={toggleModal}>
-              <FontAwesomeIcon
-                icon="times"
-                size="1x"
-                style={{ color: "#333" }}
-              />
-            </Button>
-          </Close>
         </Modal>
       )}
-      {authenticated.userID == userId && (
+      {AuthState.userID == userId && (
         <Button type="button" onClick={toggleModal} colored block>
           <FontAwesomeIcon icon="plus" />
           Add New Educational Detail

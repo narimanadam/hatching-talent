@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "react-grid-system";
-import SectionHeading from "../components/SectionHeading";
-import InputField from "../components/InputField";
+import Input from "../components/Input";
 import { Grid, GridItem } from "../styles/gridStyle";
-import Card from "../components/Card";
+import Card from "../common/components/Card";
+import PageHeader from "../common/components/PageHeader";
 
 class PressOverviewPage extends Component {
   state = {
@@ -33,23 +33,20 @@ class PressOverviewPage extends Component {
     );
     return (
       <div>
-        <div className="main-colored">
-          <Container>
-            <SectionHeading boldText="Press" normalText="Overview" />
-            <form action="">
-              <Row>
-                <Col sm={8}>
-                  <InputField
-                    type="text"
-                    placeholder="Search Press By keyword"
-                    name="query"
-                    handleInputChange={this.handleInputChange}
-                  />
-                </Col>
-              </Row>
-            </form>
-          </Container>
-        </div>
+        <PageHeader boldText="Press" normalText="Overview">
+          <form action="">
+            <Row>
+              <Col sm={8}>
+                <Input
+                  type="text"
+                  placeholder="Search Press By keyword"
+                  name="query"
+                  handleInputChange={this.handleInputChange}
+                />
+              </Col>
+            </Row>
+          </form>
+        </PageHeader>
         <Container>
           <Grid>
             {filteredPress.map(press => (

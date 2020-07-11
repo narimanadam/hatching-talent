@@ -1,23 +1,23 @@
 import React, { useState, useContext, useEffect } from "react";
 import Labels from "../Labels";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
-import InputField from "../InputField";
+import Input from "../../common/components/Input";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
 import {
   ADD_SKILL_AND_LANG,
   GET_SKILLS_AND_LANG,
   DELETE_SKILLS_AND_LANG
-} from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
+} from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
 import { Form } from "../../styles/FormStyles";
-import Message from "../../components/Message";
+import Message from "../../common/components/Message/Message";
 
 const LanguagesKnown = ({ userId }) => {
   const [language, setLanguage] = useState("");
   const [languages, setLanguages] = useState([]);
   const [showAddNewLanguage, setShowAddNewLanguage] = useState(false);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const showAddNewLanguageInput = () => {
     setShowAddNewLanguage(true);
@@ -27,7 +27,7 @@ const LanguagesKnown = ({ userId }) => {
     fetch(`${ADD_SKILL_AND_LANG}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         name: language,
         type: "language"
       }
@@ -84,7 +84,7 @@ const LanguagesKnown = ({ userId }) => {
 
       {showAddNewLanguage && (
         <Form>
-          <InputField
+          <Input
             type="text"
             name="language"
             placeholder="Add New Language"
@@ -93,7 +93,7 @@ const LanguagesKnown = ({ userId }) => {
         </Form>
       )}
       <InlineList>
-        {authenticated.userID == userId && (
+        {AuthState.userID == userId && (
           <InlineListItem>
             <MainOutlineButton onClick={showAddNewLanguageInput} type="button">
               Add New Language

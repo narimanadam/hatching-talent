@@ -4,7 +4,7 @@ const EducationItemStyled = styled.div`
   display: flex;
   margin-bottom: 25px;
   padding-bottom: 25px;
-  border-bottom: 1px solid ${props => props.theme.grey};
+  border-bottom: 1px solid ${props => props.theme.gray};
 `;
 
 const Degree = styled.h3`

@@ -1,17 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import Labels from "../Labels";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
-import InputField from "../InputField";
+import Input from "../Input";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
-import { ADD_PROJECT, GET_PROJECTS } from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
+import { ADD_PROJECT, GET_PROJECTS } from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
 
 const Projects = () => {
   const [project, setProject] = useState("");
   const [projects, setProjects] = useState([]);
   const [showAddNewProject, setShowAddNewProject] = useState(false);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const showAddNewProjectInput = () => {
     setShowAddNewProject(true);
@@ -21,7 +21,7 @@ const Projects = () => {
     fetch(`${ADD_PROJECT}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         name: project,
         type: "project"
       }
@@ -35,7 +35,7 @@ const Projects = () => {
     fetch(`${GET_PROJECTS}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         type: "project"
       }
     })
@@ -54,7 +54,7 @@ const Projects = () => {
         <Labels key={index} title={project.name} />
       ))}
       {showAddNewProject && (
-        <InputField
+        <Input
           type="text"
           name="project"
           placeholder="Add New Project"

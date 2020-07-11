@@ -7,7 +7,7 @@ import {
 } from "../styles/JobBoxStyles";
 import DefinitionList from "../components/DefinitionList";
 import { Link } from "@reach/router";
-import { GET_USER_INFO } from "../helpers/apiUrls";
+import { GET_USER_INFO } from "../common/helpers/apiUrls";
 
 const JobBox = ({ id, jobName, jobLocation, jobDesc, jobRole, employerId }) => {
   const [employerInfo, setEmployerInfo] = useState({});

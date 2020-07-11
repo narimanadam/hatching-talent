@@ -1,23 +1,23 @@
 import React, { useState, useContext, useEffect } from "react";
 import Labels from "../Labels";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
-import InputField from "../InputField";
+import Input from "../../common/components/Input";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
 import {
   ADD_SKILL_AND_LANG,
   GET_SKILLS_AND_LANG,
   DELETE_SKILLS_AND_LANG
-} from "../../helpers/apiUrls";
-import AuthContext from "../../context/AuthContext";
+} from "../../common/helpers/apiUrls";
+import AuthContext from "../../common/context/AuthContext";
 import { Form } from "../../styles/FormStyles";
-import Message from "../../components/Message";
+import Message from "../../common/components/Message/Message";
 
 const Skills = ({ userId }) => {
   const [skill, setSkill] = useState("");
   const [skills, setSkills] = useState([]);
   const [showAddNewSkill, setShowAddNewSkill] = useState(false);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const showAddNewSkillInput = () => {
     setShowAddNewSkill(true);
@@ -27,7 +27,7 @@ const Skills = ({ userId }) => {
     fetch(`${ADD_SKILL_AND_LANG}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         name: skill,
         type: "skill"
       }
@@ -71,7 +71,7 @@ const Skills = ({ userId }) => {
 
   return (
     <Box heading="Skills">
-      {!skills.length && authenticated.userID == userId && (
+      {!skills.length && AuthState.userID == userId && (
         <Message text="Add the skills you have"></Message>
       )}
 
@@ -86,7 +86,7 @@ const Skills = ({ userId }) => {
 
       {showAddNewSkill && (
         <Form>
-          <InputField
+          <Input
             type="text"
             name="skill"
             placeholder="Add New Skill"
@@ -94,7 +94,7 @@ const Skills = ({ userId }) => {
           />
         </Form>
       )}
-      {authenticated.userID == userId && (
+      {AuthState.userID == userId && (
         <InlineList>
           <InlineListItem>
             <MainOutlineButton onClick={showAddNewSkillInput} type="button">

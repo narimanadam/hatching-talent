@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-grid-system";
-import SectionHeading from "../components/SectionHeading";
-import InputField from "../components/InputField";
+import Input from "../common/components/Input";
 import { DefaultButtonOutline } from "../styles/Button";
-import CandidateCard from "../components/CandidateCard";
-import { FIND_CANDIDATE } from "../helpers/apiUrls";
+import CandidateCard from "../components/CandidateCard/CandidateCard";
+import { FIND_CANDIDATE } from "../common/helpers/apiUrls";
 import { Form } from "../styles/FormStyles";
+import PageHeader from "../common/components/PageHeader";
+import * as Styled from "../styles/gridStyle";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const FindCandidatePage = () => {
   const [keyword, setKeyword] = useState("");
@@ -24,48 +26,44 @@ const FindCandidatePage = () => {
   };
   return (
     <>
-      <div className="main-colored">
-        <Container>
-          <SectionHeading boldText="Find" normalText="Candidate" />
-          <Form onSubmit={findCandidate}>
-            <Row>
-              <Col md={5}>
-                <InputField
-                  type="text"
-                  placeholder="Search Keyword ..."
-                  handleInputChange={e => setKeyword(e.target.value)}
-                />
-              </Col>
-              <Col md={4}>
-                <InputField type="text" placeholder="Newyork, NY" />
-              </Col>
-              <Col md={2}>
-                <DefaultButtonOutline type="submit">
-                  Search
-                </DefaultButtonOutline>
-              </Col>
-            </Row>
-          </Form>
-        </Container>
-      </div>
-      <Container style={{ marginTop: "20px" }}>
-        <Row>
-          {candidates.map(candidate => (
-            <Col md={3}>
-              <CandidateCard
-                imgSrc="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
-                id={candidate.user_id}
-                firstName={candidate.first_name}
-                lastName={candidate.last_name}
-                email={candidate.username}
-                key={candidate.user_id}
-              />
-            </Col>
-          ))}
-        </Row>
-      </Container>
+      <PageHeader boldText="Find" normalText="Candidate" />
+      <Form onSubmit={findCandidate} inline>
+        <Input
+          type="text"
+          placeholder="Search Keyword ..."
+          handleInputChange={e => setKeyword(e.target.value)}
+        />
+        <Input type="text" placeholder="Newyork, NY" />
+
+        <DefaultButtonOutline type="submit">Search</DefaultButtonOutline>
+      </Form>
+
+      <Styled.Grid>
+        {console.log("candidates::::", candidates)}
+        {candidates.map(
+          ({
+            user_id,
+            first_name,
+            last_name,
+            username,
+            adress,
+            email,
+            job_title
+          }) => (
+            <CandidateCard
+              imgSrc="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
+              id={user_id}
+              firstName={first_name}
+              lastName={last_name}
+              email={email}
+              jobTitle={job_title}
+              key={user_id}
+            />
+          )
+        )}
+      </Styled.Grid>
     </>
   );
 };
 
-export default FindCandidatePage;
+export default withSecondaryLayout(FindCandidatePage);

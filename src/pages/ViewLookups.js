@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row } from "react-grid-system";
-import { GET_LOOKUPs } from "../helpers/apiUrls";
+import { GET_LOOKUPs } from "../common/helpers/apiUrls";
 import { Form } from "../styles/FormStyles";
 import Select from "react-select";
 import { SelectStyles } from "../styles/SelectStyles";
-import Box from "../components/Box";
-import { List, ListItem } from "../styles/ListStyle";
-import SectionHeading from "../components/SectionHeading";
+import Box from "../common/components/Box";
+import PageHeader from "../common/components/PageHeader";
+import * as Styled from "../styles/gridStyle";
+import Card from "../common/components/Card";
 
 const ViewLookups = () => {
   const [lookupTypeId, setLookupTypeId] = useState("");
@@ -72,48 +73,28 @@ const ViewLookups = () => {
 
   return (
     <>
-      <div className="main-colored">
-        <Container>
-          <SectionHeading boldText="Find" normalText="Lookup"></SectionHeading>
-          <Row>
-            <Form>
-              <div className="form__group">
-                <Select
-                  options={lookupTypes}
-                  placeholder="Select Lookup"
-                  name="lookups"
-                  styles={SelectStyles}
-                  onChange={handleLookupTypeChange}
-                />
-              </div>
-            </Form>
-          </Row>
-        </Container>
-      </div>
+      <PageHeader boldText="Find" normalText="Lookup">
+        <Row>
+          <Form hasBgColor>
+            <div className="form__group">
+              <Select
+                options={lookupTypes}
+                placeholder="Select Lookup"
+                name="lookups"
+                styles={SelectStyles}
+                onChange={handleLookupTypeChange}
+              />
+            </div>
+          </Form>
+        </Row>
+      </PageHeader>
       <Container>
-        {!lookupValues.length && <Box>Select Lookup Value to display</Box>}
-        <List>
+        <Styled.Grid>
           {lookupValues.map(({ value }) => (
-            <Box style={{ display: "flex" }}>
-              <ListItem>
-                {value}
-                {/* <InlineList
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end"
-                  }}
-                >
-                  <InlineListItem>
-                    <MainButton onClick={activateLookup}>Activate</MainButton>
-                    <MainOutlineButton onClick={deactivateLookup}>
-                      Deactivate
-                    </MainOutlineButton>
-                  </InlineListItem>
-                </InlineList> */}
-              </ListItem>
-            </Box>
+            <Styled.Item> {value} </Styled.Item>
           ))}
-        </List>
+        </Styled.Grid>
+        {!lookupValues.length && <Box>Select Lookup Value to display</Box>}
       </Container>
     </>
   );

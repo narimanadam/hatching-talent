@@ -1,30 +1,26 @@
 import React, { useState } from "react";
-import { Container, Row, Col } from "react-grid-system";
-import SectionHeading from "../components/SectionHeading";
-import InputField from "../components/InputField";
+import { Row, Col } from "react-grid-system";
+import Input from "../common/components/Input";
 import { DefaultButtonOutline } from "../styles/Button";
-import Textarea from "../components/Textarea";
+import Textarea from "../common/components/Textarea";
 import { Form } from "../styles/FormStyles";
-import Message from "../components/Message";
+import Message from "../common/components/Message";
+import PageHeader from "../common/components/PageHeader";
+import useDocumentTitle from "../common/hooks/useDocumentTitle";
+import Button from "../common/components/Button";
+import useForm from "../common/hooks/useForm";
+import withMainLayout from "../Layout/MainLayout/WithMainLayout";
 
 const ContactPage = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [bluredInputs, setBluredInputs] = useState(false);
+  useDocumentTitle("Contact Us | Hatching Talent");
 
-  const setBlurred = e => {
-    setBluredInputs({ ...bluredInputs, [e.target.name]: true });
-  };
-
-  const sendMessage = e => {
-    e.preventDefault();
+  const sendMessage = () => {
     fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       headers: {
-        fullName,
-        email,
-        message
+        fullName: values.fullName,
+        email: values.email,
+        message: values.message
       }
     })
       .then(res => res.json())
@@ -32,79 +28,50 @@ const ContactPage = () => {
       .catch(error => console.log(error));
   };
 
-  const validateFullName = () => {
-    return fullName != "";
-  };
-
-  const validateEmail = () => {
-    return /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email);
-  };
-
-  const validateMessage = () => {
-    return message != "";
-  };
-
-  const fullnameIsValid = validateFullName();
-  const emailIsValid = validateEmail();
-  const messageIsValid = validateMessage();
-  const formIsValid = fullnameIsValid && emailIsValid && messageIsValid;
+  const {
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    disabled
+  } = useForm({ fullName: "", email: "", message: "" }, sendMessage);
 
   return (
-    <div className="main-colored">
-      <Container>
-        <SectionHeading boldText="Contact" normalText="Us" />
-        <Form action="">
-          <Row>
-            <Col sm={6}>
-              <InputField
-                type="text"
-                placeholder="Full Name"
-                name="fullname"
-                handleInputChange={e => setFullName(e.target.value)}
-                handleBlur={setBlurred}
-              />
-              {bluredInputs.fullname && !fullnameIsValid && (
-                <Message text="Full Name is Required" type="error"></Message>
-              )}
-            </Col>
-            <Col sm={6}>
-              <InputField
-                type="email"
-                placeholder="Email"
-                name="email"
-                handleInputChange={e => setEmail(e.target.value)}
-                handleBlur={setBlurred}
-              />
-              {bluredInputs.email && !emailIsValid && (
-                <Message
-                  text="Please Enter a Valid Email Address"
-                  type="error"
-                ></Message>
-              )}
-            </Col>
-            <Col sm={12}>
-              <Textarea
-                name="message"
-                placeholder="Your Message"
-                handleInputChange={e => setMessage(e.target.value)}
-                handleBlur={setBlurred}
-              />
-              {bluredInputs.message && !messageIsValid && (
-                <Message text="Message is required" type="error"></Message>
-              )}
-            </Col>
-          </Row>
-          <DefaultButtonOutline
-            style={{ marginTop: "20px", float: "right" }}
-            onClick={sendMessage}
-            disabled={!formIsValid}
-          >
-            Send Message
-          </DefaultButtonOutline>
-        </Form>
-      </Container>
-    </div>
+    <PageHeader boldText="Contact" normalText="Us">
+      <Form action="" onSubmit={handleSubmit} hasBgColor>
+        <Input
+          type="text"
+          placeholder="Full Name"
+          name="fullname"
+          handleInputChange={handleChange}
+          handleBlur={handleBlur}
+          variant="darkFormField"
+        />
+        <Input
+          type="email"
+          placeholder="Email"
+          name="email"
+          handleInputChange={handleChange}
+          handleBlur={handleBlur}
+          variant="darkFormField"
+        />
+        <Textarea
+          name="message"
+          placeholder="Your Message"
+          handleInputChange={handleChange}
+          handleBlur={handleBlur}
+          variant="darkFormField"
+        />
+        <Button
+          text="Send Message"
+          variant="primaryButton"
+          type="submit"
+          disabled={disabled}
+        />
+      </Form>
+    </PageHeader>
   );
 };
 
-export default ContactPage;
+export default withMainLayout(ContactPage);

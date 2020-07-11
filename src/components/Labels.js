@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { LabelStyles, CloseIcon, LabelLink } from "../styles/LabelStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../common/context/AuthContext";
 const Labels = ({ title, handleClick, link, creatorUser }) => {
   const [domainName, setDomainName] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const getDomain = () => {
     let websiteName = title
@@ -24,7 +24,7 @@ const Labels = ({ title, handleClick, link, creatorUser }) => {
       )}
       {link && <LabelLink href={title}>{title}</LabelLink>}
       {!link && <span>{title}</span>}
-      {authenticated.userID == creatorUser && (
+      {AuthState.userID == creatorUser && (
         <CloseIcon type="submit" onClick={handleClick}>
           <FontAwesomeIcon icon="times" />
         </CloseIcon>

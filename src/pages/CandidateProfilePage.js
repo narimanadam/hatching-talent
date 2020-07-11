@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-grid-system";
 import ProfileInfoBox from "../components/ProfileInfoBox";
-import Box from "../components/Box";
+import Box from "../common/components/Box";
 // import ITSkills from "../components/CandidateProfile/ITSkills";
 import JobPreference from "../components/CandidateProfile/JobPreference";
 import WorkExperience from "../components/CandidateProfile/WorkExperience";
@@ -18,13 +18,12 @@ import ProfileDesc from "../components/CandidateProfile/ProfileDesc";
 const CandidateProfilePage = props => {
   return (
     <Container style={{ marginBottom: "40px", marginTop: "40px" }}>
-      <h2 className="page__title">Profile</h2>
       <Row>
         <Col sm={4} className="bg-gray">
           <ProfileInfoBox userId={props.userId} />
         </Col>
         <Col sm={8}>
-          <Box heading="Resume">hhhh</Box>
+          {/* <Box heading="Resume">hhhh</Box> */}
           <ProfileDesc userId={props.userId} />
           <Skills userId={props.userId} />
           <JobPreference userId={props.userId} />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-grid-system";
 import ProfileInfoBox from "../components/ProfileInfoBox";
-import Box from "../components/Box";
+import Box from "../common/components/Box";
 
 const CandidateDetailsPage = () => {
   const [candidate, setCandidate] = useState("");

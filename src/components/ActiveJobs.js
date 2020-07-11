@@ -1,15 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
-import { GET_JOBS_URL, UPDATE_JOB_URL } from "../helpers/apiUrls";
-import AuthContext from "../context/AuthContext";
-import NotMatching from "../components/NotMatching";
-import JobStats from "../components/JobStats";
+import { GET_JOBS_URL, UPDATE_JOB_URL } from "../common/helpers/apiUrls";
+import AuthContext from "../common/context/AuthContext";
+import Message from "../common/components/Message/Message";
+import JobCard from "./JobCard/";
+import * as Styled from "../styles/gridStyle";
 
 const ActiveJobs = () => {
   useEffect(() => {
     fetch(`${GET_JOBS_URL}`, {
       method: "POST",
       headers: {
-        employerId: authenticated.userID,
+        employerId: AuthState.userID,
         jobStatus: "Active"
       }
     })
@@ -34,22 +35,39 @@ const ActiveJobs = () => {
   };
 
   const [jobs, setJobs] = useState([]);
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   return (
     <div>
       {!jobs.length && (
-        <NotMatching message="You have no Active Jobs for now"></NotMatching>
+        <Message
+          text="You have no Active Jobs for now"
+          type="default"
+        ></Message>
       )}
-      {jobs.map(job => (
-        <JobStats
-          name={job.job_name}
-          desc={job.job_description}
-          applicants={job.applicants_no}
-          closeJob={CloseJob.bind(this, job.job_id)}
-          lengthofJobs={jobs.length}
-        />
-      ))}
+      <Styled.Grid>
+        {jobs.map(
+          ({
+            job_name,
+            job_description,
+            applicants_no,
+            job_id,
+            location,
+            industry,
+            role
+          }) => (
+            <JobCard
+              jobTitle={job_name}
+              jobLocation={location}
+              jobDesc={job_description}
+              noOfApplicants={applicants_no}
+              jobIndustry={industry}
+              jobRole={role}
+              closeJob={CloseJob.bind(this, job_id)}
+            />
+          )
+        )}
+      </Styled.Grid>
     </div>
   );
 };

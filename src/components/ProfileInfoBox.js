@@ -7,7 +7,7 @@ import {
 } from "../styles/ProfileInfoBoxStyles.js";
 import DefinitionList from "../components/DefinitionList";
 // import ProgressBar from "../components/ProgressBar";
-import { GET_USER_INFO } from "../helpers/apiUrls.js";
+import { GET_USER_INFO } from "../common/helpers/apiUrls.js";
 
 const ProfileInfoBox = ({ userId }) => {
   const [candidate, setCandidate] = useState([]);

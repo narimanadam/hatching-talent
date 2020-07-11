@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row } from "react-grid-system";
 import JobBox from "../components/JobBox";
-import { PENDING_JOBS_URL } from "../helpers/apiUrls";
-import Message from "../components/Message";
+import { PENDING_JOBS_URL } from "../common/helpers/apiUrls";
+import Message from "../common/components/Message";
+import JobCard from "../components/JobCard";
+import * as Styled from "../styles/gridStyle";
+import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
 
 const AdminJobOverview = () => {
   const [jobs, setJobs] = useState([]);
@@ -20,25 +22,28 @@ const AdminJobOverview = () => {
   }, []);
 
   return (
-    <Container style={{ marginTop: "30px" }}>
-      <Row>
-        {!jobs.length && (
-          <Message text="Good Job You have no jobs to approve for now." />
+    <>
+      {!jobs.length && (
+        <Message text="Good Job You have no jobs to approve for now." />
+      )}
+
+      <Styled.Grid>
+        {jobs.map(
+          ({ job_name, job_id, location, job_description, role, industry }) => (
+            <JobCard
+              jobTitle={job_name}
+              jobId={job_id}
+              key={job_id}
+              jobLocation={location}
+              jobDesc={job_description}
+              jobRole={role}
+              jobIndustry={industry}
+            />
+          )
         )}
-        {jobs.map(job => (
-          <JobBox
-            jobName={job.job_name}
-            id={job.job_id}
-            key={job.job_id}
-            jobLocation={job.location}
-            jobDesc={job.job_description}
-            jobRole={job.role}
-            // employerId={job.employer_id}
-          />
-        ))}
-      </Row>
-    </Container>
+      </Styled.Grid>
+    </>
   );
 };
 
-export default AdminJobOverview;
+export default withSecondaryLayout(AdminJobOverview);

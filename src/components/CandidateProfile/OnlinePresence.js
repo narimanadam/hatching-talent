@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
-import Box from "../Box";
+import Box from "../../common/components/Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
-import InputField from "../InputField";
+import Input from "../../common/components/Input";
 import { InlineList, InlineListItem } from "../../styles/ListStyle";
 import Labels from "../Labels";
 import { Form } from "../../styles/FormStyles";
-import AuthContext from "../../context/AuthContext";
-import { ADD_LINK, GET_LINKS, DELETE_LINK } from "../../helpers/apiUrls";
-import Message from "../Message";
+import AuthContext from "../../common/context/AuthContext";
+import { ADD_LINK, GET_LINKS, DELETE_LINK } from "../../common/helpers/apiUrls";
+import Message from "../../common/components/Message/Message";
 
 const OnlinePresence = ({ userId }) => {
   const [link, setLink] = useState("");
@@ -15,7 +15,7 @@ const OnlinePresence = ({ userId }) => {
   const [showAddNewLink, setShowAddNewLink] = useState(false);
   const [bluredInputs, setBluredInputs] = useState(false);
   const [domainName, setDomainName] = useState("");
-  const [authenticated] = useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   const setBlurred = e => {
     setBluredInputs({ ...bluredInputs, [e.target.name]: true });
@@ -35,7 +35,7 @@ const OnlinePresence = ({ userId }) => {
     fetch(`${ADD_LINK}`, {
       method: "POST",
       headers: {
-        forUser: authenticated.userID,
+        forUser: AuthState.userID,
         name: link,
         type: "link"
       }
@@ -96,7 +96,7 @@ const OnlinePresence = ({ userId }) => {
       ))}
       <Form onSubmit={addLink}>
         {showAddNewLink && (
-          <InputField
+          <Input
             type="text"
             name="link"
             placeholder="Add New Link"
@@ -107,7 +107,7 @@ const OnlinePresence = ({ userId }) => {
         {bluredInputs.link && !linkIsValid && (
           <Message text="Please Enter a valid Link" type="error" />
         )}
-        {authenticated.userID == userId && (
+        {AuthState.userID == userId && (
           <InlineList>
             <InlineListItem>
               <MainOutlineButton onClick={showAddNewInput} type="button">

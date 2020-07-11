@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { JobThumbnailStyled } from "../styles/JobThumbnailStyled";
 import PropTypes from "prop-types";
-import { GET_USER_INFO } from "../helpers/apiUrls";
+import { GET_USER_INFO } from "../common/helpers/apiUrls";
 
 const JobThumbnail = ({
   name,
@@ -41,7 +41,8 @@ const JobThumbnail = ({
         <span className="grid-thumb__desc">{jobLocation}</span>
         <span className="grid-thumb__title">{name}</span>
         <span className="grid-thumb__subTitle">
-          {employerInfo.first_name} {employerInfo.last_name}
+          {employerInfo && employerInfo.first_name}
+          {employerInfo && employerInfo.last_name}
         </span>
       </div>
     </JobThumbnailStyled>

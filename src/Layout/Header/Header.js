@@ -1,50 +1,52 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  HeaderStyle,
-  HeaderTop,
-  Logo,
-  Slogan,
-  Navigation,
-  NavigationList,
-  NavigationItem
-} from "./HeaderStyle";
-import { InlineList, InlineListItem } from "../../styles/ListStyle";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback
+} from "react";
+import * as Styled from "./Header.styles";
 import { MainOutlineButton, Button } from "../../styles/Button";
 import logo from "../../assets/logo.png";
-import { Container, Row, Col } from "react-grid-system";
 import { Link, navigate } from "@reach/router";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../common/context/AuthContext";
 import Thumbnail from "../../components/Thumbnail";
-import { GET_USER_INFO } from "../../helpers/apiUrls";
+import { GET_USER_INFO } from "../../common/helpers/apiUrls";
+import { LOGOUT } from "../../common/actions/Types";
+import Logo from "../../assets/logo.png";
+import Modal from "../../common/components/Modal/";
+import LoginRegisterModal from "../../pages/LoginRegisterModal";
 
 const Header = () => {
-  const [authenticated, setAuthenticated] = useContext(AuthContext);
+  const { AuthState, AuthDispatch } = useContext(AuthContext);
   const [userFullName, setUserFullName] = useState("");
+  const modalRef = useRef();
+
+  const toggleModal = useCallback(() => modalRef.current.toggleModal(), [
+    AuthState
+  ]);
 
   const logout = () => {
     window.localStorage.clear();
-    let userData = { id: "", type: "" };
-    window.localStorage.setItem("userData", JSON.stringify(userData));
-    setAuthenticated(
-      Object.assign({}, authenticated, {
-        isLoggedIn: false
-      })
-    );
     navigate("/");
+    AuthDispatch({ type: LOGOUT });
   };
 
   const getUserData = () => {
     fetch(`${GET_USER_INFO}`, {
       method: "POST",
       headers: {
-        userId: authenticated.userID
+        userId: AuthState.userID
       }
     })
       .then(res => res.json())
       .then(data => {
-        if ((data[0] && data[0].user_type === "Canidate") || "Employer") {
+        if (data[0] && data[0].user_type === "Canidate") {
           let fullName = `${data[0].first_name && data[0].first_name} ${data[0]
             .last_name && data[0].last_name}`;
+          setUserFullName(fullName);
+        } else if (data[0] && data[0].user_type === "Employer") {
+          let fullName = `${data[0].first_name && data[0].first_name} `;
           setUserFullName(fullName);
         }
       })
@@ -56,20 +58,17 @@ const Header = () => {
   });
 
   return (
-    <HeaderStyle>
-      <HeaderTop>
+    <>
+      {/* <HeaderTop>
         <Container>
           <Row>
             <Col sm={7}>
-              <Link to="/">
-                <Logo src={logo} alt="Logo" />
-              </Link>
               <Slogan>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet.
               </Slogan>
             </Col>
-            {authenticated.isLoggedIn && authenticated.type == "Candidate" && (
-              <Link to={`/candidate-profile/${authenticated.userID}`}>
+            {AuthState.isLoggedIn && AuthState.type == "Candidate" && (
+              <Link to={`/candidate-profile/${AuthState.userID}`}>
                 <Thumbnail
                   imgSrc="https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1302&q=80"
                   title={userFullName}
@@ -77,8 +76,8 @@ const Header = () => {
                 />
               </Link>
             )}
-            {authenticated.isLoggedIn && authenticated.type == "Employer" && (
-              <Link to={`/employer-profile/${authenticated.userID}`}>
+            {AuthState.isLoggedIn && AuthState.type == "Employer" && (
+              <Link to={`/employer-profile/${AuthState.userID}`}>
                 <Thumbnail
                   imgSrc="https://media.glassdoor.com/sqll/142089/majid-al-futtaim-group-squarelogo-1531112944476.png"
                   title={userFullName}
@@ -86,7 +85,7 @@ const Header = () => {
                 />
               </Link>
             )}
-            {!authenticated.isLoggedIn && (
+            {!AuthState.isLoggedIn && (
               <Col sm={5} align="right">
                 <InlineList>
                   <InlineListItem>
@@ -103,117 +102,115 @@ const Header = () => {
             )}
           </Row>
         </Container>
-      </HeaderTop>
-      <Navigation>
-        <Container>
-          <Row>
-            <Col sm={7} align="left">
-              {authenticated.isLoggedIn && authenticated.type == "Candidate" && (
-                <NavigationList>
-                  <NavigationItem>
-                    <Link
-                      to={`/candidate-dashboard/${authenticated.userID}`}
-                      className="white-link"
-                    >
-                      Dashboard
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/job-search" className="white-link">
-                      Find a Job
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/review" className="white-link">
-                      Write a Review
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/articles" className="white-link">
-                      Blog
-                    </Link>
-                  </NavigationItem>
-                </NavigationList>
-              )}
+      </HeaderTop> */}
+      <Styled.Header>
+        {AuthState.isLoggedIn && AuthState.type == "Candidate" && (
+          <Styled.List>
+            <Styled.Link>
+              <Link
+                to={`/candidate-dashboard/${AuthState.userID}`}
+                className="white-link"
+              >
+                Dashboard
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/job-search" className="white-link">
+                Find a Job
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/review" className="white-link">
+                Write a Review
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/articles" className="white-link">
+                Blog
+              </Link>
+            </Styled.Link>
+          </Styled.List>
+        )}
 
-              {authenticated.isLoggedIn && authenticated.type == "Employer" && (
-                <NavigationList>
-                  <NavigationItem>
-                    <Link
-                      to={`/employer-dashboard/${authenticated.userID}`}
-                      className="white-link"
-                    >
-                      Dashboard
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/post-job" className="white-link">
-                      Post a Job
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/find-candidate" className="white-link">
-                      Find a candidate
-                    </Link>
-                  </NavigationItem>
-                </NavigationList>
-              )}
-              {authenticated.isLoggedIn && authenticated.type == "Admin" && (
-                <NavigationList>
-                  <NavigationItem>
-                    <Link to="/post-article" className="white-link">
-                      Post an article
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/approve-review" className="white-link">
-                      Approve-review
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/jobs-overview" className="white-link">
-                      Jobs Overview
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/lookups" className="white-link">
-                      Lookups
-                    </Link>
-                  </NavigationItem>
-                </NavigationList>
-              )}
-            </Col>
-            <Col sm={5} align="right">
-              {authenticated.isLoggedIn ? (
-                <NavigationList>
-                  <Button className="white-link" onClick={logout} type="button">
-                    Log out
-                  </Button>
-                </NavigationList>
-              ) : (
-                <NavigationList>
-                  <NavigationItem>
-                    <Link to="/login" className="white-link">
-                      Login
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/register" className="white-link">
-                      Sign Up
-                    </Link>
-                  </NavigationItem>
-                  <NavigationItem>
-                    <Link to="/employer-register" className="white-link">
-                      Employer? Register Here
-                    </Link>
-                  </NavigationItem>
-                </NavigationList>
-              )}
-            </Col>
-          </Row>
-        </Container>
-      </Navigation>
-    </HeaderStyle>
+        {AuthState.isLoggedIn && AuthState.type == "Admin" && (
+          <Styled.List>
+            <Styled.Link>
+              <Link to="/post-article" className="white-link">
+                Post an article
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/approve-review" className="white-link">
+                Approve-review
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/jobs-overview" className="white-link">
+                Jobs Overview
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/lookups" className="white-link">
+                Lookups
+              </Link>
+            </Styled.Link>
+          </Styled.List>
+        )}
+
+        {AuthState.isLoggedIn && AuthState.type == "Employer" && (
+          <Styled.List>
+            <Styled.Link className="active">
+              <Link
+                to={`/employer-dashboard/${AuthState.userID}`}
+                className="white-link"
+              >
+                Dashboard
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/post-job" className="white-link">
+                Post a Job
+              </Link>
+            </Styled.Link>
+            <Styled.Link>
+              <Link to="/find-candidate" className="white-link">
+                Find a candidate
+              </Link>
+            </Styled.Link>
+          </Styled.List>
+        )}
+        {AuthState.isLoggedIn ? (
+          <Styled.List>
+            <Button className="white-link" onClick={logout} type="button">
+              Log out
+            </Button>
+          </Styled.List>
+        ) : (
+          <>
+            {/* <Link to="/">
+              <Styled.Logo src={logo} alt="Logo" />
+            </Link> */}
+            <Styled.List>
+              <Styled.Link onClick={toggleModal}>Log in / Register</Styled.Link>
+              <Styled.Link>
+                <Link to="/job-search" className="white-link">
+                  Search jobs
+                </Link>
+              </Styled.Link>
+              <Styled.Link>
+                <Link to="/employer-register" className="white-link">
+                  Employer? Register Here
+                </Link>
+              </Styled.Link>
+            </Styled.List>
+          </>
+        )}
+      </Styled.Header>
+
+      <Modal boldText="Login" variant="light" img={Logo} ref={modalRef}>
+        <LoginRegisterModal />
+      </Modal>
+    </>
   );
 };
 

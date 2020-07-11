@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import TabList from "./TabList";
-import TabItem from "./TabTitle";
-import { TabsHorizontal } from "../../styles/TabStyles";
-import TabContent from "./TabContent";
+import TabList from "../../common/components/Tabs/TabList";
+import TabItem from "../../common/components/Tabs/TabTitle";
+import { TabsHorizontal } from "../../common/components/Tabs/Tab.styles";
+import TabContent from "../../common/components/Tabs/TabContent";
 import { JobThumbnailStyled } from "../../styles/JobThumbnailStyled";
 import Reviews from "../Reviews";
-import { GET_USER_INFO } from "../../helpers/apiUrls";
+import { GET_USER_INFO } from "../../common/helpers/apiUrls";
 
 const JobResultsDetails = ({ currentJob }) => {
   const [tabSelected, setTabSelected] = useState(0);

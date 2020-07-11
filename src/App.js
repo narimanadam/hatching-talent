@@ -4,8 +4,6 @@ import Footer from "./Layout/Footer/Footer";
 import { Router } from "@reach/router";
 import { GlobalStyle } from "./styles";
 import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import CandidateRegisterationPage from "./pages/CadidateRegisterPage";
 import EmployerRegisterPage from "./pages/EmployerRegisterPage";
 import ArticleOverViewPage from "./pages/ArticleOverviewPage";
 import ArticleDetails from "./pages/ArticleDetailsPage";
@@ -23,7 +21,6 @@ import CompanyReviewPage from "./pages/CompanyReviewPage";
 import InterviewReviewPage from "./pages/InterviewReviewPage";
 import CandidateDashboardPage from "./pages/CandidateDashboardPage";
 import CandidateProfilePage from "./pages/CandidateProfilePage";
-import { AuthProvider } from "./context/AuthContext";
 import PostArticlePage from "./pages/PostArticlePage";
 import FindCandidatePage from "./pages/FindCandidatePage";
 import CandidateDetailsPage from "./pages/CandidateDetailsPage";
@@ -35,47 +32,47 @@ import ViewLookups from "./pages/ViewLookups";
 import AdminDashboard from "./pages/AdminDashboard";
 import EmployerProfilePage from "./pages/EmployerProfilePage";
 import RecommendedJobDetailsPage from "./pages/RecommendedJobDetailsPage";
+import AuthProvider from "./common/context/AuthProvider";
+import MyErrorBoundary from "./common/MyErrorBoundary";
 
-const App = Component => {
+const App = () => {
   return (
     <div className="App">
-      <AuthProvider>
-        <Header />
-        <Router>
-          <LandingPage path="/" />
-          <LoginPage path="/login" />
-          <CandidateRegisterationPage path="/register" />
-          <EmployerRegisterPage path="/employer-register" />
-          <ArticleOverViewPage path="/articles" />
-          <ArticleDetails path="/articles/:articleId" />
-          <ContactPage path="/contact" />
-          <PostJobPage path="/post-job" />
-          <AboutPage path="/about" />
-          <ForgotPasswordPage path="/forgot-password" />
-          <ResetPasswordPage path="/reset-password" />
-          <ResetSuccessPage path="/reset-success" />
-          <PrivacyPage path="/privacy-policy" />
-          <ReviewPage path="/review" />
-          <JobSearchPage path="/job-search" />
-          <EmployerDashboard path="/employer-dashboard/:employerId" />
-          <CompanyReviewPage path="/review/company-review" />
-          <InterviewReviewPage path="review/interview-review" />
-          <CandidateDashboardPage path="/candidate-dashboard/:userId" />
-          <CandidateProfilePage path="/candidate-profile/:userId" />
-          <EmployerProfilePage path="/employer-profile/:employerId" />
-          <PostArticlePage path="/post-article" />
-          <FindCandidatePage path="/find-candidate" />
-          <CandidateDetailsPage path="/candidate/:id" />
-          <AdminJobOverview path="/jobs-overview" />
-          <JobDetailsPage path="/jobs-overview/job-details/:id" />
-          <RecommendedJobDetailsPage path="/job-details/:id" />
-          <AdminReviewOverviewPage path="/approve-review" />
-          <LookupsPage path="/lookups" />
-          <ViewLookups path="/view-lookups" />
-          <AdminDashboard path="/admin-dashboard" />
-        </Router>
-        <Footer />
-      </AuthProvider>
+      <MyErrorBoundary>
+        <AuthProvider>
+          <Router>
+            <LandingPage path="/" />
+            <EmployerRegisterPage path="/employer-register" />
+            <ArticleOverViewPage path="/articles" />
+            <ArticleDetails path="/articles/:articleId" />
+            <ContactPage path="/contact" />
+            <PostJobPage path="/post-job" />
+            <AboutPage path="/about" />
+            <ForgotPasswordPage path="/forgot-password" />
+            <ResetPasswordPage path="/reset-password" />
+            <ResetSuccessPage path="/reset-success" />
+            <PrivacyPage path="/privacy-policy" />
+            <ReviewPage path="/review" />
+            <JobSearchPage path="/job-search" />
+            <EmployerDashboard path="/employer-dashboard/:employerId" />
+            <CompanyReviewPage path="/review/company-review" />
+            <InterviewReviewPage path="review/interview-review" />
+            <CandidateDashboardPage path="/candidate-dashboard/:userId" />
+            <CandidateProfilePage path="/candidate-profile/:userId" />
+            <EmployerProfilePage path="/employer-profile/:employerId" />
+            <PostArticlePage path="/post-article" />
+            <FindCandidatePage path="/find-candidate" />
+            <CandidateDetailsPage path="/candidate/:id" />
+            <AdminJobOverview path="/jobs-overview" />
+            <JobDetailsPage path="/jobs-overview/job-details/:id" />
+            <RecommendedJobDetailsPage path="/job-details/:id" />
+            <AdminReviewOverviewPage path="/approve-review" />
+            <LookupsPage path="/lookups" />
+            <ViewLookups path="/view-lookups" />
+            <AdminDashboard path="/admin-dashboard" />
+          </Router>
+        </AuthProvider>
+      </MyErrorBoundary>
       <GlobalStyle />
     </div>
   );
