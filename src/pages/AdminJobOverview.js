@@ -4,7 +4,7 @@ import { PENDING_JOBS_URL } from "../common/helpers/apiUrls";
 import Message from "../common/components/Message";
 import JobCard from "../components/JobCard";
 import * as Styled from "../styles/gridStyle";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const AdminJobOverview = () => {
   const [jobs, setJobs] = useState([]);
@@ -46,4 +46,4 @@ const AdminJobOverview = () => {
   );
 };
 
-export default withSecondaryLayout(AdminJobOverview);
+export default WithSidebarLayout(AdminJobOverview);

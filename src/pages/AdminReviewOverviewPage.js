@@ -3,11 +3,10 @@ import { Container } from "react-grid-system";
 import ReviewDetails from "../components/ReviewDetails";
 import Message from "../common/components/Message";
 import { GET_PENDING_REVIEWS } from "../common/helpers/apiUrls";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const AdminReviewOverviewPage = () => {
   const [reviews, setReviews] = useState([]);
-  const [employerName, setEmployerName] = useState("");
 
   const getPendingReview = () => {
     fetch(`${GET_PENDING_REVIEWS}`, {
@@ -45,4 +44,4 @@ const AdminReviewOverviewPage = () => {
   );
 };
 
-export default withSecondaryLayout(AdminReviewOverviewPage);
+export default WithSidebarLayout(AdminReviewOverviewPage);

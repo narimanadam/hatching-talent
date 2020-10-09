@@ -51,7 +51,6 @@ export const Heading = styled(Box)`
 `;
 
 Heading.defaultProps = {
-  as: "h1",
   fontSize: [9],
   fontWeight: [3],
   mb: [3],

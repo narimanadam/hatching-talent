@@ -7,7 +7,8 @@ import { FIND_CANDIDATE } from "../common/helpers/apiUrls";
 import { Form } from "../styles/FormStyles";
 import PageHeader from "../common/components/PageHeader";
 import * as Styled from "../styles/gridStyle";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import Grid from "../common/components/Grid/Grid";
 
 const FindCandidatePage = () => {
   const [keyword, setKeyword] = useState("");
@@ -38,18 +39,9 @@ const FindCandidatePage = () => {
         <DefaultButtonOutline type="submit">Search</DefaultButtonOutline>
       </Form>
 
-      <Styled.Grid>
-        {console.log("candidates::::", candidates)}
+      <Grid columns={5} mt={3}>
         {candidates.map(
-          ({
-            user_id,
-            first_name,
-            last_name,
-            username,
-            adress,
-            email,
-            job_title
-          }) => (
+          ({ user_id, first_name, last_name, email, job_title }) => (
             <CandidateCard
               imgSrc="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
               id={user_id}
@@ -61,9 +53,9 @@ const FindCandidatePage = () => {
             />
           )
         )}
-      </Styled.Grid>
+      </Grid>
     </>
   );
 };
 
-export default withSecondaryLayout(FindCandidatePage);
+export default WithSidebarLayout(FindCandidatePage);

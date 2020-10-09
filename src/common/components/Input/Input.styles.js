@@ -18,8 +18,8 @@ Input.defaultProps = {
   fontSize: [3],
   // bg: "white",
   sx: {
-    borderWidth: ["1px"],
-    borderStyle: ["solid"],
-    borderColor: ["lightGray"]
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderColor: "lightGray"
   }
 };

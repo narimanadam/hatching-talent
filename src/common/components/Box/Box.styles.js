@@ -2,14 +2,14 @@ import styled from "@emotion/styled";
 import { Flex } from "reflexbox";
 
 export const Box = styled(Flex)`
+  flex-direction: column;
   min-width: 600px;
   text-align: ${props => (props.center ? "center" : "left")};
 `;
 
 Box.defaultProps = {
   bg: "white",
-  mb: [3],
-  p: [5],
+  mb: [2],
   sx: {
     borderRadius: [3],
     "nth-type-of-last": {
@@ -29,7 +29,7 @@ export const Heading = styled(Flex)``;
 
 Heading.defaultProps = {
   as: "h3",
-  mb: [3]
+  mb: [2]
 };
 
 export const Text = styled(Flex)``;

@@ -49,6 +49,7 @@ const ClosedJobs = () => {
               jobDesc={job_description}
               noOfApplicants={applicants_no}
               jobIndustry={industry}
+              jobId={job_id}
               jobRole={role}
               closed={true}
             />

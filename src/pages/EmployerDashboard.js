@@ -1,6 +1,6 @@
 import React from "react";
 import EmployerDashboardTabs from "../components/Tabs/EmployerDashboardTabs";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const EmployerDashboard = () => {
   return (
@@ -10,4 +10,4 @@ const EmployerDashboard = () => {
   );
 };
 
-export default withSecondaryLayout(EmployerDashboard);
+export default WithSidebarLayout(EmployerDashboard);

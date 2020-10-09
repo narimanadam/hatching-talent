@@ -7,7 +7,6 @@ import { navigate } from "@reach/router";
 import useForm from "../common/hooks/useForm";
 import Button from "../common/components/Button";
 import PageHeader from "../common/components/PageHeader";
-import { Container } from "react-grid-system";
 
 const PostArticleForm = () => {
   const postArticle = () => {

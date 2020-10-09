@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box } from "reflexbox";
+import { Box, Flex } from "reflexbox";
 
 export const Heading = styled(Box)`
   display: block;
@@ -13,11 +13,20 @@ Heading.defaultProps = {
   fontWeight: [6]
 };
 
-export const Field = styled(Box)`
+export const FormGroup = styled(Flex)`
   position: relative;
+  height: 40px;
+  width: 100%;
+  align-items: center;
+`;
+
+export const Field = styled(Box)`
+  position: absolute;
   z-index: 2;
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   opacity: 0;
+  cursor: pointer;
 `;
 
 Field.defaultProps = {
@@ -59,6 +68,5 @@ export const Text = styled(Box)`
 
 Text.defaultProps = {
   as: "span",
-  lineHeight: ["30px"],
   fontSize: [2]
 };

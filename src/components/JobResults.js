@@ -56,58 +56,54 @@ const JobResults = () => {
   };
 
   return (
-    <div>
-      <Container>
-        <Row style={{ marginTop: "50px", marginBottom: "50px" }}>
-          <>
-            <Col md={4}>
-              <h3>Jobs</h3>
-              {jobs.map((job, index) => (
-                <JobThumbnail
-                  key={job.job_id}
-                  name={job.job_name}
-                  description={job.job_description}
-                  jobLocation={job.location}
-                  employerId={job.employer_id}
-                  handleJobThumbnailClick={handleJobThumbnailClick.bind(
-                    this,
-                    index
-                  )}
-                >
-                  {job.job_name}
-                </JobThumbnail>
-              ))}
+    <Row style={{ marginTop: "50px", marginBottom: "50px" }}>
+      <>
+        <Col md={4}>
+          <h3>Jobs</h3>
+          {jobs.map((job, index) => (
+            <JobThumbnail
+              key={job.job_id}
+              name={job.job_name}
+              description={job.job_description}
+              jobLocation={job.location}
+              employerId={job.employer_id}
+              handleJobThumbnailClick={handleJobThumbnailClick.bind(
+                this,
+                index
+              )}
+            >
+              {job.job_name}
+            </JobThumbnail>
+          ))}
+        </Col>
+        <Col md={8} align="left">
+          <Row>
+            <Col md={6}>
+              <h3>{currentJob.job_name}</h3>
             </Col>
-            <Col md={8} align="left">
-              <Row>
-                <Col md={6}>
-                  <h3>{currentJob.job_name}</h3>
-                </Col>
-                <Col md={6} align="right">
-                  <InlineList>
-                    {/* <InlineListItem center>
+            <Col md={6} align="right">
+              <InlineList>
+                {/* <InlineListItem center>
                       <InlineListIcon>
                         <FontAwesomeIcon className="" icon={["far", "heart"]} />
                       </InlineListIcon>
                       <p>Favourite</p>
                     </InlineListItem> */}
-                    <InlineListItem center>
-                      <Button onClick={applyJob}>
-                        <InlineListIcon>
-                          <FontAwesomeIcon icon={["far", "share-square"]} />
-                        </InlineListIcon>
-                        <span>Apply</span>
-                      </Button>
-                    </InlineListItem>
-                  </InlineList>
-                </Col>
-              </Row>
-              <JobResultsDetails currentJob={currentJob} />
+                <InlineListItem center>
+                  <Button onClick={applyJob}>
+                    <InlineListIcon>
+                      <FontAwesomeIcon icon={["far", "share-square"]} />
+                    </InlineListIcon>
+                    <span>Apply</span>
+                  </Button>
+                </InlineListItem>
+              </InlineList>
             </Col>
-          </>
-        </Row>
-      </Container>
-    </div>
+          </Row>
+          <JobResultsDetails currentJob={currentJob} />
+        </Col>
+      </>
+    </Row>
   );
 };
 

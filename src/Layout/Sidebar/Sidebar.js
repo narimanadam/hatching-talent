@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link, navigate } from "@reach/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex } from "reflexbox";
 
 import logo from "../../assets/logo.png";
 
@@ -18,10 +19,21 @@ const Sidebar = () => {
     AuthDispatch({ type: LOGOUT });
   };
   return (
-    <Styled.Sidebar>
-      <Link to="/">
-        <Styled.Logo src={logo} alt="Logo" />
-      </Link>
+    <Styled.Sidebar
+    // sx={{ transform: ["translateX(-400px)", "translateX(0)", null] }}
+    >
+      <Flex>
+        <Link to="/" flex="1">
+          <Styled.Logo src={logo} alt="Logo" />
+        </Link>
+        {/* <button
+          flex="1"
+          justifyContent="flex-end"
+          onClick={() => console.log("ahahah")}
+        >
+          <FontAwesomeIcon icon="times" size="2x" style={{ color: "#333" }} />
+        </button> */}
+      </Flex>
       {AuthState.isLoggedIn && AuthState.type == "Employer" && (
         <>
           <Styled.Item className="active">
@@ -40,18 +52,18 @@ const Sidebar = () => {
       {AuthState.isLoggedIn && AuthState.type == "Candidate" && (
         <>
           <Styled.Item>
-            <Link to={`/candidate-dashboard/${AuthState.userID}`}>
+            <NavLink to={`/candidate-dashboard/${AuthState.userID}`}>
               Dashboard
-            </Link>
+            </NavLink>
           </Styled.Item>
           <Styled.Item>
-            <Link to="/job-search">Find a Job</Link>
+            <NavLink to="/job-search">Find a Job</NavLink>
           </Styled.Item>
           <Styled.Item>
-            <Link to="/review">Write a Review</Link>
+            <NavLink to="/review">Write a Review</NavLink>
           </Styled.Item>
           <Styled.Item>
-            <Link to="/articles">Blog</Link>
+            <NavLink to="/articles">Blog</NavLink>
           </Styled.Item>
         </>
       )}
@@ -59,16 +71,16 @@ const Sidebar = () => {
       {AuthState.isLoggedIn && AuthState.type == "Admin" && (
         <>
           <Styled.Item>
-            <Link to="/post-article">Post an article</Link>
+            <NavLink to="/post-article">Post an article</NavLink>
           </Styled.Item>
           <Styled.Item>
-            <Link to="/approve-review">Approve-review</Link>
+            <NavLink to="/approve-review">Approve-review</NavLink>
           </Styled.Item>
           <Styled.Item>
-            <Link to="/jobs-overview">Jobs Overview</Link>
+            <NavLink to="/jobs-overview">Jobs Overview</NavLink>
           </Styled.Item>
           <Styled.Item>
-            <Link to="/lookups">Lookups</Link>
+            <NavLink to="/lookups">Lookups</NavLink>
           </Styled.Item>
         </>
       )}

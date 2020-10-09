@@ -7,7 +7,7 @@ import { SelectStyles } from "../styles/SelectStyles";
 import Box from "../common/components/Box";
 import PageHeader from "../common/components/PageHeader";
 import * as Styled from "../styles/gridStyle";
-import Card from "../common/components/Card";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const ViewLookups = () => {
   const [lookupTypeId, setLookupTypeId] = useState("");
@@ -90,9 +90,9 @@ const ViewLookups = () => {
       </PageHeader>
       <Container>
         <Styled.Grid>
-          {lookupValues.map(({ value }) => (
+          {/* {lookupValues.map(({ value }) => (
             <Styled.Item> {value} </Styled.Item>
-          ))}
+          ))} */}
         </Styled.Grid>
         {!lookupValues.length && <Box>Select Lookup Value to display</Box>}
       </Container>
@@ -100,4 +100,4 @@ const ViewLookups = () => {
   );
 };
 
-export default ViewLookups;
+export default WithSidebarLayout(ViewLookups);

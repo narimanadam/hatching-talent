@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import { Box } from "reflexbox";
 
 export const Textarea = styled(Box)`
-  border: none;
   resize: none;
   width: 100%;
   :focus {
@@ -17,5 +16,10 @@ Textarea.defaultProps = {
   fontSize: [3],
   pl: [3],
   pt: [2],
-  height: ["150px"]
+  height: ["150px"],
+  sx: {
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderColor: "lightGray"
+  }
 };

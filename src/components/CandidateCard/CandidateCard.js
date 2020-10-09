@@ -1,6 +1,8 @@
 import React from "react";
-import * as Styled from "./CandidateCard.styles";
 import { Link } from "@reach/router";
+
+import Button from "../../common/components/Button";
+import * as Styled from "./CandidateCard.styles";
 
 const CandidateCard = ({
   imgSrc,
@@ -11,15 +13,16 @@ const CandidateCard = ({
   jobTitle
 }) => {
   return (
-    <Link to={`/candidate-profile/${id}`} style={{ color: "#333" }}>
-      <Styled.Card>
-        <Styled.Img src={imgSrc} alt={firstName} />
-        <Styled.Title>
-          {firstName} {lastName}
-        </Styled.Title>
-        <Styled.Body>{jobTitle}</Styled.Body>
-      </Styled.Card>
-    </Link>
+    <Styled.Card>
+      <Styled.Img src={imgSrc} alt={firstName} />
+      <Styled.Title>
+        {firstName} {lastName}
+      </Styled.Title>
+      <Styled.Body>{jobTitle}</Styled.Body>
+      <Link to={`/candidate-profile/${id}`}>
+        <Button text="View Candidate" variant="primaryButton" />
+      </Link>
+    </Styled.Card>
   );
 };
 

@@ -8,6 +8,8 @@ import { Form } from "../styles/FormStyles";
 import { SEARCH_JOBS } from "../common/helpers/apiUrls";
 import PageHeader from "../common/components/PageHeader";
 
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+
 const JobSearchPage = () => {
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
@@ -47,10 +49,8 @@ const JobSearchPage = () => {
           </Row>
         </Form>
       </PageHeader>
-      <Container>
-        <JobResults />
-      </Container>
+      <JobResults />
     </>
   );
 };
-export default JobSearchPage;
+export default WithSidebarLayout(JobSearchPage);

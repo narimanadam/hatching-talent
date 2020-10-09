@@ -2,11 +2,11 @@ import React from "react";
 import PostJobForm from "../components/PostJobForm";
 import PageHeader from "../common/components/PageHeader";
 import useDocumentTitle from "../common/hooks/useDocumentTitle";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const PostJobPage = () => {
   useDocumentTitle("Post Job | Hatching Talent");
   return <PostJobForm />;
 };
 
-export default withSecondaryLayout(PostJobPage);
+export default WithSidebarLayout(PostJobPage);

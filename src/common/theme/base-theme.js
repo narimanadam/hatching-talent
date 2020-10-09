@@ -1,3 +1,14 @@
+import { keyframes } from "@emotion/core";
+
+const skeletonAnimation = keyframes`
+    0% {
+    background-position:-200px 0;
+  }
+  100% {
+    background-position:calc(200px + 100%) 0;
+  }
+`;
+
 const BaseTheme = {
   fontSizes: [10, 12, 14, 16, 18, 20, 24, 32, 48, 64],
   fontWeights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
@@ -63,6 +74,8 @@ const BaseTheme = {
     primaryButton: {
       bg: "main",
       color: "white",
+      borderWidth: 1,
+      borderStyle: "solid",
       borderColor: "main",
       ":hover, :active": {
         bg: "darkenMain15",
@@ -72,9 +85,9 @@ const BaseTheme = {
     primaryOutlineButton: {
       bg: "transparent",
       color: "main",
-      sx: {
-        borderColor: "main"
-      },
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderColor: "main",
       ":hover, :active": {
         bg: "main",
         color: "white",
@@ -84,9 +97,7 @@ const BaseTheme = {
     defaultOutlineButton: {
       bg: "transparent",
       color: "white",
-
       borderColor: "white",
-
       ":hover, :active": {
         bg: "white",
         color: "main",
@@ -101,6 +112,17 @@ const BaseTheme = {
     jobIndustryBadge: {
       bg: "green",
       color: "white"
+    },
+    skeletonBox: {
+      border: "1px dashed #ececec"
+    },
+    skeletonSquare: {
+      animation: `${skeletonAnimation} 1.2s ease-in-out infinite`,
+      bg: "#EBF0F3",
+      backgroundImage: "linear-gradient(90deg,#EBF0F3,#f5f5f5,#EBF0F3)",
+      backgroundSize: "200px 100%",
+      backgroundRepeat: "no-repeat",
+      borderRadius: 1
     }
   }
 };

@@ -4,11 +4,13 @@ import { Flex, Box } from "reflexbox";
 export const Header = styled(Flex)`
   background: linear-gradient(to right, #f7ac06, #ffc544);
   justify-content: space-between;
+  align-items: center;
 `;
 
 Header.defaultProps = {
   as: "header",
-  px: [7]
+  px: [7],
+  height: 70
 };
 
 export const Navigation = styled.nav`
@@ -43,7 +45,7 @@ Link.defaultProps = {
   as: "a",
   color: "white",
   mr: [4],
-  py: [3],
+  pb: [2],
   fontSize: [4],
   sx: {
     ":after": {
@@ -57,4 +59,10 @@ Link.defaultProps = {
       mr: [0]
     }
   }
+};
+
+export const Logo = styled(Box)``;
+Logo.defaultProps = {
+  as: "img",
+  height: 30
 };

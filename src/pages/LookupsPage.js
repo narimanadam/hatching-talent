@@ -10,7 +10,7 @@ import { Link } from "@reach/router";
 import { InlineList, InlineListItem } from "../styles/ListStyle";
 import PageHeader from "../common/components/PageHeader";
 import Button from "../common/components/Button";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const LookupsPage = () => {
   const [lookupValue, setLookupValue] = useState("");
@@ -77,4 +77,4 @@ const LookupsPage = () => {
   );
 };
 
-export default withSecondaryLayout(LookupsPage);
+export default WithSidebarLayout(LookupsPage);

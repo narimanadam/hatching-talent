@@ -12,7 +12,7 @@ Heading.defaultProps = {
   fontWeight: [6]
 };
 
-export const Field = styled.input`
+export const Field = styled(Box)`
   position: absolute;
   z-index: 2;
   display: inline-block;
@@ -32,7 +32,7 @@ Field.defaultProps = {
   }
 };
 
-export const Label = styled.label`
+export const Label = styled(Box)`
   position: relative;
   display: inline-block;
   top: 0;
@@ -54,15 +54,14 @@ export const Label = styled.label`
 
 Label.defaultProps = {
   as: "label",
-  bg: "white",
+  bg: "main",
   width: ["20px"],
   height: ["20px"],
-  mb: [2],
   sx: {
     ":after": {
-      bg: "black",
-      width: ["10px"],
-      height: ["10px"]
+      bg: "white",
+      width: ["7px"],
+      height: ["7px"]
     }
   }
 };

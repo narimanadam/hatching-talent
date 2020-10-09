@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Row, Col } from "react-grid-system";
+import { Row, Col } from "react-grid-system";
 import ProfileInfoBox from "../components/ProfileInfoBox";
 import CandidateStats from "../components/CandidateStats";
 import ViewedProfile from "../assets/view-profile.png";
 import ContactedYou from "../assets/contacted-you.png";
 import CompaniesFollowed from "../assets/companies-followed.png";
-import { SEARCH_JOBS, GET_USER_INFO } from "../common/helpers/apiUrls";
+import { GET_USER_INFO } from "../common/helpers/apiUrls";
 import AuthContext from "../common/context/AuthContext";
 import RecommendedJobBox from "../components/RecommendedJobBox";
 import useDocumentTitle from "../common/hooks/useDocumentTitle";
-import withSecondaryLayout from "../Layout/SecondaryLayout/WithSecondaryLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const CandidateDashboardPage = props => {
-  const [jobs, setJobs] = useState([]);
+  const [jobs] = useState([]);
   const { AuthState } = useContext(AuthContext);
   const [authUser, setAuthUser] = useState({});
   useDocumentTitle(
@@ -52,7 +52,7 @@ const CandidateDashboardPage = props => {
   }, []);
 
   return (
-    <Container style={{ marginBottom: "40px", marginTop: "40px" }}>
+    <>
       <Row>
         <Col sm={3}>
           <CandidateStats
@@ -99,8 +99,8 @@ const CandidateDashboardPage = props => {
           ))}
         </Col>
       </Row>
-    </Container>
+    </>
   );
 };
 
-export default withSecondaryLayout(CandidateDashboardPage);
+export default WithSidebarLayout(CandidateDashboardPage);

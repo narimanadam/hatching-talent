@@ -25,6 +25,10 @@ const SelectStyles = {
 };
 
 const SelectDefaultStyles = {
+  container: styles => ({
+    ...styles,
+    width: "100%"
+  }),
   control: styles => ({
     ...styles,
     backgroundColor: "#fff",

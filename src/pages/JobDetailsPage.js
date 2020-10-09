@@ -1,23 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Row, Col } from "react-grid-system";
-import {
-  EmployerLogo,
-  EmployerName,
-  Jobtitle,
-  JobLevel,
-  JobDesc
-} from "../styles/JobDetails";
-import { InlineList, InlineListItem } from "../styles/ListStyle";
-import { MainOutlineButton, MainButton } from "../styles/Button";
+
 import {
   PENDING_JOBS_URL,
   UPDATE_JOB_URL,
-  SEARCH_JOBS,
   APPLY_SAVE_JOB
 } from "../common/helpers/apiUrls";
 import AuthContext from "../common/context/AuthContext";
 import { navigate } from "@reach/router";
-import Button from "../common/components/Button";
+import JobDetails from "../components/JobDetails/JobDetails";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
 
 const JobDetailsPage = props => {
   const [job, setJob] = useState({});
@@ -69,7 +60,7 @@ const JobDetailsPage = props => {
       .catch(error => console.log(error));
   };
 
-  const applyJob = () => {
+  const ApplyJob = () => {
     fetch(`${APPLY_SAVE_JOB}`, {
       method: "POST",
       headers: {
@@ -83,53 +74,21 @@ const JobDetailsPage = props => {
       .catch(error => console.log(error));
   };
 
+  if (!job) return;
   return (
-    <Container style={{ marginTop: "30px" }}>
-      <Row>
-        <Col sm={3}>
-          <EmployerLogo
-            src="https://freemuse.org/wp-content/uploads/2017/06/mbc-logo-590x300.jpg"
-            alt=""
-          />
-          <EmployerName>MBC</EmployerName>
-        </Col>
-        <Col sm={9}>
-          <Jobtitle>{job && job.job_name}</Jobtitle>
-          <JobLevel>{job && job.role}</JobLevel>
-          <JobDesc>{job && job.job_description}</JobDesc>
-        </Col>
-        {AuthState.type === "Candidate" && (
-          <InlineList>
-            <InlineListItem>
-              <MainOutlineButton onClick={applyJob}>
-                Apply to this job
-              </MainOutlineButton>
-            </InlineListItem>
-          </InlineList>
-        )}
-        {AuthState.type === "Admin" && (
-          <InlineList>
-            <InlineListItem>
-              <Button
-                text="Approve"
-                handleClick={ApproveJob}
-                type="submit"
-                variant="primaryButton"
-              />
-            </InlineListItem>
-            <InlineListItem>
-              <Button
-                text="Reject"
-                handleClick={RejectJob}
-                type="submit"
-                variant="primaryOutlineButton"
-              />
-            </InlineListItem>
-          </InlineList>
-        )}
-      </Row>
-    </Container>
+    <>
+      {job && (
+        <JobDetails
+          jobTitle={job.job_name}
+          jobLevel={job.role}
+          jobDesc={job.job_description}
+          approveJob={ApproveJob}
+          rejectJob={RejectJob}
+          applyJob={ApplyJob}
+        />
+      )}
+    </>
   );
 };
 
-export default JobDetailsPage;
+export default WithSidebarLayout(JobDetailsPage);

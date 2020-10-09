@@ -1,18 +1,17 @@
 import styled from "@emotion/styled";
 import { Box, Flex } from "reflexbox";
 
-export const Card = styled(Box)`
-  display: inline-block;
-  text-align: center;
-  box-shadow: 2px 3px 3px #eee;
-  border: 1px solid #efefef;
-  width: 100%;
+export const Card = styled(Flex)`
+  flex-direction: column;
+  align-items: center;
 `;
 
 Card.defaultProps = {
-  bg: "white",
+  bg: "lightGray",
   p: [4],
+  pt: 0,
   mb: [3],
+  mt: 35,
   sx: {
     borderRadius: [3]
   }
@@ -25,7 +24,8 @@ export const Img = styled(Box)`
 Img.defaultProps = {
   as: "img",
   width: ["100px"],
-  height: ["100px"]
+  height: ["100px"],
+  mt: ["-50px"]
 };
 
 export const Title = styled(Box)``;
@@ -40,6 +40,7 @@ Title.defaultProps = {
 export const Body = styled(Box)``;
 
 Body.defaultProps = {
-  as: "span",
-  fontSize: [3]
+  as: "p",
+  fontSize: [3],
+  mb: 4
 };

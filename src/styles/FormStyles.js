@@ -5,7 +5,7 @@ const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: ${props => (props.inline ? "row" : "column")};
-  justify-content: flex-end;
+  // justify-content: flex-end;
   align-items: flex-end;
   background-color: ${props => (props.hasBgColor ? "#fff" : "")};
   border-radius: 16px;

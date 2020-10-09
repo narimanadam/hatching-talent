@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-grid-system";
-import {
-  EmployerLogo,
-  EmployerName,
-  Jobtitle,
-  JobLevel,
-  JobDesc
-} from "../styles/JobDetails";
+// import {
+//   EmployerLogo,
+//   EmployerName,
+//   Jobtitle,
+//   JobLevel,
+//   JobDesc
+// } from "../styles/JobDetails";
 import { InlineList, InlineListItem } from "../styles/ListStyle";
 import { MainOutlineButton, MainButton } from "../styles/Button";
 import {
@@ -104,16 +104,16 @@ const RecommendedJobDetailsPage = props => {
     <Container style={{ marginTop: "30px" }}>
       <Row>
         <Col sm={3}>
-          <EmployerLogo
+          {/* <EmployerLogo
             src="https://freemuse.org/wp-content/uploads/2017/06/mbc-logo-590x300.jpg"
             alt=""
           />
-          <EmployerName>MBC</EmployerName>
+          <EmployerName>MBC</EmployerName> */}
         </Col>
         <Col sm={9}>
-          <Jobtitle>{job.job_name}</Jobtitle>
+          {/* <Jobtitle>{job.job_name}</Jobtitle>
           <JobLevel>{job.role}</JobLevel>
-          <JobDesc>{job.job_description}</JobDesc>
+          <JobDesc>{job.job_description}</JobDesc> */}
         </Col>
         {AuthState.type === "Candidate" && (
           <InlineList>

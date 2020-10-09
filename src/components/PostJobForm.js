@@ -42,7 +42,7 @@ const PostJobForm = () => {
     handleSelectChange,
     handleSelectBlur,
     errors,
-    disabled
+    formIsValid
   } = useForm(
     { jobTitle: "", jobDescription: "", jobLocation: "", jobRole: "" },
     postJob
@@ -98,7 +98,7 @@ const PostJobForm = () => {
           text="Post job"
           variant="primaryButton"
           type="submit"
-          disabled={disabled}
+          disabled={!formIsValid}
         />
       </Form>
     </>

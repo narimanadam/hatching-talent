@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { toPascalCase } from "../helpers/helpers";
 import { validationSchema } from "../helpers/validationSchema";
-import { isEmptyObject } from "../helpers/helpers";
 
 const useForm = (initialValues, cb) => {
   const [values, setValues] = useState(initialValues);
@@ -55,7 +55,7 @@ const useForm = (initialValues, cb) => {
   const validateForm = (name, value) => {
     let errorMessage = "";
     if (value === "" && validationSchema[name].required) {
-      errorMessage = `${name} is required`;
+      errorMessage = `${toPascalCase(name)} is required`;
     } else if (
       value !== "" &&
       validationSchema[name].validator &&

@@ -9,7 +9,6 @@ export const Avatar = styled.img`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  border: 7px solid ${props => props.theme.white};
   margin-bottom: 10px;
 `;
 

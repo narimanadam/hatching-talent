@@ -6,7 +6,7 @@ import React, {
   useCallback
 } from "react";
 import * as Styled from "./Header.styles";
-import { MainOutlineButton, Button } from "../../styles/Button";
+import { Button } from "../../styles/Button";
 import logo from "../../assets/logo.png";
 import { Link, navigate } from "@reach/router";
 import AuthContext from "../../common/context/AuthContext";
@@ -104,7 +104,7 @@ const Header = () => {
         </Container>
       </HeaderTop> */}
       <Styled.Header>
-        {AuthState.isLoggedIn && AuthState.type == "Candidate" && (
+        {/* {AuthState.isLoggedIn && AuthState.type == "Candidate" && (
           <Styled.List>
             <Styled.Link>
               <Link
@@ -130,7 +130,7 @@ const Header = () => {
               </Link>
             </Styled.Link>
           </Styled.List>
-        )}
+        )} */}
 
         {AuthState.isLoggedIn && AuthState.type == "Admin" && (
           <Styled.List>
@@ -187,9 +187,9 @@ const Header = () => {
           </Styled.List>
         ) : (
           <>
-            {/* <Link to="/">
+            <Link to="/">
               <Styled.Logo src={logo} alt="Logo" />
-            </Link> */}
+            </Link>
             <Styled.List>
               <Styled.Link onClick={toggleModal}>Log in / Register</Styled.Link>
               <Styled.Link>

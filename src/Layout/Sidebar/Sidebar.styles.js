@@ -3,13 +3,17 @@ import { Flex, Box } from "reflexbox";
 
 export const Sidebar = styled(Flex)`
   flex-direction: column;
-  width: 100%;
+  position: relative;
+  z-index: 999;
 
   height: 100%;
   border-right: 1px solid #efefef;
 `;
 
-Sidebar.defaultProps = {};
+Sidebar.defaultProps = {
+  bg: "white",
+  width: ["265px", "100%", null]
+};
 
 export const Logo = styled(Box)``;
 

@@ -39,7 +39,7 @@ const SelectLookup = ({
     name
   }));
   return (
-    <div>
+    <>
       <Select
         placeholder={placeholder}
         name={name}
@@ -51,7 +51,7 @@ const SelectLookup = ({
       {validationMessage && (
         <Message type="error" text={validationMessage || ""} />
       )}
-    </div>
+    </>
   );
 };
 
