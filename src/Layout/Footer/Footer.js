@@ -57,15 +57,9 @@ const Footer = () => {
                 Please subscribe to our latest news to be updated
               </Styled.ListItem>
 
-              <Form>
-                <Flex>
-                  <Input type="text" placeholder="Enter your Email" />
-                  <Button
-                    text="Send"
-                    variant="defaultOutlineButton"
-                    notRounded
-                  />
-                </Flex>
+              <Form inline>
+                <Input type="text" placeholder="Enter your Email" />
+                <Button text="Send" variant="defaultOutlineButton" notRounded />
               </Form>
             </Styled.List>
           </Col>
