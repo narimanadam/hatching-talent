@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { Container } from "react-grid-system";
+import React, { useContext } from "react";
 import Input from "../common/components/Input";
 import Textarea from "../common/components/Textarea";
 import { Form } from "../styles/FormStyles";
@@ -9,7 +8,7 @@ import AuthContext from "../common/context/AuthContext";
 import SelectLookup from "./SelectLookup";
 import useForm from "../common/hooks/useForm";
 import Button from "../common/components/Button";
-import PageHeader from "../common/components/PageHeader";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
 
 const PostJobForm = () => {
   const { AuthState } = useContext(AuthContext);
@@ -49,8 +48,8 @@ const PostJobForm = () => {
   );
 
   return (
-    <>
-      <PageHeader boldText="Post" normalText="Job" />
+    <SidebarLayoutContainer>
+      {/* <PageHeader boldText="Post" normalText="Job" /> */}
       <Form onSubmit={handleSubmit} hasBgColor>
         <Input
           type="text"
@@ -81,7 +80,7 @@ const PostJobForm = () => {
             handleSelectChange={handleSelectChange}
             handleSelectBlur={handleSelectBlur}
             validationMessage={errors.jobRole}
-          ></SelectLookup>
+          />
         </div>
         <div className="form__group">
           <label className="form__label">Job Location</label>
@@ -92,7 +91,7 @@ const PostJobForm = () => {
             handleSelectChange={handleSelectChange}
             handleSelectBlur={handleSelectBlur}
             validationMessage={errors.jobLocation}
-          ></SelectLookup>
+          />
         </div>
         <Button
           text="Post job"
@@ -101,7 +100,7 @@ const PostJobForm = () => {
           disabled={!formIsValid}
         />
       </Form>
-    </>
+    </SidebarLayoutContainer>
   );
 };
 

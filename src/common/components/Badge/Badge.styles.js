@@ -13,9 +13,6 @@ Badge.defaultProps = {
   mr: [2],
   fontWeight: [6],
   sx: {
-    borderRadius: [2],
-    ":last-child": {
-      mr: [0]
-    }
+    borderRadius: [2]
   }
 };

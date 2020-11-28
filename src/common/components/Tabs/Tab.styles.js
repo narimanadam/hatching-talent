@@ -14,7 +14,6 @@ export const TabsStyled = styled.div`
       font-weight: bold;
       margin-top: 24px;
       margin-bottom: 24px;
-      padding-left: 24px;
     }
 
     &__title {
@@ -27,6 +26,10 @@ export const TabsStyled = styled.div`
       vertical-align: middle;
       transition: 0.3s;
       display: inline-block;
+      @media screen and (max-width: 767px) {
+        width: 100%;
+        margin-bottom: 16px;
+      }
 
       &:after {
         content: "";
@@ -59,8 +62,6 @@ export const TabsStyled = styled.div`
       margin-top: 24px;
       margin-bottom: 24px;
       // background: #fff;
-      padding-left: 24px;
-      padding-right: 24px;
     }
 
     &__icon {
@@ -129,7 +130,7 @@ export const TabsHorizontal = styled(TabsStyled)`
   .tab {
     &__list {
       border-right: none;
-      border-bottom: 1px solid ${props => props.theme.lightGray};
+      /* border-bottom: 1px solid ${props => props.theme.lightGray}; */
       width: 100%;
     }
 

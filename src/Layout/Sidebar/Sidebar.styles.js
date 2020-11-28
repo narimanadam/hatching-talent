@@ -7,11 +7,11 @@ export const Sidebar = styled(Flex)`
   z-index: 999;
 
   height: 100%;
-  border-right: 1px solid #efefef;
+  /* border-right: 1px solid #efefef; */
 `;
 
 Sidebar.defaultProps = {
-  bg: "white",
+  bg: "lightGray",
   width: ["265px", "100%", null]
 };
 
@@ -27,6 +27,10 @@ Logo.defaultProps = {
 export const Item = styled(Box)`
   display: block;
   position: relative;
+
+  & > a {
+    text-decoration: none;
+  }
 
   & > a:after {
     content: "";

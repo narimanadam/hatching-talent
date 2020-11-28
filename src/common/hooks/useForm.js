@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toPascalCase } from "../helpers/helpers";
+import { isObjectPropsEmpty, toPascalCase } from "../helpers/helpers";
 import { validationSchema } from "../helpers/validationSchema";
 
 const useForm = (initialValues, cb) => {
@@ -24,7 +24,6 @@ const useForm = (initialValues, cb) => {
       [name]: value
     });
     setSelectedValue(value);
-    console.log(value);
     validateForm(name, value);
   };
 
@@ -67,8 +66,9 @@ const useForm = (initialValues, cb) => {
     }
 
     setErrors({ ...errors, [name]: errorMessage });
+    console.log("errrors", errors);
 
-    errors[name] === "" ? setFormIsValid(true) : setFormIsValid(false);
+    isObjectPropsEmpty(errors) ? setFormIsValid(true) : setFormIsValid(false);
   };
 
   return {

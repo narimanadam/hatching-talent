@@ -1,15 +1,15 @@
 import styled from "@emotion/styled";
-import { Flex } from "reflexbox";
+import { Box, Flex } from "reflexbox";
 
-export const Box = styled(Flex)`
-  flex-direction: column;
+export const Wrapper = styled(Box)`
   min-width: 600px;
   text-align: ${props => (props.center ? "center" : "left")};
 `;
 
-Box.defaultProps = {
-  bg: "white",
-  mb: [2],
+Wrapper.defaultProps = {
+  bg: "lightGray",
+  p: 5,
+  mb: [3],
   sx: {
     borderRadius: [3],
     "nth-type-of-last": {
@@ -29,14 +29,12 @@ export const Heading = styled(Flex)``;
 
 Heading.defaultProps = {
   as: "h3",
-  mb: [2]
+  mb: [3]
 };
 
 export const Text = styled(Flex)``;
 
 Text.defaultProps = {
   as: "p",
-  mt: [2],
-  mb: [2],
   fontSize: [2]
 };

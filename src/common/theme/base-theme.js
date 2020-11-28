@@ -21,7 +21,7 @@ const BaseTheme = {
     white: "#fff",
     gray: "#6c6e72",
     darkGray: "#686768",
-    lightGray: "#f6f7f9",
+    lightGray: "#f6f9fa",
     black: "#333",
     lightBlue: "#93B5C6",
     blue: "#30BCED",
@@ -72,6 +72,7 @@ const BaseTheme = {
       boxShadow: "2px 3px 3px #eee"
     },
     primaryButton: {
+      height: 40,
       bg: "main",
       color: "white",
       borderWidth: 1,
@@ -83,6 +84,7 @@ const BaseTheme = {
       }
     },
     primaryOutlineButton: {
+      height: 40,
       bg: "transparent",
       color: "main",
       borderWidth: 1,
@@ -95,14 +97,21 @@ const BaseTheme = {
       }
     },
     defaultOutlineButton: {
+      height: 40,
       bg: "transparent",
       color: "white",
+      borderWidth: "1px",
+      borderStyle: "solid",
       borderColor: "white",
       ":hover, :active": {
         bg: "white",
-        color: "main",
-        borderColor: "white"
+        color: "main"
       }
+    },
+    linkButton: {
+      bg: "transparent",
+      border: 0,
+      height: "16px"
     },
     // Badges
     JobRoleBadge: {
@@ -113,8 +122,13 @@ const BaseTheme = {
       bg: "green",
       color: "white"
     },
+    defaultBadge: {
+      bg: "main",
+      color: "white"
+    },
     skeletonBox: {
-      border: "1px dashed #ececec"
+      border: "1px dashed #ececec",
+      borderRadius: 3
     },
     skeletonSquare: {
       animation: `${skeletonAnimation} 1.2s ease-in-out infinite`,
@@ -123,6 +137,20 @@ const BaseTheme = {
       backgroundSize: "200px 100%",
       backgroundRepeat: "no-repeat",
       borderRadius: 1
+    },
+    skeletonCircle: {
+      animation: `${skeletonAnimation} 1.2s ease-in-out infinite`,
+      bg: "#EBF0F3",
+      backgroundImage: "linear-gradient(90deg,#EBF0F3,#f5f5f5,#EBF0F3)",
+      backgroundSize: "200px 100%",
+      backgroundRepeat: "no-repeat",
+      borderRadius: "50%"
+    },
+    yellowOverlay: {
+      bg: "-webkit-linear-gradient(to right,#f7ac06,#ffc544)"
+    },
+    opacityOverlay: {
+      bg: "rgba(0, 0, 0, 0.4)"
     }
   }
 };

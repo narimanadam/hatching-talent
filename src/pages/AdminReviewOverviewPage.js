@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-grid-system";
-import ReviewDetails from "../components/ReviewDetails";
-import Message from "../common/components/Message";
 import { GET_PENDING_REVIEWS } from "../common/helpers/apiUrls";
 import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import Empty from "../common/components/empty";
+import ReviewItem from "../components/reviews/";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
 
 const AdminReviewOverviewPage = () => {
   const [reviews, setReviews] = useState([]);
 
-  const getPendingReview = () => {
+  useEffect(() => {
     fetch(`${GET_PENDING_REVIEWS}`, {
       method: "POST"
     })
       .then(res => res.json())
       .then(data => setReviews(data))
       .catch(error => console.log(error));
-  };
-  useEffect(() => {
-    getPendingReview();
   }, [reviews]);
 
   return (
-    <Container style={{ marginTop: "30px" }}>
+    <SidebarLayoutContainer>
       {!reviews.length && (
-        <Message text="You have no pending reviews right now."></Message>
+        <Empty label="You have no pending reviews right now." />
       )}
       {reviews.map(review => (
-        <ReviewDetails
+        <ReviewItem
           name={review.review_title}
           cons={review.cons}
           pros={review.pros}
@@ -38,9 +35,10 @@ const AdminReviewOverviewPage = () => {
           interviewDifficulty={review.difficulty}
           employmentStatus={review.employemnt_status}
           reviewId={review.review_id}
+          mb={3}
         />
       ))}
-    </Container>
+    </SidebarLayoutContainer>
   );
 };
 

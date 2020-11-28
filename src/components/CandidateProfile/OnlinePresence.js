@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
-import Box from "../../common/components/Box";
-import { MainOutlineButton, MainButton } from "../../styles/Button";
 import Input from "../../common/components/Input";
-import { InlineList, InlineListItem } from "../../styles/ListStyle";
-import Labels from "../Labels";
 import { Form } from "../../styles/FormStyles";
 import AuthContext from "../../common/context/AuthContext";
 import { ADD_LINK, GET_LINKS, DELETE_LINK } from "../../common/helpers/apiUrls";
 import Message from "../../common/components/Message/Message";
+import SocialLinks from "../social-links/social-links";
+import Button from "../../common/components/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex } from "reflexbox";
 
 const OnlinePresence = ({ userId }) => {
   const [link, setLink] = useState("");
@@ -55,7 +55,9 @@ const OnlinePresence = ({ userId }) => {
     })
       .then(res => res.json())
       .then(data => {
-        setLinks(data);
+        if (data) {
+          setLinks(data);
+        }
       })
       .catch(error => console.log(error));
   };
@@ -81,54 +83,63 @@ const OnlinePresence = ({ userId }) => {
   }, []);
 
   return (
-    <Box
-      heading="Online Presence"
-      body="Add link to your social profiles(linkedin, facebook, ...etc)"
-    >
-      {links.map(({ name, id }) => (
-        <Labels
-          title={name}
-          key={id}
-          handleClick={deleteLink.bind(this, id)}
-          link="true"
-          creatorUser={userId}
-        />
-      ))}
-      <Form onSubmit={addLink}>
-        {showAddNewLink && (
-          <Input
-            type="text"
-            name="link"
-            placeholder="Add New Link"
-            handleInputChange={e => setLink(e.target.value)}
-            handleBlur={setBlurred}
-          />
-        )}
-        {bluredInputs.link && !linkIsValid && (
-          <Message text="Please Enter a valid Link" type="error" />
-        )}
-        {AuthState.userID == userId && (
-          <InlineList>
-            <InlineListItem>
-              <MainOutlineButton onClick={showAddNewInput} type="button">
-                Add Your Social Presence Links
-              </MainOutlineButton>
-            </InlineListItem>
-            {showAddNewLink && (
-              <InlineListItem>
-                <MainButton
-                  onClick={addLink}
+    <>
+      <SocialLinks
+        links={links}
+        // title={name}
+        // key={id}
+        // handleClick={deleteLink.bind(this, id)}
+        // link="true"
+        // creatorUser={userId}
+      />
+      <Flex mr={5} mt={2}>
+        <Form onSubmit={addLink}>
+          {showAddNewLink && (
+            <Input
+              type="text"
+              name="link"
+              placeholder="Add New Link"
+              handleInputChange={e => setLink(e.target.value)}
+              handleBlur={setBlurred}
+            />
+          )}
+          {bluredInputs.link && !linkIsValid && (
+            <Message text="Please Enter a valid Link" type="error" />
+          )}
+          {AuthState.userID === +userId && (
+            <>
+              {!showAddNewLink && (
+                <Button
+                  variant="primaryOutlineButton"
                   type="button"
-                  disabled={!formValid}
-                >
-                  Submit
-                </MainButton>
-              </InlineListItem>
-            )}
-          </InlineList>
-        )}
-      </Form>
-    </Box>
+                  text="Add Your Social Presence Links"
+                  icon={<FontAwesomeIcon icon="plus" size="1x" />}
+                  onClick={showAddNewInput}
+                />
+              )}
+              {showAddNewLink && (
+                <Flex>
+                  <Button
+                    text="Submit"
+                    variant="primaryButton"
+                    onClick={addLink}
+                    type="button"
+                    disabled={!formValid}
+                    mr={2}
+                  />
+                  <Button
+                    text="Cancel"
+                    variant="primaryOutlineButton"
+                    onClick={() => setShowAddNewLink(false)}
+                    type="button"
+                  />
+                </Flex>
+              )}
+            </>
+          )}
+        </Form>
+      </Flex>
+    </>
   );
 };
 

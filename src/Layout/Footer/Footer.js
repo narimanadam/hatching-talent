@@ -5,6 +5,7 @@ import { Link } from "@reach/router";
 import { Input } from "../../common/components/Input/Input.styles";
 import { Form } from "../../styles/FormStyles";
 import Button from "../../common/components/Button";
+import { Flex } from "reflexbox";
 
 const Footer = () => {
   return (
@@ -56,9 +57,15 @@ const Footer = () => {
                 Please subscribe to our latest news to be updated
               </Styled.ListItem>
 
-              <Form inline>
-                <Input type="text" placeholder="Enter your Email" />
-                <Button text="Send" variant="defaultOutlineButton" />
+              <Form>
+                <Flex>
+                  <Input type="text" placeholder="Enter your Email" />
+                  <Button
+                    text="Send"
+                    variant="defaultOutlineButton"
+                    notRounded
+                  />
+                </Flex>
               </Form>
             </Styled.List>
           </Col>

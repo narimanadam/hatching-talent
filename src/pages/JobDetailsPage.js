@@ -3,29 +3,55 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   PENDING_JOBS_URL,
   UPDATE_JOB_URL,
-  APPLY_SAVE_JOB
+  APPLY_SAVE_JOB,
+  GET_JOBS_URL
 } from "../common/helpers/apiUrls";
 import AuthContext from "../common/context/AuthContext";
 import { navigate } from "@reach/router";
 import JobDetails from "../components/JobDetails/JobDetails";
 import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import useUserType from "../common/utils/UserTypes";
 
-const JobDetailsPage = props => {
+const JobDetailsPage = ({ id, type }) => {
   const [job, setJob] = useState({});
   const { AuthState } = useContext(AuthContext);
+  const { isEmployer } = useUserType();
 
   useEffect(() => {
-    // GET: Job Details
-    fetch(`${PENDING_JOBS_URL}`, {
-      method: "POST"
-    })
-      .then(res => res.json())
-      .then(data => {
-        let targetJob = data.filter(job => job.job_id == props.id);
-        setJob(targetJob[0]);
+    if (isEmployer) {
+      // GET: Job Details
+      fetch(`${GET_JOBS_URL}`, {
+        method: "POST",
+        headers: {
+          employerId: AuthState.userID,
+          jobStatus: type
+        }
       })
-      .catch(error => console.log(error));
+        .then(res => res.json())
+        .then(data => {
+          if (data) {
+            let targetJob = data.filter(({ job_id }) => job_id === +id)[0];
+            setJob(targetJob);
+          }
+        })
+        .catch(error => console.log(error));
+    } else {
+      fetch(`${PENDING_JOBS_URL}`, {
+        method: "POST"
+      })
+        .then(res => res.json())
+        .then(data => {
+          let targetJob = data.filter(job => job.job_id === +id);
+          setJob(targetJob[0]);
+        })
+        .catch(error => console.log(error));
+    }
   }, []);
+
+  // useEffect(() => {
+  //   // GET: Job Details
+
+  // }, []);
 
   const ApproveJob = () => {
     fetch(`${UPDATE_JOB_URL}`, {
@@ -43,6 +69,7 @@ const JobDetailsPage = props => {
       })
       .catch(error => console.log(error));
   };
+
   const RejectJob = () => {
     fetch(`${UPDATE_JOB_URL}`, {
       method: "POST",
@@ -74,7 +101,8 @@ const JobDetailsPage = props => {
       .catch(error => console.log(error));
   };
 
-  if (!job) return;
+  if (!job) return null;
+
   return (
     <>
       {job && (

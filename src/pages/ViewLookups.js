@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row } from "react-grid-system";
 import { GET_LOOKUPs } from "../common/helpers/apiUrls";
 import { Form } from "../styles/FormStyles";
 import Select from "react-select";
 import { SelectStyles } from "../styles/SelectStyles";
-import Box from "../common/components/Box";
 import PageHeader from "../common/components/PageHeader";
-import * as Styled from "../styles/gridStyle";
 import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import Grid from "../common/components/Grid/Grid";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import Empty from "../common/components/empty";
+import { Card } from "../components/JobCard/JobCard.styles";
 
 const ViewLookups = () => {
   const [lookupTypeId, setLookupTypeId] = useState("");
@@ -72,31 +73,27 @@ const ViewLookups = () => {
   };
 
   return (
-    <>
+    <SidebarLayoutContainer>
       <PageHeader boldText="Find" normalText="Lookup">
-        <Row>
-          <Form hasBgColor>
-            <div className="form__group">
-              <Select
-                options={lookupTypes}
-                placeholder="Select Lookup"
-                name="lookups"
-                styles={SelectStyles}
-                onChange={handleLookupTypeChange}
-              />
-            </div>
-          </Form>
-        </Row>
+        <Form hasBgColor>
+          <div className="form__group">
+            <Select
+              options={lookupTypes}
+              placeholder="Select Lookup"
+              name="lookups"
+              styles={SelectStyles}
+              onChange={handleLookupTypeChange}
+            />
+          </div>
+        </Form>
       </PageHeader>
-      <Container>
-        <Styled.Grid>
-          {/* {lookupValues.map(({ value }) => (
-            <Styled.Item> {value} </Styled.Item>
-          ))} */}
-        </Styled.Grid>
-        {!lookupValues.length && <Box>Select Lookup Value to display</Box>}
-      </Container>
-    </>
+      <Grid columns={4}>
+        {lookupValues.map(({ value }) => (
+          <Card> {value} </Card>
+        ))}
+      </Grid>
+      {!lookupValues.length && <Empty label="Select Lookup Value to display" />}
+    </SidebarLayoutContainer>
   );
 };
 

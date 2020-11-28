@@ -1,6 +1,5 @@
 import React from "react";
 import * as Styled from "./Input.styles";
-import useForm from "../../hooks/useForm";
 import Message from "../Message";
 
 const Input = ({
@@ -24,11 +23,14 @@ const Input = ({
         placeholder={placeholder}
         name={name}
         onChange={handleInputChange}
+        onKeyUp={handleBlur}
         onBlur={handleBlur}
         required={required}
         value={value}
-        onKeyUp={handleInputKeyup}
+        bg="lightGray"
+        // onKeyUp={handleInputKeyup}
         variant={variant && variant}
+        autocomplete="new-password"
       />
 
       {validationMessage && (

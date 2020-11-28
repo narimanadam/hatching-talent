@@ -1,23 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileInfoBox from "../components/ProfileInfoBox";
-import { Container, Row, Col } from "react-grid-system";
-import EmployerDescription from "../components/EmployerProfile/EmployerDescription";
-import EmployerReviews from "../components/EmployerProfile/EmployerReviews";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import Bio from "../components/CandidateProfile/bio/bio";
+import { GET_EMPLOYER_REVIEW } from "../common/helpers/apiUrls";
+import ReviewsSlider from "../components/reviews/reviews-slider";
 
-const EmployerProfilePage = props => {
+const EmployerProfilePage = ({ employerId }) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetch(`${GET_EMPLOYER_REVIEW}`, {
+      method: "POST",
+      headers: {
+        employerId
+      }
+    })
+      .then(res => res.json())
+      .then(data => setReviews(data))
+      .catch(error => console.log(error));
+  }, []);
+
   return (
-    <Container style={{ marginBottom: "40px", marginTop: "40px" }}>
-      <Row>
-        <Col sm={3} className="bg-gray">
-          <ProfileInfoBox userId={props.employerId} />
-        </Col>
-        <Col sm={9}>
-          <EmployerDescription userId={props.employerId} />
-          <EmployerReviews userId={props.employerId} />
-        </Col>
-      </Row>
-    </Container>
+    <SidebarLayoutContainer>
+      <ProfileInfoBox userId={employerId} type="employer" />
+      <Bio userId={employerId} />
+      {reviews.length ? (
+        <ReviewsSlider reviews={reviews} />
+      ) : (
+        <p>You have no reviews yet</p>
+      )}
+    </SidebarLayoutContainer>
   );
 };
 
-export default EmployerProfilePage;
+export default WithSidebarLayout(EmployerProfilePage);

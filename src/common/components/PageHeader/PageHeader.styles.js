@@ -12,7 +12,7 @@ export const Header = styled(Box)`
 
 Header.defaultProps = {
   // bg: "main",
-  py: [4],
+  pb: [4],
   ml: [0]
 };
 

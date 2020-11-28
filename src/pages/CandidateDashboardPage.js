@@ -1,26 +1,50 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Row, Col } from "react-grid-system";
+import { Row } from "react-grid-system";
 import ProfileInfoBox from "../components/ProfileInfoBox";
 import CandidateStats from "../components/CandidateStats";
 import ViewedProfile from "../assets/view-profile.png";
 import ContactedYou from "../assets/contacted-you.png";
 import CompaniesFollowed from "../assets/companies-followed.png";
-import { GET_USER_INFO } from "../common/helpers/apiUrls";
+import { GET_USER_INFO, SEARCH_JOBS } from "../common/helpers/apiUrls";
 import AuthContext from "../common/context/AuthContext";
-import RecommendedJobBox from "../components/RecommendedJobBox";
 import useDocumentTitle from "../common/hooks/useDocumentTitle";
 import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import JobResults from "../components/JobResults";
+import Input from "../common/components/Input";
+import { Form } from "../styles/FormStyles";
 
 const CandidateDashboardPage = props => {
-  const [jobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
   const { AuthState } = useContext(AuthContext);
   const [authUser, setAuthUser] = useState({});
+  const [query, setQuery] = useState("");
+
   useDocumentTitle(
     `${authUser && authUser.first_name} ${authUser &&
       authUser.last_name} | Dashboard`
   );
 
-  const getEmployerInfo = () => {
+  useEffect(() => {
+    console.log("queryy", query);
+    fetch(`${SEARCH_JOBS}`, {
+      method: "POST",
+      headers: {
+        keyWord: query,
+        jobLocation: "",
+        jobIndustry: ""
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          setJobs(data);
+        }
+      })
+      .catch(error => console.log(error));
+  }, [query]);
+
+  useEffect(() => {
     fetch(`${GET_USER_INFO}`, {
       method: "POST",
       headers: {
@@ -30,31 +54,12 @@ const CandidateDashboardPage = props => {
       .then(res => res.json())
       .then(data => setAuthUser(data[0]))
       .catch(error => console.log(error));
-  };
-
-  const getRecommendedJobs = () => {
-    // fetch(`${SEARCH_JOBS}`, {
-    //   method: "POST",
-    //   headers: {
-    //     keyWord: AuthState.jobTitle,
-    //     jobLocation: "",
-    //     jobIndustry: ""
-    //   }
-    // })
-    //   .then(res => res.json())
-    //   .then(data => setJobs(data))
-    //   .catch(error => console.log(error));
-  };
-
-  useEffect(() => {
-    getRecommendedJobs();
-    getEmployerInfo();
   }, []);
 
   return (
-    <>
+    <SidebarLayoutContainer>
       <Row>
-        <Col sm={3}>
+        {/* <Col sm={3}>
           <CandidateStats
             icon={ViewedProfile}
             number="28"
@@ -70,7 +75,7 @@ const CandidateDashboardPage = props => {
             number="22"
             text="Saved Jobs"
           />
-        </Col>
+        </Col> */}
         {/* <Col sm={3}>
             <CandidateStats
               icon={RecruitersFollowed}
@@ -79,27 +84,17 @@ const CandidateDashboardPage = props => {
             />
           </Col> */}
       </Row>
-      <h2 className="page__title">Dashboard</h2>
-      <Row>
-        <Col sm={4} className="bg-gray">
-          <ProfileInfoBox userId={props.userId} />
-        </Col>
-        <Col sm={8}>
-          <h3 className="page__subtitle">Recommended Jobs for You</h3>
-          {jobs.map((job, i) => (
-            <RecommendedJobBox
-              jobName={job.job_name}
-              jobLocation={job.location}
-              jobDesc={job.job_description}
-              jobRole={job.role}
-              employerId={job.employer_id}
-              id={job.job_id}
-              key={i}
-            />
-          ))}
-        </Col>
-      </Row>
-    </>
+
+      <Form>
+        <Input
+          type="text"
+          placeholder="Search Keyword ..."
+          handleInputChange={e => setQuery(e.target.value)}
+        />
+      </Form>
+      <h3 className="page__subtitle">Recommended Jobs for You</h3>
+      <JobResults query={AuthState.jobTitle} />
+    </SidebarLayoutContainer>
   );
 };
 

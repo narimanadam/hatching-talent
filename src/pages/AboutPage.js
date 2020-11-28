@@ -8,12 +8,10 @@ import withMainLayout from "../Layout/MainLayout/WithMainLayout";
 const AboutPage = () => {
   useDocumentTitle("About | Hatching Talent");
   return (
-    <>
+    <Container>
       <PageHeader boldText="About" normalText="Hatching Talent"></PageHeader>
-      <Container>
-        <AboutTabs />
-      </Container>
-    </>
+      <AboutTabs />
+    </Container>
   );
 };
 

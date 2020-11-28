@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Router, Link, Match } from "@reach/router";
+import { Link } from "@reach/router";
 
 const NavLink = props => {
   return (

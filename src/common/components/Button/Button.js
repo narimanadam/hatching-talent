@@ -1,15 +1,24 @@
 import React from "react";
 import * as Styled from "./Button.styles";
 
-const Button = ({ text, variant, type, disabled, handleClick }) => {
+const Button = ({
+  text,
+  icon,
+  variant,
+  type,
+  disabled,
+  handleClick,
+  ...rest
+}) => {
   return (
     <Styled.Button
       variant={variant}
       type={type}
       disabled={disabled}
       onClick={handleClick}
+      {...rest}
     >
-      {text}
+      {icon && icon} {text}
     </Styled.Button>
   );
 };

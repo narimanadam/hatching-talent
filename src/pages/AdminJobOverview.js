@@ -1,48 +1,61 @@
 import React, { useState, useEffect } from "react";
-import JobBox from "../components/JobBox";
 import { PENDING_JOBS_URL } from "../common/helpers/apiUrls";
-import Message from "../common/components/Message";
 import JobCard from "../components/JobCard";
-import * as Styled from "../styles/gridStyle";
 import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import Grid from "../common/components/Grid/Grid";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import Empty from "../common/components/empty";
+import { JobCardsLoader } from "../components/job-cards-loader";
 
 const AdminJobOverview = () => {
   const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${PENDING_JOBS_URL}`, {
       method: "POST"
     })
       .then(res => res.json())
       .then(data => {
         setJobs(data);
-        console.log(data);
+        setIsLoading(false);
       })
       .catch(error => console.log(error));
   }, []);
 
-  return (
-    <>
-      {!jobs.length && (
-        <Message text="Good Job You have no jobs to approve for now." />
-      )}
+  if (isLoading) return <JobCardsLoader />;
 
-      <Styled.Grid>
-        {jobs.map(
-          ({ job_name, job_id, location, job_description, role, industry }) => (
-            <JobCard
-              jobTitle={job_name}
-              jobId={job_id}
-              key={job_id}
-              jobLocation={location}
-              jobDesc={job_description}
-              jobRole={role}
-              jobIndustry={industry}
-            />
-          )
-        )}
-      </Styled.Grid>
-    </>
+  return (
+    <SidebarLayoutContainer>
+      {jobs.length ? (
+        <Grid columns={3}>
+          {jobs.map(
+            ({
+              job_name,
+              job_id,
+              location,
+              job_description,
+              role,
+              industry
+            }) => (
+              <JobCard
+                jobTitle={job_name}
+                jobId={job_id}
+                key={job_id}
+                jobLocation={location}
+                jobDesc={job_description}
+                jobRole={role}
+                jobIndustry={industry}
+                jobType="Pending"
+              />
+            )
+          )}
+        </Grid>
+      ) : (
+        <Empty label="Good Job You have no jobs to approve for now." />
+      )}
+    </SidebarLayoutContainer>
   );
 };
 

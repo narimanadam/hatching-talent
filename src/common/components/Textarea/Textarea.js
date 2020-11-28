@@ -19,9 +19,10 @@ const Textarea = ({
         name={name}
         placeholder={placeholder}
         onChange={handleInputChange}
-        onBlur={handleBlur}
+        onKeyUp={handleBlur}
         value={value}
         variant={variant}
+        bg="lightGray"
       />
       {validationMessage && (
         <Message type="error" text={validationMessage || {}} />

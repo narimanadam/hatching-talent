@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 
 let isAuth = window.localStorage.getItem("authenticated");
 let userData = window.localStorage.getItem("userData") || null;

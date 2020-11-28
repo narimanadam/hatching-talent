@@ -3,7 +3,7 @@ import { Flex, Box } from "reflexbox";
 
 import SelectLookup from "./SelectLookup";
 import Input from "../common/components/Input";
-import { Button } from "../styles/Button";
+import Button from "../common/components/Button/";
 import { Form } from "../styles/FormStyles";
 import { REGISTER_URL } from "../common/helpers/apiUrls";
 import useForm from "../common/hooks/useForm";
@@ -177,9 +177,12 @@ const CandidateRegistertaionForm = () => {
           />
         </Box>
       </Flex>
-      <Button type="submit" disabled={!formIsValid}>
-        Register
-      </Button>
+      <Button
+        text="Register"
+        type="submit"
+        variant="primaryButton"
+        disabled={!formIsValid}
+      />
     </Form>
   );
 };

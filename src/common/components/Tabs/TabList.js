@@ -1,9 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 
-class TabList extends Component {
-  render() {
-    return <div className="tab__list">{this.props.children}</div>;
-  }
-}
+const TabList = ({ children }) => <div className="tab__list">{children}</div>;
 
 export default TabList;

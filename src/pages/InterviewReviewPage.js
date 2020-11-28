@@ -1,22 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
 import Select from "react-select";
 
-import { Row, Col } from "react-grid-system";
 import { Form } from "../styles/FormStyles";
-import RadioButton from "../common/components/RadioButton";
 import Input from "../common/components/Input";
 import Textarea from "../common/components/Textarea/Textarea";
-import { MainButton } from "../styles/Button";
-import Checkbox from "../common/components/Checkbox/Checkbox";
 import Box from "../common/components/Box";
-import SelectLookup from "../components/SelectLookup";
 import { SelectDefaultStyles } from "../styles/SelectStyles";
 import { ADD_REVIEW } from "../common/helpers/apiUrls";
 import AuthContext from "../common/context/AuthContext";
 import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import Button from "../common/components/Button/";
+import { navigate } from "@reach/router";
 
 const InterviewReviewPage = () => {
-  const [role, setRole] = useState("");
   const [interviewProcess, setInterviewProcess] = useState("");
   const [interviewQuestion, setInterviewQuestion] = useState("");
   const [interviewAnswer, setInterviewAnswer] = useState("");
@@ -27,6 +24,7 @@ const InterviewReviewPage = () => {
   const [advice, setAdvice] = useState("");
   const [employerId, setEmployerId] = useState("");
   const [employmentStatus, setEmploymentStatus] = useState("");
+  const [jobRole, setJobRole] = useState("");
   const { AuthState } = useContext(AuthContext);
 
   const interviewLevel = [
@@ -35,9 +33,9 @@ const InterviewReviewPage = () => {
     { label: "Hard", value: "hard" }
   ];
 
-  const handleJobRoleChange = ({ value }) => {
-    setRole(value);
-  };
+  // const handleJobRoleChange = ({ value }) => {
+  //   setRole(value);
+  // };
 
   const selectInterViewDifficulty = ({ value }) => {
     setInterviewDifficulty(value);
@@ -47,7 +45,7 @@ const InterviewReviewPage = () => {
     fetch(`${ADD_REVIEW}`, {
       method: "POST",
       headers: {
-        role,
+        role: jobRole,
         reviewTitle,
         pros,
         cons,
@@ -62,7 +60,11 @@ const InterviewReviewPage = () => {
       }
     })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => {
+        if (data[0].value === "Ok") {
+          navigate("/review");
+        }
+      })
       .catch(error => console.log(error));
   };
 
@@ -74,7 +76,7 @@ const InterviewReviewPage = () => {
   }, []);
 
   return (
-    <Row>
+    <SidebarLayoutContainer>
       <Box
         heading="Tell us about your recent job interview"
         text={[
@@ -83,12 +85,18 @@ const InterviewReviewPage = () => {
       />
 
       <Form onSubmit={submitInterviewReview} hasBgColor>
-        <SelectLookup
+        {/* <SelectLookup
           name="jobLocation"
           placeholder="Select Job Role"
-          typeId="Industries"
+          typeId="Roles"
           handleSelectChange={handleJobRoleChange}
           type="default"
+        /> */}
+        <Input
+          placeholder="Job Role"
+          label="Job Role"
+          name="jobRole"
+          handleInputChange={e => setJobRole(e.target.value)}
         />
         <Textarea
           placeholder="Briefly describe the hiring and interview process"
@@ -141,9 +149,9 @@ const InterviewReviewPage = () => {
                 label="I agree to this platform Terms of Use. This Review of my experience at my current or former employer."
                 name="agreeTermsAndConditions"
               /> */}
-        <MainButton type="submit">Submit</MainButton>
+        <Button type="submit" text="Submit" variant="primaryButton" />
       </Form>
-    </Row>
+    </SidebarLayoutContainer>
   );
 };
 

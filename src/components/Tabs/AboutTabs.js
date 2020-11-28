@@ -55,7 +55,7 @@ class AboutTabs extends Component {
                   title={tabItem.title}
                   key={tabItem.id}
                   icon={tabItem.icon}
-                  className={this.state.tabSelected == index ? "active" : ""}
+                  className={this.state.tabSelected === index ? "active" : ""}
                   handleClick={this.handleClick.bind(this, index)}
                 />
               ))}

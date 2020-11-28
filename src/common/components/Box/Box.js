@@ -2,12 +2,12 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Styled from "./Box.styles";
 
-const success = `${props => props.theme.success}`;
+// const success = `${props => props.theme.success}`;
 
-const Box = ({ type, heading, text, children, editMode }) => {
+const Box = ({ type, heading, text, children, editMode, ...rest }) => {
   return (
-    <Styled.Box>
-      {type == "success" && (
+    <Styled.Wrapper {...rest}>
+      {type === "success" && (
         <Styled.Icon>
           <FontAwesomeIcon
             icon="check-circle"
@@ -17,7 +17,7 @@ const Box = ({ type, heading, text, children, editMode }) => {
         </Styled.Icon>
       )}
 
-      {type == "error" && (
+      {type === "error" && (
         <Styled.Icon>
           <FontAwesomeIcon
             icon="times-circle"
@@ -28,9 +28,13 @@ const Box = ({ type, heading, text, children, editMode }) => {
       )}
 
       <Styled.Heading>{heading}</Styled.Heading>
-      {text && !editMode && text.map(text => <Styled.Text>{text}</Styled.Text>)}
+      {text &&
+        !editMode &&
+        React.Children.toArray(
+          text.map(text => <Styled.Text>{text}</Styled.Text>)
+        )}
       {children}
-    </Styled.Box>
+    </Styled.Wrapper>
   );
 };
 

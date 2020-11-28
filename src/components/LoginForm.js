@@ -11,10 +11,9 @@ import useDocumentTitle from "../common/hooks/useDocumentTitle";
 import useForm from "../common/hooks/useForm";
 
 const LoginForm = () => {
-  const { AuthState, AuthDispatch } = useContext(AuthContext);
+  const { AuthDispatch } = useContext(AuthContext);
 
   const login = () => {
-    console.log("hahahah");
     fetch(`${LOGIN_URL}`, {
       method: "POST",
       headers: {

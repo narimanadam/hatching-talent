@@ -1,17 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 
-class TabContent extends Component {
-  render() {
-    return (
-      <div
-        className={`tab__content ${
-          this.props.activeTab == this.props.tabId ? "visible" : ""
-        }`}
-      >
-        {this.props.children}
-      </div>
-    );
-  }
-}
+const TabContent = ({ activeTab, type, children }) => (
+  <div className={`tab__content ${activeTab === type ? "visible" : ""}`}>
+    {children}
+  </div>
+);
 
 export default TabContent;

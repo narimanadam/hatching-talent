@@ -4,14 +4,7 @@ import { Link } from "@reach/router";
 import Button from "../../common/components/Button";
 import * as Styled from "./CandidateCard.styles";
 
-const CandidateCard = ({
-  imgSrc,
-  firstName,
-  lastName,
-  email,
-  id,
-  jobTitle
-}) => {
+const CandidateCard = ({ imgSrc, firstName, lastName, id, jobTitle }) => {
   return (
     <Styled.Card>
       <Styled.Img src={imgSrc} alt={firstName} />

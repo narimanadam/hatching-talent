@@ -7,6 +7,7 @@ import * as Styled from "./JobCard.styles";
 
 const JobCard = ({
   jobTitle,
+  jobType,
   jobId,
   jobLocation,
   jobDesc,
@@ -18,7 +19,7 @@ const JobCard = ({
   return (
     <Styled.Card>
       <Link
-        to={`/jobs-overview/job-details/${jobId}`}
+        to={`/jobs-overview/job-details/${jobType}/${jobId}`}
         style={{ textDecoration: "none", color: "#333" }}
       >
         <Styled.Wrapper>

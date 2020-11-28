@@ -102,6 +102,27 @@ export const GlobalStyle = props => (
       .slick-next:before {
         content: "" !important;
       }
+      .swiper-container {
+        width: 100%;
+      }
+
+      .swiper-slide {
+        background-size: cover;
+        background-position: 50%;
+        min-height: 20vh;
+
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .swiper-button-next,
+      .swiper-button-prev {
+        color: #6c6e72;
+        &:after {
+          font-size: 22px;
+        }
+      }
     `}
   />
 );

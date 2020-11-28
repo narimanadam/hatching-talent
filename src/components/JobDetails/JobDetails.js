@@ -34,35 +34,35 @@ const JobDetails = ({
         <Styled.JobTitle>{jobTitle}</Styled.JobTitle>
         <Styled.JobLevel>{jobLevel}</Styled.JobLevel>
         <Styled.JobDesc>{jobDesc}</Styled.JobDesc>
-      </Container>
-
-      <Flex mt={4} justifyContent="flex-end">
-        {isCandidate && (
-          <Button
-            text="Apply to this Job"
-            handleClick={applyJob}
-            type="submit"
-            variant="primaryButton"
-          />
-        )}
-
-        {isAdmin && (
-          <>
+        <Flex mt={4} justifyContent="flex-end">
+          {isCandidate && (
             <Button
-              text="Approve"
-              handleClick={approveJob}
+              text="Apply to this Job"
+              handleClick={applyJob}
               type="submit"
               variant="primaryButton"
             />
-            <Button
-              text="Reject"
-              handleClick={rejectJob}
-              type="submit"
-              variant="primaryOutlineButton"
-            />
-          </>
-        )}
-      </Flex>
+          )}
+
+          {isAdmin && (
+            <Flex>
+              <Button
+                text="Approve"
+                handleClick={approveJob}
+                type="submit"
+                variant="primaryButton"
+                mr={2}
+              />
+              <Button
+                text="Reject"
+                handleClick={rejectJob}
+                type="submit"
+                variant="primaryOutlineButton"
+              />
+            </Flex>
+          )}
+        </Flex>
+      </Container>
     </>
   );
 };

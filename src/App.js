@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "./Layout/Header/Header";
-import Footer from "./Layout/Footer/Footer";
 import { Router } from "@reach/router";
 import { GlobalStyle } from "./styles";
 import LandingPage from "./pages/LandingPage";
@@ -31,9 +29,10 @@ import LookupsPage from "./pages/LookupsPage";
 import ViewLookups from "./pages/ViewLookups";
 import AdminDashboard from "./pages/AdminDashboard";
 import EmployerProfilePage from "./pages/EmployerProfilePage";
-import RecommendedJobDetailsPage from "./pages/RecommendedJobDetailsPage";
 import AuthProvider from "./common/context/AuthProvider";
 import MyErrorBoundary from "./common/MyErrorBoundary";
+// import SwiperCore from "swiper";
+import "swiper/swiper-bundle.css";
 
 const App = () => {
   return (
@@ -64,8 +63,7 @@ const App = () => {
             <FindCandidatePage path="/find-candidate" />
             <CandidateDetailsPage path="/candidate/:id" />
             <AdminJobOverview path="/jobs-overview" />
-            <JobDetailsPage path="/jobs-overview/job-details/:id" />
-            <RecommendedJobDetailsPage path="/job-details/:id" />
+            <JobDetailsPage path="/jobs-overview/job-details/:type/:id" />
             <AdminReviewOverviewPage path="/approve-review" />
             <LookupsPage path="/lookups" />
             <ViewLookups path="/view-lookups" />

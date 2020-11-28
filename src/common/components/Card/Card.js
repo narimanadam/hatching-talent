@@ -3,7 +3,7 @@ import * as Styled from "./Card.styles";
 import Articles from "../../../assets/recent-articles.jpg";
 import { Link } from "@reach/router";
 
-const Card = ({ title, body, viewsNo, articleId, hasImg }) => {
+const Card = ({ title, body, viewsNo, articleId, hasImg, children }) => {
   return (
     <Styled.Card>
       <Link
@@ -27,6 +27,7 @@ const Card = ({ title, body, viewsNo, articleId, hasImg }) => {
           )} */}
         </Styled.Info>
       </Link>
+      {children}
     </Styled.Card>
   );
 };

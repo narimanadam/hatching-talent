@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 const Form = styled.form`
   padding: ${props => (props.hasBgColor ? "24px" : "")};
   width: 100%;
-  display: flex;
+  display: ${props => (props.reviewForm ? "block" : "flex")};
   flex-direction: ${props => (props.inline ? "row" : "column")};
   // justify-content: flex-end;
   align-items: flex-end;
@@ -49,10 +49,11 @@ const Form = styled.form`
     position: relative;
     top: -15px;
     background: #fff;
-    border-top: 1px solid #efefef;
+    border-top: 1px solid #f6f9fa;
+    cursor: pointer;
     .list__search-results__item {
       padding: 10px 15px;
-      border-bottom: 1px solid #6c6e72;
+      border-bottom: 1px solid #f6f9fa;
       &:last-child {
         border-bottom: none;
       }
@@ -71,7 +72,7 @@ const Form = styled.form`
         font-size: 16px;
         padding-left: 15px;
         width: 100%;
-        background: #fff;
+        background: #f6f9fa;
         outline: none;
         :focus {
           box-shadow: none;

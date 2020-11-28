@@ -4,10 +4,16 @@ import styled from "styled-components";
 import { Container } from "react-grid-system";
 import { GET_ARTICLES } from "../common/helpers/apiUrls";
 import useDocumentTitle from "../common/hooks/useDocumentTitle";
-import withMainLayout from "../Layout/MainLayout/WithMainLayout";
+import WithSidebarLayout from "../Layout/SidebarLayout/WithSidebarLayout";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+
+const ArticleImgWrapper = styled.div`
+  text-align: center;
+`;
 
 const ArticleImg = styled.img`
-  width: 100%;
+  max-width: 100%;
+  max-height: 400px;
 `;
 
 const ArticleTitle = styled.h1`
@@ -25,33 +31,31 @@ const ArticleDetails = ({ articleId }) => {
   const [article, setArticle] = useState({});
   useDocumentTitle(`${article.title}`);
 
-  const getArticle = () => {
+  useEffect(() => {
     fetch(`${GET_ARTICLES}`, {
       method: "POST"
     })
       .then(res => res.json())
       .then(data => {
         let targetArticle = data.filter(
-          article => article.article_id == articleId
+          article => article.article_id === +articleId
         );
         setArticle(targetArticle[0]);
       })
       .catch(error => console.log(error));
-  };
-
-  useEffect(() => {
-    getArticle();
   }, []);
 
   return (
-    <>
-      <ArticleImg src={ArticleImage} />
+    <SidebarLayoutContainer>
+      <ArticleImgWrapper>
+        <ArticleImg src={ArticleImage} />
+      </ArticleImgWrapper>
       <Container>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleBody>{article.article_description}</ArticleBody>
       </Container>
-    </>
+    </SidebarLayoutContainer>
   );
 };
 
-export default withMainLayout(ArticleDetails);
+export default WithSidebarLayout(ArticleDetails);

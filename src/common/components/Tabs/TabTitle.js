@@ -1,30 +1,30 @@
-import React, { Component } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-class TabItem extends Component {
-  render() {
-    return (
-      <div
-        className={`tab__title ${this.props.className}`}
-        onClick={this.props.handleClick}
-        tabIndex={this.props.tabIndex}
-      >
-        {this.props.icon && (
-          <FontAwesomeIcon
-            icon={
-              this.props.iconType
-                ? ["far", `${this.props.icon}`]
-                : this.props.icon
-            }
-            size="2x"
-            className="tab__icon"
-          />
-        )}
-        <span>{this.props.title}</span>
-        {this.props.children}
-      </div>
-    );
-  }
-}
+const TabItem = ({
+  title,
+  handleClick,
+  tabIndex,
+  className,
+  iconType,
+  icon,
+  children
+}) => (
+  <div
+    className={`tab__title ${className}`}
+    onClick={handleClick}
+    tabIndex={tabIndex}
+  >
+    {icon && (
+      <FontAwesomeIcon
+        icon={iconType ? ["far", `${icon}`] : icon}
+        size="2x"
+        className="tab__icon"
+      />
+    )}
+    <span>{title}</span>
+    {children}
+  </div>
+);
 
 export default TabItem;

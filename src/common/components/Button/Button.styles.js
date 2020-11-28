@@ -2,11 +2,10 @@ import styled from "@emotion/styled";
 import { Box } from "reflexbox";
 
 export const Button = styled(Box)`
-  height: 40px;
-  line-height: 30px;
   outline: 0;
   transition: 0.3s;
   cursor: pointer;
+  border-radius: ${props => (props.notRounded ? 0 : props.theme.radii[3])}px;
 `;
 
 Button.defaultProps = {
@@ -14,7 +13,6 @@ Button.defaultProps = {
   fontSize: ["16px"],
   px: [4],
   sx: {
-    borderRadius: [3],
     ":disabled": {
       opacity: 0.5,
       cursor: "not-allowed"

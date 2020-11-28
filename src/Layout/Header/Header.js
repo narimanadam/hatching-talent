@@ -10,21 +10,21 @@ import { Button } from "../../styles/Button";
 import logo from "../../assets/logo.png";
 import { Link, navigate } from "@reach/router";
 import AuthContext from "../../common/context/AuthContext";
-import Thumbnail from "../../components/Thumbnail";
+import Thumbnail from "../../components/user-thumbnail/user-thumbnail";
 import { GET_USER_INFO } from "../../common/helpers/apiUrls";
 import { LOGOUT } from "../../common/actions/Types";
 import Logo from "../../assets/logo.png";
 import Modal from "../../common/components/Modal/";
 import LoginRegisterModal from "../../pages/LoginRegisterModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = () => {
+  const [showModal, setShowModal] = useState(false);
   const { AuthState, AuthDispatch } = useContext(AuthContext);
   const [userFullName, setUserFullName] = useState("");
   const modalRef = useRef();
 
-  const toggleModal = useCallback(() => modalRef.current.toggleModal(), [
-    AuthState
-  ]);
+  const toggleModal = useCallback(() => setShowModal(!showModal), [AuthState]);
 
   const logout = () => {
     window.localStorage.clear();
@@ -32,7 +32,7 @@ const Header = () => {
     AuthDispatch({ type: LOGOUT });
   };
 
-  const getUserData = () => {
+  useEffect(() => {
     fetch(`${GET_USER_INFO}`, {
       method: "POST",
       headers: {
@@ -51,11 +51,7 @@ const Header = () => {
         }
       })
       .catch(error => console.log(error));
-  };
-
-  useEffect(() => {
-    getUserData();
-  });
+  }, []);
 
   return (
     <>
@@ -104,7 +100,7 @@ const Header = () => {
         </Container>
       </HeaderTop> */}
       <Styled.Header>
-        {/* {AuthState.isLoggedIn && AuthState.type == "Candidate" && (
+        {AuthState.isLoggedIn && AuthState.type === "Candidate" && (
           <Styled.List>
             <Styled.Link>
               <Link
@@ -130,9 +126,9 @@ const Header = () => {
               </Link>
             </Styled.Link>
           </Styled.List>
-        )} */}
+        )}
 
-        {AuthState.isLoggedIn && AuthState.type == "Admin" && (
+        {AuthState.isLoggedIn && AuthState.type === "Admin" && (
           <Styled.List>
             <Styled.Link>
               <Link to="/post-article" className="white-link">
@@ -157,7 +153,7 @@ const Header = () => {
           </Styled.List>
         )}
 
-        {AuthState.isLoggedIn && AuthState.type == "Employer" && (
+        {AuthState.isLoggedIn && AuthState.type === "Employer" && (
           <Styled.List>
             <Styled.Link className="active">
               <Link
@@ -207,9 +203,18 @@ const Header = () => {
         )}
       </Styled.Header>
 
-      <Modal boldText="Login" variant="light" img={Logo} ref={modalRef}>
-        <LoginRegisterModal />
-      </Modal>
+      {showModal && (
+        <Modal boldText="Login" variant="light" img={Logo} ref={modalRef}>
+          <LoginRegisterModal />
+          <Button
+            type="button"
+            variant="linkButton"
+            color="#333"
+            icon={<FontAwesomeIcon icon="times" size="1x" />}
+            onClick={() => setShowModal(false)}
+          />
+        </Modal>
+      )}
     </>
   );
 };

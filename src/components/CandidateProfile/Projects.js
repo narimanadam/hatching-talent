@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import Labels from "../Labels";
+// import Labels from "../Labels";
 import Box from "../../common/components/Box";
 import { MainOutlineButton, MainButton } from "../../styles/Button";
 import Input from "../Input";
@@ -50,9 +50,9 @@ const Projects = () => {
 
   return (
     <Box heading="Projects">
-      {projects.map((project, index) => (
+      {/* {projects.map((project, index) => (
         <Labels key={index} title={project.name} />
-      ))}
+      ))} */}
       {showAddNewProject && (
         <Input
           type="text"

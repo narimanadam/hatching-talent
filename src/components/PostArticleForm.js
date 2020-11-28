@@ -7,6 +7,7 @@ import { navigate } from "@reach/router";
 import useForm from "../common/hooks/useForm";
 import Button from "../common/components/Button";
 import PageHeader from "../common/components/PageHeader";
+import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
 
 const PostArticleForm = () => {
   const postArticle = () => {
@@ -35,7 +36,7 @@ const PostArticleForm = () => {
   } = useForm({ articleTitle: "", articleBody: "" }, postArticle);
 
   return (
-    <>
+    <SidebarLayoutContainer>
       <PageHeader boldText="Post" normalText="an article" />
       <Form onSubmit={handleSubmit} hasBgColor>
         <Input
@@ -64,7 +65,7 @@ const PostArticleForm = () => {
           variant="primaryButton"
         />
       </Form>
-    </>
+    </SidebarLayoutContainer>
   );
 };
 

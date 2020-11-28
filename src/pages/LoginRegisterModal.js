@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LoginForm from "../components/LoginForm";
 import CandidateRegisterationForm from "../components/CandidateRegisterationForm";
-import { Button } from "../styles/Button";
+import Button from "../common/components/Button/";
 import * as Styled from "../common/components/Modal/Modal.styles";
 
 const LoginRegisterModal = () => {
@@ -10,6 +10,7 @@ const LoginRegisterModal = () => {
     <>
       {!newUser ? (
         <>
+          <Styled.Img src="/assets/login.svg" width={200} />
           <Styled.Title>Welcome Back</Styled.Title>
           <Styled.SubTitle>Login to get started</Styled.SubTitle>
         </>
@@ -35,21 +36,21 @@ const LoginRegisterModal = () => {
           <>
             New User?
             <Button
-              style={{ color: "#f7ac06" }}
+              text="Create an account"
+              color="#f7ac06"
               onClick={() => setNewUser(true)}
-            >
-              Create an account
-            </Button>
+              variant="linkButton"
+            />
           </>
         ) : (
           <>
-            Already Have an account?{" "}
+            Already Have an account?
             <Button
-              style={{ color: "#f7ac06" }}
+              text="Login"
+              color="#f7ac06"
               onClick={() => setNewUser(false)}
-            >
-              login
-            </Button>
+              variant="linkButton"
+            />
           </>
         )}
       </p>

@@ -49,7 +49,7 @@ const SelectLookup = ({
         options={selectOptions}
       />
       {validationMessage && (
-        <Message type="error" text={validationMessage || ""} />
+        <Message type="error" text={validationMessage || "Field is Required"} />
       )}
     </>
   );

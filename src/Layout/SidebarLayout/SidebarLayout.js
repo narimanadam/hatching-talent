@@ -1,14 +1,17 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex } from "reflexbox";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../Footer/Footer";
-import Button from "../../common/components/Button";
+
+export const SidebarLayoutContainer = ({ children, ...rest }) => (
+  <Box px={5} py={4} {...rest}>
+    {children}
+  </Box>
+);
 
 const SidebarLayout = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleIsOpen = useCallback(() => setIsOpen(true), []);
+  const [isOpen] = useState(false);
 
   return (
     <>
@@ -26,7 +29,7 @@ const SidebarLayout = ({ children }) => {
         >
           <Sidebar />
         </Box>
-        <Box flex="5" px={5} py={4}>
+        <Box flex="5">
           {/* <Button onClick={handleIsOpen}>
             <FontAwesomeIcon icon="bars" size="2x" style={{ color: "#333" }} />
           </Button> */}
