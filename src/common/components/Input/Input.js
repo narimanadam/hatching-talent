@@ -7,13 +7,9 @@ const Input = ({
   placeholder,
   name,
   label,
-  handleInputChange,
-  handleBlur,
-  required,
-  value,
-  handleInputKeyup,
-  validationMessage,
-  variant
+  variant,
+  register,
+  error
 }) => {
   return (
     <div className="form__group">
@@ -22,20 +18,11 @@ const Input = ({
         type={type}
         placeholder={placeholder}
         name={name}
-        onChange={handleInputChange}
-        onKeyUp={handleBlur}
-        onBlur={handleBlur}
-        required={required}
-        value={value}
         bg="lightGray"
-        // onKeyUp={handleInputKeyup}
+        ref={register}
         variant={variant && variant}
-        autocomplete="new-password"
       />
-
-      {validationMessage && (
-        <Message type="error" text={validationMessage || {}} />
-      )}
+      {error && <Message type="error" text={error.message} />}
     </div>
   );
 };

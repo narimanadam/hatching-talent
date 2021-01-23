@@ -5,20 +5,21 @@ import { Form } from "../styles/FormStyles";
 import PageHeader from "../common/components/PageHeader";
 import useDocumentTitle from "../common/hooks/useDocumentTitle";
 import Button from "../common/components/Button";
-import useForm from "../common/hooks/useForm";
 import withMainLayout from "../Layout/MainLayout/WithMainLayout";
 import { Container } from "react-grid-system";
+import { useForm } from "react-hook-form";
 
 const ContactPage = () => {
   useDocumentTitle("Contact Us | Hatching Talent");
+  const { register, handleSubmit, errors } = useForm();
 
-  const sendMessage = () => {
+  const sendMessage = data => {
     fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       headers: {
-        fullName: values.fullName,
-        email: values.email,
-        message: values.message
+        fullName: data.fullName,
+        email: data.email,
+        message: data.message
       }
     })
       .then(res => res.json())
@@ -26,44 +27,43 @@ const ContactPage = () => {
       .catch(error => console.log(error));
   };
 
-  const { values, handleChange, handleBlur, handleSubmit, disabled } = useForm(
-    { fullName: "", email: "", message: "" },
-    sendMessage
-  );
-
   return (
     <Container>
       <PageHeader boldText="Contact" normalText="Us">
-        <Form action="" onSubmit={handleSubmit} hasBgColor>
+        <Form action="" onSubmit={handleSubmit(sendMessage)} hasBgColor>
           <Input
             type="text"
             placeholder="Full Name"
             name="fullname"
-            handleInputChange={handleChange}
-            handleBlur={handleBlur}
-            variant="darkFormField"
+            register={register({ required: "Full Name is Required" })}
+            error={errors.fullname}
           />
           <Input
             type="email"
             placeholder="Email"
             name="email"
-            handleInputChange={handleChange}
-            handleBlur={handleBlur}
-            variant="darkFormField"
+            register={register({
+              required: "Email is required.",
+              pattern: {
+                value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/,
+                message: "Invalid Email Format"
+              }
+            })}
+            error={errors.email}
           />
           <Textarea
             name="message"
             placeholder="Your Message"
-            handleInputChange={handleChange}
-            handleBlur={handleBlur}
-            variant="darkFormField"
+            register={register({
+              required: "Message is Required",
+              minLength: {
+                value: 8,
+                message: "Message should be at least 20 characters"
+              }
+            })}
+            error={errors.message}
           />
-          <Button
-            text="Send Message"
-            variant="primaryButton"
-            type="submit"
-            disabled={disabled}
-          />
+          <Button text="Send Message" variant="primaryButton" type="submit" />
         </Form>
       </PageHeader>
     </Container>

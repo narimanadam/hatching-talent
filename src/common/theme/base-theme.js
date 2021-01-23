@@ -108,6 +108,19 @@ const BaseTheme = {
         color: "main"
       }
     },
+    defaultButton: {
+      height: 40,
+      bg: "white",
+      color: "main",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderColor: "white",
+      fontWeight: 5,
+      ":hover, :active": {
+        bg: "transparent",
+        color: "white"
+      }
+    },
     linkButton: {
       bg: "transparent",
       border: 0,

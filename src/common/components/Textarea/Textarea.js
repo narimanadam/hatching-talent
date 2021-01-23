@@ -6,10 +6,9 @@ const Textarea = ({
   name,
   placeholder,
   label,
-  handleInputChange,
-  handleBlur,
   value,
-  validationMessage,
+  register,
+  error,
   variant
 }) => {
   return (
@@ -18,15 +17,12 @@ const Textarea = ({
       <Styled.Textarea
         name={name}
         placeholder={placeholder}
-        onChange={handleInputChange}
-        onKeyUp={handleBlur}
         value={value}
-        variant={variant}
+        variant={variant && variant}
         bg="lightGray"
+        ref={register}
       />
-      {validationMessage && (
-        <Message type="error" text={validationMessage || {}} />
-      )}
+      {error && <Message type="error" text={error.message} />}
     </div>
   );
 };

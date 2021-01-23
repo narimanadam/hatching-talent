@@ -8,20 +8,21 @@ import AuthContext from "../common/context/AuthContext";
 import { LOGIN_URL } from "../common/helpers/apiUrls";
 import { LOGIN } from "../common/actions/Types";
 import useDocumentTitle from "../common/hooks/useDocumentTitle";
-import useForm from "../common/hooks/useForm";
+import { useForm } from "react-hook-form";
 
 const LoginForm = () => {
   const { AuthDispatch } = useContext(AuthContext);
+  const { register, handleSubmit, errors } = useForm();
 
-  const login = () => {
+  const login = data => {
     fetch(`${LOGIN_URL}`, {
       method: "POST",
       headers: {
         "Access-Control-Allow-Origin": "*",
         Accept: "application/json",
         "Content-Type": "application/json",
-        email: values.email,
-        pass: values.password
+        email: data.email,
+        pass: data.password
       },
       body: {}
     })
@@ -65,34 +66,34 @@ const LoginForm = () => {
   };
 
   useDocumentTitle("Hatching Talent | Login");
-  const {
-    values,
-    errors,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    formIsValid
-  } = useForm({ email: "", password: "" }, login);
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit(login)}>
       <Input
         type="text"
         placeholder="Your Email"
         name="email"
-        handleInputChange={handleChange}
-        handleBlur={handleBlur}
-        validationMessage={errors.email}
-        variant="darkFormField"
+        register={register({
+          required: "Email is required.",
+          pattern: {
+            value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/,
+            message: "Invalid Email Format"
+          }
+        })}
+        error={errors.email}
       />
       <Input
         type="password"
         placeholder="Password"
         name="password"
-        handleInputChange={handleChange}
-        handleBlur={handleBlur}
-        validationMessage={errors.password}
-        variant="darkFormField"
+        register={register({
+          required: "Password is Required",
+          minLength: {
+            value: 8,
+            message: "Password must have at least 8 characters"
+          }
+        })}
+        error={errors.password}
       />
       <Link
         style={{
@@ -108,7 +109,7 @@ const LoginForm = () => {
         Forget Password?
       </Link>
 
-      <MainButton type="submit" block disabled={!formIsValid}>
+      <MainButton type="submit" block>
         Sign In
       </MainButton>
     </Form>

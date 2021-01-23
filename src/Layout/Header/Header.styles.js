@@ -25,6 +25,7 @@ export const List = styled(Flex)`
 export const Link = styled(Box)`
   position: relative;
   display: inline-block;
+  cursor: pointer;
 
   :after {
     content: "";

@@ -3,6 +3,7 @@ import * as Styled from "./HeroBanner.styles";
 import { Input } from "../../../common/components/Input/Input.styles";
 import { Form } from "../../../styles/FormStyles";
 import Button from "../../../common/components/Button";
+import { Link } from "@reach/router";
 
 const HeroBanner = () => {
   return (
@@ -15,15 +16,17 @@ const HeroBanner = () => {
           Find meaningful jobs. Explore career paths. Check out helpful
           resources.
         </Styled.Desc>
-        <Form inline>
-          <Input type="text" placeholder="Search your dream job" />
+        {/* <Form inline>
+          <Input type="text" placeholder="Search your dream job" /> */}
+        <Link to="/job-search">
           <Button
-            text="Search"
-            type="submit"
-            variant="defaultOutlineButton"
+            text="Search Jobs"
+            type="button"
+            variant="defaultButton"
             notRounded
           />
-        </Form>
+        </Link>
+        {/* </Form> */}
       </Styled.Content>
       <Styled.Img src="../../../assets/bannerImg1.png" />
     </Styled.HeroBanner>

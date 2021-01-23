@@ -1,25 +1,58 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import Button from "../common/components/Button";
 import Input from "../common/components/Input";
 import Textarea from "../common/components/Textarea";
+import { GET_LOOKUPs, POST_JOB_URL } from "../common/helpers/apiUrls";
 import { Form } from "../styles/FormStyles";
 import { navigate } from "@reach/router";
-import { POST_JOB_URL } from "../common/helpers/apiUrls";
 import AuthContext from "../common/context/AuthContext";
+import { useForm, Controller } from "react-hook-form";
 import SelectLookup from "./SelectLookup";
-import useForm from "../common/hooks/useForm";
-import Button from "../common/components/Button";
+import { Box } from "reflexbox";
 import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import Select from "react-select";
+import { SelectStyles } from "../styles/SelectStyles";
+import Message from "../common/components/Message";
 
 const PostJobForm = () => {
   const { AuthState } = useContext(AuthContext);
+  const { register, handleSubmit, errors, control } = useForm();
+  const [jobRoleLookupValues, setJobRoleLookupValues] = useState([]);
+  const [locationsLookupValues, setLocationsLookupValues] = useState([]);
+  let jobRoleSelectOptions = [];
+  let locationSelectOptions = [];
 
-  const postJob = () => {
+  const getIndustriesLookups = type => {
+    fetch(`${GET_LOOKUPs}`, {
+      method: "POST",
+      headers: {
+        lookTypeName: "Industries"
+      }
+    })
+      .then(res => res.json())
+      .then(data => setJobRoleLookupValues(data))
+      .catch(error => console.log(error));
+  };
+
+  const getLocationsLookups = type => {
+    fetch(`${GET_LOOKUPs}`, {
+      method: "POST",
+      headers: {
+        lookTypeName: "Locations"
+      }
+    })
+      .then(res => res.json())
+      .then(data => setLocationsLookupValues(data))
+      .catch(error => console.log(error));
+  };
+
+  const postJob = useCallback(data => {
     fetch(`${POST_JOB_URL}`, {
       method: "POST",
       headers: {
         employerId: AuthState.userID,
-        jobName: values.jobTitle,
-        jobDescription: values.jobDescription,
+        jobName: data.jobTitle,
+        jobDescription: data.jobDescription,
         jobStatus: "Pending",
         jobLocation: 1,
         jobIndustry: 3,
@@ -31,74 +64,105 @@ const PostJobForm = () => {
         console.log(data);
       })
       .catch(error => console.log(error));
-  };
+  }, []);
 
-  const {
-    values,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    handleSelectChange,
-    handleSelectBlur,
-    errors,
-    formIsValid
-  } = useForm(
-    { jobTitle: "", jobDescription: "", jobLocation: "", jobRole: "" },
-    postJob
-  );
+  useEffect(() => {
+    getIndustriesLookups();
+    getLocationsLookups();
+  }, []);
+  jobRoleSelectOptions = jobRoleLookupValues.map(option => ({
+    value: option.value,
+    label: option.value
+  }));
+
+  locationSelectOptions = locationsLookupValues.map(option => ({
+    value: option.value,
+    label: option.value
+  }));
 
   return (
     <SidebarLayoutContainer>
-      {/* <PageHeader boldText="Post" normalText="Job" /> */}
-      <Form onSubmit={handleSubmit} hasBgColor>
+      <Form onSubmit={handleSubmit(postJob)} hasBgColor noValidate>
         <Input
           type="text"
           placeholder="Job Title"
           name="jobTitle"
           label="Job Title"
-          handleInputChange={handleChange}
-          handleBlur={handleBlur}
-          validationMessage={errors.jobTitle}
-          variant="darkFormField"
+          register={register({ required: "Job Title is Required" })}
+          error={errors.jobTitle}
         />
         <Textarea
           type="text"
           placeholder="Job Description"
           name="jobDescription"
           label="Job Description"
-          handleInputChange={handleChange}
-          handleBlur={handleBlur}
-          validationMessage={errors.jobDescription}
-          variant="darkFormField"
+          register={register({ required: "Job Description is Required" })}
+          error={errors.jobDescription}
         />
+
         <div className="form__group">
           <label className="form__label">Job Role</label>
-          <SelectLookup
-            name="jobRole"
-            placeholder="Select Job Role"
-            typeId="Industries"
-            handleSelectChange={handleSelectChange}
-            handleSelectBlur={handleSelectBlur}
-            validationMessage={errors.jobRole}
-          />
+          <Box width={1}>
+            <Controller
+              name="jobRole"
+              control={control}
+              options={jobRoleSelectOptions}
+              as={Select}
+              styles={SelectStyles}
+              rules={{ required: "Job Location is Required" }}
+            />
+          </Box>
+          {errors.jobRole && (
+            <Message type="error" text={errors.jobRole.message} />
+          )}
         </div>
+
         <div className="form__group">
           <label className="form__label">Job Location</label>
-          <SelectLookup
-            name="jobLocation"
-            placeholder="Select Job Location"
-            typeId="Locations"
-            handleSelectChange={handleSelectChange}
-            handleSelectBlur={handleSelectBlur}
-            validationMessage={errors.jobLocation}
-          />
+          <Box width={1}>
+            <Controller
+              name="jobLocation"
+              control={control}
+              options={locationSelectOptions}
+              as={Select}
+              styles={SelectStyles}
+              rules={{ required: "Job Location is Required" }}
+            />
+          </Box>
+          {errors.jobLocation && (
+            <Message type="error" text={errors.jobLocation.message} />
+          )}
         </div>
-        <Button
-          text="Post job"
-          variant="primaryButton"
-          type="submit"
-          disabled={!formIsValid}
-        />
+        {/* <Box width={1}>
+          <Controller
+            name="jobLocation"
+            control={control}
+            options={jobRoleLookupValues}
+            as={Select}
+            styles={SelectStyles}
+          />
+        </Box> */}
+
+        {/* <Controller
+          as={SelectLookup}
+          name="jobRole"
+          label="Job Role"
+          typeId="Industries"
+          rules={{ required: "Job Role is required" }}
+          control={control}
+          error={errors.jobRole}
+          defaultValue=""
+        /> */}
+        {/* <Controller
+          as={<SelectLookup label="Job Location" />}
+          typeId="Locations"
+          name="jobLocation"
+          rules={{ required: "Job Location is required" }}
+          control={control}
+          error={errors.jobLocation}
+          defaultValue=""
+        /> */}
+        <Button text="Post Job" variant="primaryButton" type="submit" />
       </Form>
     </SidebarLayoutContainer>
   );

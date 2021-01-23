@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
+import React, { useState, useEffect, useCallback } from "react";
+import ReactSelect from "react-select";
 import { SelectStyles, SelectDefaultStyles } from "../styles/SelectStyles";
 import { GET_LOOKUPs } from "../common/helpers/apiUrls";
 import Message from "../common/components/Message";
 
-const SelectLookup = ({
-  placeholder,
-  name,
-  handleSelectChange,
-  handleSelectBlur,
-  typeId,
-  type,
-  validationMessage
-}) => {
-  const [lookupTypeId, setLookupTypeId] = useState("");
+const SelectLookup = ({ placeholder, name, typeId, type, error, label }) => {
+  const [, setLookupTypeId] = useState("");
   const [lookupValues, setLookupValues] = useState([]);
+  const [hasValue, setHasValue] = useState(false);
   let selectOptions = [];
   const getLookups = type => {
     fetch(`${GET_LOOKUPs}`, {
@@ -28,6 +21,15 @@ const SelectLookup = ({
       .catch(error => console.log(error));
   };
 
+  const handleChange = useCallback(
+    selectedOption => {
+      if (selectedOption.value) {
+        setHasValue(true);
+      }
+    },
+    [error]
+  );
+
   useEffect(() => {
     setLookupTypeId(typeId);
     getLookups(typeId);
@@ -40,17 +42,17 @@ const SelectLookup = ({
   }));
   return (
     <>
-      <Select
+      <div className="form_group">
+        {label && <label className="form__label">{label}</label>}
+      </div>
+      <ReactSelect
         placeholder={placeholder}
         name={name}
         styles={type === "default" ? SelectDefaultStyles : SelectStyles}
-        onChange={handleSelectChange}
-        onBlur={e => handleSelectBlur(name, e.target.value)}
+        onChange={handleChange}
         options={selectOptions}
       />
-      {validationMessage && (
-        <Message type="error" text={validationMessage || "Field is Required"} />
-      )}
+      {error && !hasValue && <Message type="error" text={error.message} />}
     </>
   );
 };

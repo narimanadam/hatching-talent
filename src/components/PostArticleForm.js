@@ -4,18 +4,20 @@ import Input from "../common/components/Input";
 import Textarea from "../common/components/Textarea";
 import { ADD_ARTICLE } from "../common/helpers/apiUrls";
 import { navigate } from "@reach/router";
-import useForm from "../common/hooks/useForm";
 import Button from "../common/components/Button";
 import PageHeader from "../common/components/PageHeader";
 import { SidebarLayoutContainer } from "../Layout/SidebarLayout/SidebarLayout";
+import { useForm } from "react-hook-form";
 
-const PostArticleForm = () => {
+const PostArticleForm = data => {
+  const { register, handleSubmit, errors } = useForm();
+
   const postArticle = () => {
     fetch(`${ADD_ARTICLE}`, {
       method: "POST",
       headers: {
-        title: values.articleTitle,
-        articleDescription: values.articleBody
+        title: data.articleTitle,
+        articleDescription: data.articleBody
       }
     })
       .then(data => {
@@ -26,44 +28,32 @@ const PostArticleForm = () => {
       .catch(error => console.log(error));
   };
 
-  const {
-    values,
-    handleBlur,
-    handleSubmit,
-    handleChange,
-    formIsValid,
-    errors
-  } = useForm({ articleTitle: "", articleBody: "" }, postArticle);
-
   return (
     <SidebarLayoutContainer>
       <PageHeader boldText="Post" normalText="an article" />
-      <Form onSubmit={handleSubmit} hasBgColor>
+      <Form onSubmit={handleSubmit(postArticle)} hasBgColor>
         <Input
           name="articleTitle"
           type="text"
           label="Article Title"
           placeholder="Article Title"
-          handleInputChange={handleChange}
-          handleBlur={handleBlur}
-          validationMessage={errors.articleTitle}
-          variant="darkFormField"
+          register={register({ required: "Article Title is Required" })}
+          error={errors.articleTitle}
         />
         <Textarea
           name="articleBody"
           label="Article Body"
           placeholder="Article Body"
-          handleInputChange={handleChange}
-          handleBlur={handleBlur}
-          validationMessage={errors.articleBody}
-          variant="darkFormField"
+          register={register({
+            required: "Article Body is Required",
+            minLength: {
+              value: 100,
+              message: "Article Body should be at least 100 characters"
+            }
+          })}
+          error={errors.articleBody}
         />
-        <Button
-          text="Post Article"
-          disabled={!formIsValid}
-          type="submit"
-          variant="primaryButton"
-        />
+        <Button text="Post Article" type="submit" variant="primaryButton" />
       </Form>
     </SidebarLayoutContainer>
   );

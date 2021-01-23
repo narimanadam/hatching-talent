@@ -52,10 +52,7 @@ const ArticleOverViewPage = () => {
         )}
       </Styled.Wrapper>
       {!FilteredArticles.length && !loading && (
-        <Message
-          text="No articles found matching your search"
-          type="default"
-        ></Message>
+        <Message text="No articles found matching your search" type="default" />
       )}
       {loading && <Loading />}
     </SidebarLayoutContainer>

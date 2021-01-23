@@ -74,7 +74,7 @@ const Skills = ({ userId }) => {
       {AuthState.userID === userId && skills && (
         <Box heading="Skills">
           {!skills.length && AuthState.userID == userId && (
-            <Message text="Add the skills you have"></Message>
+            <Message text="Add the skills you have" />
           )}
 
           {console.log("skills", skills)}

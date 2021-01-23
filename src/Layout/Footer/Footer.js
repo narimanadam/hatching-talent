@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Container, Row, Col } from "react-grid-system";
 import * as Styled from "./Footer.styles";
 import { Link } from "@reach/router";
-import { Input } from "../../common/components/Input/Input.styles";
+import Input from "../../common/components/Input";
 import { Form } from "../../styles/FormStyles";
 import Button from "../../common/components/Button";
+import { useForm } from "react-hook-form";
 import { Flex } from "reflexbox";
 
 const Footer = () => {
+  const { register, handleSubmit, errors } = useForm();
+
+  const submitNewsletter = useCallback(data => {
+    console.log("dataa", data);
+  }, []);
+
   return (
     <Styled.Footer>
       <Container>
@@ -57,9 +64,28 @@ const Footer = () => {
                 Please subscribe to our latest news to be updated
               </Styled.ListItem>
 
-              <Form inline>
-                <Input type="text" placeholder="Enter your Email" />
-                <Button text="Send" variant="defaultOutlineButton" notRounded />
+              <Form inline onSubmit={handleSubmit(submitNewsletter)} noValidate>
+                <Flex alignItems="flex-start">
+                  <Input
+                    type="email"
+                    placeholder="Enter Your Email"
+                    name="email"
+                    register={register({
+                      required: "Email is required.",
+                      pattern: {
+                        value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/,
+                        message: "Invalid Email Format"
+                      }
+                    })}
+                    error={errors.email}
+                  />
+                  <Button
+                    text="Send"
+                    variant="defaultOutlineButton"
+                    type="submit"
+                    notRounded
+                  />
+                </Flex>
               </Form>
             </Styled.List>
           </Col>

@@ -36,7 +36,9 @@ HeroBanner.defaultProps = {
 
 export const Wrapper = styled.div``;
 
-export const Content = styled(Box)`
+export const Content = styled(Flex)`
+  flex-direction: column;
+  align-items: flex-start;
   position: relative;
   z-index: 999;
   text-align: center;
